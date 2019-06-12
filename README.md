@@ -23,3 +23,7 @@ Első körben igyekeztem további feature-ök nélkül, csak a "nyers" adatokkal
 MFCC illetve FFT algoritmusok benne foglaltatnak az Essentia kkkönyvtárban, ezek eredményeit valószínűleg hozzá lehetne csatolni az eredeti datasethez.
 
 4. Poliphonic inputs
+
+## Linkek
+
+https://medium.com/x8-the-ai-community/audio-classification-using-cnn-coding-example-f9cbd272269e
