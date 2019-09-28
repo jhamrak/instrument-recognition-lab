@@ -1,8 +1,10 @@
 # instrument-recognition-lab
 
-## Project vision
+For English readme, [click here](README.en.md).
 
-A project célja egy olyan deep learning modell betanítása, amely képes egy nyers audio fájlból (pl. .wav) megállapítani a benne megszólaló hangszer(eke)t. Első körben csak egy hangszert tartalmazó hangfájlokra, és amennyiben itt megfelelő eredményeket produkál a modell, akkor polifónikus audióra is ki lehetne terjeszteni.
+## A projekt célja
+
+Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. Célja felépíteni és összehasonlítani két
 
 
 ## Milestones
