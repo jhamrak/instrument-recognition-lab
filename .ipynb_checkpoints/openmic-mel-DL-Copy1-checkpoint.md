@@ -2,8 +2,8 @@
 jupyter:
   jupytext:
     text_representation:
-      extension: .Rmd
-      format_name: rmarkdown
+      extension: .md
+      format_name: markdown
       format_version: '1.2'
       jupytext_version: 1.3.0
   kernelspec:
@@ -12,7 +12,7 @@ jupyter:
     name: python3
 ---
 
-```{python}
+```python
 import librosa as lb
 import librosa.display
 import scipy
@@ -34,7 +34,7 @@ from plotter import plot_history
 import matplotlib.pyplot as plt
 ```
 
-```{python}
+```python
 # CONSTANTS
 
 DATA_DIR = "openmic-2018/"
@@ -43,7 +43,7 @@ LEARNING_RATE = 0.00001
 THRESHOLD = 0.5
 ```
 
-```{python}
+```python
 # MEL-SPECTOGRAM EXAMPLE
 
 y, sr = lb.load(DATA_DIR + 'audio/000/000135_483840.ogg')
@@ -61,7 +61,7 @@ librosa.display.specshow(S_dB, x_axis='s', y_axis='mel')
 plt.colorbar(format='%+2.0f dB')
 ```
 
-```{python}
+```python
 MEL = []
 sum = 0
 for i in range(X.shape[0]):
@@ -75,30 +75,30 @@ for i in range(X.shape[0]):
 
 ```
 
-```{python}
+```python
 MEL_S = np.asarray(MEL)
 print('Mel has shape: ' + str(MEL_S.shape))
 ```
 
-```{python}
+```python
 # TODO SAVE WITHOUT X
 
 np.savez('openmic-test-delete.npz', MEL = X, Y_true=Y_true, Y_mask=Y_mask, sample_key=sample_key)
 ```
 
-```{python}
+```python
 np.savez_compressed('openmic-mel-only.npz', MEL = MEL_S)
 print('OpenMIC keys: ' + str(list(OPENMIC_2.keys())))
 ```
 
-```{python}
+```python
 
 OPENMIC_2 = np.load(os.path.join(DATA_DIR, 'openmic-mel.npz'), allow_pickle=True)
 X, Y_true, Y_mask, sample_key = OPENMIC_2['MEL'], OPENMIC_2['Y_true'], OPENMIC_2['Y_mask'], OPENMIC_2['sample_key']
 
 ```
 
-```{python}
+```python
 # LOAD DATA
 
 OPENMIC = np.load(os.path.join(DATA_DIR, 'openmic-2018.npz'), allow_pickle=True)
@@ -110,7 +110,7 @@ print('Y_mask has shape: ' + str(Y_mask.shape))
 print('sample_key has shape: ' + str(sample_key.shape))
 ```
 
-```{python}
+```python
 # LOAD LABELS
 
 with open(os.path.join(DATA_DIR, 'class-map.json'), 'r') as f:
@@ -118,7 +118,7 @@ with open(os.path.join(DATA_DIR, 'class-map.json'), 'r') as f:
 print('OpenMIC instruments: ' + str(INSTRUMENTS))
 ```
 
-```{python}
+```python
 # SPLIT DATA (TRAIN - TEST - VAL)
 
 # CHANGE X TO MEL
@@ -129,21 +129,70 @@ test_set = np.asarray(set(split_test))
 print('# Train: {}, # Val: {}, # Test: {}'.format(len(split_train), len(split_test), len(split_val)))
 ```
 
-```{python}
-#print(X.shape)
-#X = []
-#print(len(sample_key))
-#for key in sample_key:
-#    key_dir = key[:3]
-#    y, sr = lb.load(DATA_DIR + 'audio/'+ key_dir + '/' + key + '.ogg')
-#    X.append(lb.feature.melspectrogram(y=y, sr=sr))
-#    print(len(X))
+```python
+# DUPLICATE OF THE MODEL PREPROCESS
 
 print(X_train.shape)
 print(X_test.shape)
+
+for instrument in INSTRUMENTS:
+    
+    # Map the instrument name to its column number
+    inst_num = INSTRUMENTS[instrument]
+
+    print(instrument)
+    
+    # TRAIN
+    train_inst = Y_mask_train[:, inst_num]
+    X_train_inst = X_train[train_inst]
+    X_train_inst = X_train_inst.astype('float16')
+    shape = X_train_inst.shape
+    X_train_inst = X_train_inst.reshape(shape[0],1, shape[1], shape[2])
+    Y_true_train_inst = Y_true_train[train_inst, inst_num] >= THRESHOLD
+    i = 0
+    for val in Y_true_train_inst:
+        i += val
+        
+    print('TRAIN: ' + str(i) + ' true of ' + str(len(Y_true_train_inst)) + ' (' + str(round(i / len(Y_true_train_inst ) * 100,2)) + ' %)' )
+        
+    
+    # TEST
+    test_inst = Y_mask_test[:, inst_num]
+    X_test_inst = X_test[test_inst]
+    X_test_inst = X_test_inst.astype('float16')
+    shape = X_test_inst.shape
+    X_test_inst = X_test_inst.reshape(shape[0],1, shape[1], shape[2])
+    Y_true_test_inst = Y_true_test[test_inst, inst_num] >= THRESHOLD
+    
+    i = 0
+    for val in Y_true_test_inst:
+        i += val
+        
+    print('TEST: ' + str(i) + ' true of ' + str(len(Y_true_test_inst)) + ' (' + str(round(i / len(Y_true_test_inst ) * 100,2)) + ' %)' )
+    
+    
+    # VALIDATION
+    val_inst = Y_mask_val[:, inst_num]
+    X_val_inst = X_val[val_inst]
+    X_val_inst = X_val_inst.astype('float16')
+    shape = X_val_inst.shape
+    X_val_inst = X_val_inst.reshape(shape[0],1, shape[1], shape[2])
+    Y_true_val_inst = Y_true_val[val_inst, inst_num] >= THRESHOLD
+    
+    
+    i = 0
+    for val in Y_true_val_inst:
+        i += val
+    print('VALIDATION: ' + str(i) + ' true of ' + str(len(Y_true_val_inst)) + ' (' + str(round(i / len(Y_true_val_inst ) * 100,2)) + ' %)' )
 ```
 
-```{python}
+```python
+# VALAMI FANCY ADATKIÍRÁS
+len(Y_true_val_inst)
+
+```
+
+```python
 # This dictionary will include the classifiers for each model
 mymodels = dict()
 # We'll iterate over all istrument classes, and fit a model for each one
@@ -230,7 +279,7 @@ for instrument in INSTRUMENTS:
 mymodels[instrument] = model
 ```
 
-```{python}
+```python
 
 import matplotlib.pyplot as plt
 from pylab import plot, show, figure, imshow, xlim, ylim, title
@@ -255,7 +304,7 @@ def plot_history():
     plt.show()
 ```
 
-```{python}
+```python
 """"
     # Step 3: simplify the data by averaging over time
     # Instead of having time-varying features, we'll summarize each track by its mean feature vector over time
