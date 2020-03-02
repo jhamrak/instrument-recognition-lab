@@ -7,7 +7,78 @@ Lorem ipsum
 
 hogyan tudjuk megmérni a modell teljesítményét, pontosság, tanítás ideje, stb...
 
+A következő metrikákat vizsgáltuk:
+
+\begin{itemize}
+\item Pontosság (accuraccy) - a modell az adott lépésben a bemeneti adatok hány százalékára adott helyes kimenetet?
+\item Veszteség (loss) - a veszteségfüggvény eredménye. A modell predikcióinak a valóságtól való eltérését összeadva kapjuk meg.
+\item Precizitás (precision) - 
+\item Felidézés (recall) - 
+\item F1 érték (f1 score) - ..... Ennek a súlyozott átlaga a mérvadó.
+
+\end{itemize}
+
 \section{Eredmények}
+
+
+\begin{tikzpicture}
+    \begin{axis}[
+        width  = \textwidth,
+        height = 10cm,
+        major x tick style = transparent,
+        ybar=0pt,
+        bar width=4pt,
+        ymajorgrids = true,
+        ylabel = {macro f-score},
+        symbolic x coords={Harmónika,Bendzsó,Basszusgitár,Cselló,Klarinét,Cintányér,Dob,Furulya,Gitár,Melodikus ütőhangszer,Mandolin,Orgona,Zongora,Szaxofon,Szintetizátor,Harsona,Trombita,Ukulele,Hegedű,Ének},
+        xtick = data,
+        x tick label style={rotate=90},
+        scaled y ticks = false,
+legend cell align=left,legend style={
+                at={(1,1.05)},
+                anchor=south east,
+                column sep=1ex
+        }
+    ]
+        \addplot[style={bblue,fill=bblue,mark=none}]
+            coordinates {(Harmónika, 0.68) (Bendzsó,0.72) (Basszusgitár,0.75)  (Cselló,0.79)  (Klarinét,0.52)  (Cintányér,0.93)  (Dob,0.75)  (Furulya,0.89)  (Gitár,0.97)  (Melodikus ütőhangszer,0.77)  (Mandolin,0.70)  (Orgona,0.60) (Zongora,0.93) (Szaxofon,0.83) (Szintetizátor,0.94) (Harsona,0.75) (Trombita,0.76) (Ukulele,0.72) (Hegedű,0.83) (Ének,0.93)};
+
+        \addplot[style={rred,fill=rred,mark=none}]
+            coordinates {(Harmónika, 0.76) (Bendzsó,0.74) (Basszusgitár,0.66) (Cselló,0.73) (Klarinét,0.52)  (Cintányér,0.88) (Dob,0.93) (Furulya,0.66) (Gitár,0.95)  (Melodikus ütőhangszer,0.79)  (Mandolin,0.64)  (Orgona,0.77) (Zongora,0.91) (Szaxofon,0.67) (Szintetizátor,0.89) (Harsona,0.77) (Trombita,0.71) (Ukulele,0.64) (Hegedű,0.76) (Ének,0.81)};
+
+
+        \legend{ML VGGish ,DL VGGish}
+    \end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \begin{axis}[
+        width  = \textwidth,
+        height = 10cm,
+        major x tick style = transparent,
+        ybar=0pt,
+        bar width=4pt,
+        ymajorgrids = true,
+        ylabel = {macro f-score},
+        symbolic x coords={Harmónika,Bendzsó,Basszusgitár,Cselló,Klarinét,Cintányér,Dob,Furulya,Gitár,Melodikus ütőhangszer,Mandolin,Orgona,Zongora,Szaxofon,Szintetizátor,Harsona,Trombita,Ukulele,Hegedű,Ének},
+        xtick = data,
+        x tick label style={rotate=90},
+        scaled y ticks = false,
+legend cell align=left,legend style={
+                at={(1,1.05)},
+                anchor=south east,
+                column sep=1ex
+        }
+    ]
+        \addplot[style={ppurple,fill=ppurple,mark=none}]
+            coordinates {(Harmónika,0.45) (Bendzsó,0.39) (Basszusgitár,0.42) (Cselló,0.63)  (Klarinét,0.43)  (Cintányér,0.80)  (Dob,0.82)  (Furulya,0.41)  (Gitár,0.47)  (Melodikus ütőhangszer,0.52)  (Mandolin,0.39)  (Orgona,0.59) (Zongora,0.84) (Szaxofon,0.59) (Szintetizátor,0.51) (Harsona,0.47) (Trombita,0.59) (Ukulele,0.43) (Hegedű,0.57) (Ének,0.82) };
+
+        \addplot[style={ggreen,fill=ggreen,mark=none}]
+            coordinates {(Harmónika,0.46) (Bendzsó,0.46) (Basszusgitár,0.74) (Cselló,0.65)  (Klarinét,0.61)  (Cintányér,0.80)  (Dob,0.83)  (Furulya,0.54)  (Gitár,0.45)  (Melodikus ütőhangszer,0.57)  (Mandolin,0.57)  (Orgona,0.59) (Zongora,0.84) (Szaxofon,0.55) (Szintetizátor,0.73) (Harsona,0.54) (Trombita,0.44) (Ukulele,0.50) (Hegedű,0.68) (Ének,0.68) };
+ 	
+        \legend{ML Mel,DL Mel}
+    \end{axis}
+\end{tikzpicture}
 
 \subsection{próba1}
 
