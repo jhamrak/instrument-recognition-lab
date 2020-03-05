@@ -4,7 +4,7 @@ For English readme, [click here](README.en.md).
 
 ## A projekt célja
 
-Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. Célja felépíteni és összehasonlítani két
+Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. [Diplomamunka](doc_latex/thesis.pdf)
 
 
 ## Mérföldkövek
