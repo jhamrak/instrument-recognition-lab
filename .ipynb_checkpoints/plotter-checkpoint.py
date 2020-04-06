@@ -12,12 +12,6 @@
 #     name: python3
 # ---
 
-# +
-
-import matplotlib.pyplot as plt
-from pylab import plot, show, figure, imshow, xlim, ylim, title
-
-
 def plot_history():
     plt.figure(figsize=(9,4))
     plt.subplot(1,2,1)
