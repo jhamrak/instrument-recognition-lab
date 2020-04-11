@@ -6,6 +6,18 @@ For English readme, [click here](README.en.md).
 
 Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. [Diplomamunka](doc_latex/thesis.pdf)
 
+## Beüzemelés
+
+### Adatok
+- OpenMIC dataset letöltése: https://zenodo.org/record/1432913
+- OpenMIC reduced dataset letöltése: TODO
+- OpenMIC melspectogramra való tarnszformáló script: TODO
+- OpenMIC MFCC-re való transzformáló script: TODO
+
+### Futtatás
+- Futtató script : TODO
+- paraméterek : TODO
+- 
 
 ## Mérföldkövek
 
