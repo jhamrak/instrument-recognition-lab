@@ -13,13 +13,15 @@
 # ---
 
 # +
-
+from datetime import datetime
 import matplotlib.pyplot as plt
 from pylab import plot, show, figure, imshow, xlim, ylim, title
+import os
 
 
-def plot_history():
+def plot_history(history, instrument):
     plt.figure(figsize=(9,4))
+    plt.title(instrument)
     plt.subplot(1,2,1)
     plt.plot(history.history['acc'])
     plt.plot(history.history['val_acc'])
@@ -34,4 +36,5 @@ def plot_history():
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.legend(['Train loss', 'Validation loss'], loc='upper left')
-    plt.show()
+    os.mkdir(datetime.now().strftime("%m-%d-%Y-%H-%M-%S"))
+    plt.savefig(datetime.now().strftime("%m-%d-%Y-%H-%M-%S") + '/' + instrument +'.png')

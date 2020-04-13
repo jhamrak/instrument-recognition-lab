@@ -1,28 +1,13 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.3.0
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# +
-
 import matplotlib.pyplot as plt
 from pylab import plot, show, figure, imshow, xlim, ylim, title
 
 
-def plot_history():
+def plot_history(history, instrument, dir):
     plt.figure(figsize=(9,4))
+    plt.title(instrument)
     plt.subplot(1,2,1)
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
     plt.title('Model accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -34,4 +19,4 @@ def plot_history():
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.legend(['Train loss', 'Validation loss'], loc='upper left')
-    plt.show()
+    plt.savefig(dir + '/' + instrument +'.png')

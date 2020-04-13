@@ -1,4 +1,8 @@
 openmic.zip
+logs/*
 openmic-2018/*
 data/*
 smalldata/*
+__pycache__/*
+*.tgz
+*.pyc
