@@ -6,3 +6,4 @@ smalldata/*
 __pycache__/*
 *.tgz
 *.pyc
+.ipynb_checkpoints/*
