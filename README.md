@@ -4,20 +4,35 @@ For English readme, [click here](README.en.md).
 
 ## A projekt célja
 
-Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. [Diplomamunka](doc_latex/thesis.pdf)
-
+Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része.
+[Diplomamunka](docs/thesis.pdf)
+[Témabejelentő](docs/topicdesc.pdf)
 ## Beüzemelés
 
 ### Adatok
-- OpenMIC dataset letöltése: https://zenodo.org/record/1432913
-- OpenMIC reduced dataset letöltése: TODO
-- OpenMIC melspectogramra való tarnszformáló script: TODO
-- OpenMIC MFCC-re való transzformáló script: TODO
+
+Miután cloneoztuk a repot, töltsünk le egy datasetet. Ez lehet a teljes OpenMIC-2018 dataset, vagy ennek az általam redukált változata.
+- Teljes OpenMIC dataset letöltése: https://zenodo.org/record/1432913
+- Redukált OpenMIC dataset letöltése: TODO
+A letöltött fájlt csomagoljuk ki a repo gyökerébe.
+
+Ha bemenetként NEM a példában felhasznált VGGish featureset-et szeretnénk használni, akkor a dataset kicsomagolása után futtassuk a megfelelő adattranszformáló scriptet.
+- OpenMIC melspectogramra való tarnszformáló script: TODO. Indítás: python [melspec.py](melspec.py).
+- OpenMIC MFCC-re való transzformáló script: TODO. Indítás: python [mfcc.py](mfcc.py).
 
 ### Futtatás
-- Futtató script : TODO
-- paraméterek : TODO
-- 
+
+A tanító algoritmus futtatást a [run.py](run.py) scripttel tehetjük meg. Ennek a következő opcionális paraméterei vannak:
+- --mode (default DL): ha értéke DL, akkor Deep Learning, ha értéke ML, akkor Machine Learning algoritmussal dolgozunk
+- --data (default VGG):
+- TODO
+-
+
+
+### Kiértékelés
+
+TODO logs
+
 
 ## Mérföldkövek
 
