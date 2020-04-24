@@ -30,13 +30,13 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 	DATA_DIR = "openmic-2018/"
 	CLASS_MAP = "class-map.json"
 	CATEGORY_COUNT = 8
-	INPUT_SHAPE = (1,10,128)
+	INPUT_SHAPE = (1,128,430)
 
 	# LOAD DATA
 	print('-' * 52)
 	print('>> Loading data: ' + DATA_DIR + DATA_FILE)
 	OPENMIC = np.load(os.path.join(DATA_DIR, DATA_FILE), allow_pickle=True)
-	X, Y_true, Y_mask, sample_key = OPENMIC['X'], OPENMIC['Y_true'], OPENMIC['Y_mask'], OPENMIC['sample_key']
+	X, Y_true, Y_mask, sample_key = OPENMIC['MEL'], OPENMIC['Y_true'], OPENMIC['Y_mask'], OPENMIC['sample_key']
 	print('Keys: ' + str(list(OPENMIC.keys())))
 	print('X shape: ' + str(X.shape))
 	print('Y_true shape: ' + str(Y_true.shape))
@@ -91,19 +91,22 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 		# We thresold the label likelihoods at 0.5 to get binary labels
 
 		# TRAIN
-		train_inst = Y_mask_train[:, inst_num]
-		X_train_inst = utils.get_transformed_array(X_train[train_inst])
-		Y_true_train_inst = Y_true_train[train_inst, inst_num] >= THRESHOLD
+		X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
+		print('train shapes')
+		print(str(X_train_inst.shape))
+		print(str(Y_true_train_inst.shape))
 
 		# TEST
-		test_inst = Y_mask_test[:, inst_num]
-		X_test_inst = utils.get_transformed_array(X_test[test_inst])
-		Y_true_test_inst = Y_true_test[test_inst, inst_num] >= THRESHOLD
+		X_test_inst, Y_true_test_inst = utils.get_instrument_arrays(X_test, Y_true_test, Y_mask_test, inst_num, THRESHOLD)
+		print('test shapes')
+		print(str(X_test_inst.shape))
+		print(str(Y_true_test_inst.shape))
 
 		# VALIDATION
-		val_inst = Y_mask_val[:, inst_num]
-		X_val_inst = utils.get_transformed_array(X_val[val_inst])
-		Y_true_val_inst = Y_true_val[val_inst, inst_num] >= THRESHOLD
+		X_val_inst, Y_true_val_inst= utils.get_instrument_arrays(X_val, Y_true_val, Y_mask_val, inst_num, THRESHOLD)
+		print('val shapes')
+		print(str(X_val_inst.shape))
+		print(str(Y_true_val_inst.shape))
 
 		model = raw_model
 		model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.Adam(lr= LEARNING_RATE), metrics = ['accuracy'])

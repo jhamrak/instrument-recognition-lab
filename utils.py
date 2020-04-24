@@ -1,6 +1,27 @@
 import os
 import librosa as lb
 from datetime import datetime
+import numpy as np
+
+def undersample(X,Y,inst_coords,inst_num, threshold):
+	X_inst = X[inst_coords]
+	Y_inst = Y[inst_coords, inst_num] >= threshold
+	count = np.sum(Y_inst)
+	i = 0
+	undersampled_coords = []
+	for i in range(len(Y_inst)) :
+		if Y_inst[i] == 1:
+			undersampled_coords.append(i)
+		elif count > 0:
+			undersampled_coords.append(i)
+			count -= 1
+	return X_inst[undersampled_coords], Y_inst[undersampled_coords]
+
+def get_instrument_arrays(X, Y, mask, inst_num, threshold):
+	inst_coords = mask[:, inst_num]
+	X, Y = undersample(X,Y,inst_coords,inst_num, threshold)
+	X = get_transformed_array(X)
+	return X, Y
 
 
 def get_transformed_array(X_old):
