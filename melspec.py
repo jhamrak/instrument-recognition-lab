@@ -14,10 +14,11 @@ for i in range(sample_key.shape[0]):
 	S = lb.feature.melspectrogram(y=y, sr=sr)
 	S_dB = lb.power_to_db(S, ref=0)
 	MEL.append(S_dB[:,:430])
-	if(i % 100 = 0):
+	if(i % 100 == 0):
 		print(str(i) + ' samples are ready...')
 	
 MEL_S = np.asarray(MEL)
 print('Mel has shape: ' + str(MEL_S.shape))
-
+print('Writing file ' + DATA_DIR + 'openmic-mel.npz ...')
 np.savez_compressed(DATA_DIR + 'openmic-mel.npz', X = MEL_S, Y_true=Y_true, Y_mask=Y_mask, sample_key=sample_key)
+print('Done')

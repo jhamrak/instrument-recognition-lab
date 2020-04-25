@@ -18,5 +18,6 @@ for i in range(sample_key.shape[0]):
 
 MFCC_S = np.asarray(MFCC)
 print('MFCC has shape: ' + str(MFCC_S.shape))
-
+print('Writing file ' + DATA_DIR + 'openmic-mfcc.npz ...')
 np.savez_compressed(DATA_DIR + 'openmic-mfcc.npz', X = MFCC_S, Y_true=Y_true, Y_mask=Y_mask, sample_key=sample_key)
+print('Done')

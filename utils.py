@@ -32,7 +32,7 @@ def get_transformed_array(X_old):
 	X = lb.util.normalize(X)
 	return X
 	
-def create_dir():
-	dir_name = "logs/" + datetime.now().strftime("%Y%m%d%H%M%S")
+def create_dir(mode, data):
+	dir_name = "logs/" + datetime.now().strftime("%m%d%H%M%S") + "-" + mode + "-" + data
 	os.mkdir(dir_name)
 	return dir_name
