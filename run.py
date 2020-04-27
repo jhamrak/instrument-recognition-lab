@@ -26,7 +26,7 @@ def read_data(DATA_FILE):
 	print('Y_true shape: ' + str(Y_true.shape))
 	print('Y_mask shape: ' + str(Y_mask.shape))
 	print('sample_key shape: ' + str(sample_key.shape))
-	print('<< Loading data: ' + DATA_DIR + '/' + DATA_FILE)
+	print('<< Loading data: ' + DATA_DIR + DATA_FILE)
 
 	# LOAD LABELS
 
@@ -122,39 +122,7 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 	from keras.preprocessing.image import ImageDataGenerator
 	import model_builder
 
-	# LOAD DATA
-	print('-' * 52)
-	print('>> Loading data: ' + DATA_DIR + DATA_FILE)
-	OPENMIC = np.load(os.path.join(DATA_DIR, DATA_FILE), allow_pickle=True)
-	X, Y_true, Y_mask, sample_key = OPENMIC['X'], OPENMIC['Y_true'], OPENMIC['Y_mask'], OPENMIC['sample_key']
-	print('Keys: ' + str(list(OPENMIC.keys())))
-	print('X shape: ' + str(X.shape))
-	print('Y_true shape: ' + str(Y_true.shape))
-	print('Y_mask shape: ' + str(Y_mask.shape))
-	print('sample_key shape: ' + str(sample_key.shape))
-	print('<< Loading data: ' + DATA_DIR + '/' + DATA_FILE)
-
-	# LOAD LABELS
-
-	print('-' * 52)
-	print('>> Loading labels: ' + CLASS_MAP)
-	with open(os.path.join(DATA_DIR, CLASS_MAP), 'r') as f:
-		INSTRUMENTS = json.load(f)
-	print('Instrument labels loaded:')
-	for instrument in INSTRUMENTS:
-		print(str(INSTRUMENTS[instrument]) + ' : ' + instrument)
-	print('<< Loading labels: ' + CLASS_MAP)
-
-	# SPLIT DATA (TRAIN - TEST - VAL)
-
-	print('-' * 52)
-	print('>> Splitting data TRAIN/TEST')
-	X_train, X_test, Y_true_train, Y_true_test, Y_mask_train, Y_mask_test = train_test_split(X, Y_true, Y_mask)
-	print('<< Splitting data TRAIN/TEST')
-	print('>> Splitting data TEST/VAL')
-	X_val, X_test, Y_true_val, Y_true_test, Y_mask_val, Y_mask_test = train_test_split(X_test, Y_true_test, Y_mask_test, test_size=0.5)
-	print('# Train: {}, # Val: {}, # Test: {}'.format(len(X_train), len(X_test), len(X_val)))
-	print('<< Splitting data TEST/VAL')
+	X_train, Y_true_train, Y_mask_train, X_test, Y_true_test, Y_mask_test, X_val, Y_true_val, Y_mask_val, INSTRUMENTS = read_data(DATA_FILE)
 
 	# TRAIN AND EVALUATE
 
@@ -163,9 +131,15 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 	print('>> Tranining and evaluation')
 	dir = utils.create_dir('DL',DATASET)
 	mymodels = dict()
-	raw_model = model_builder.build_small((1,X.shape[1], X.shape[2]))
+	raw_model = model_builder.build_small((1,X_train.shape[1], X_train.shape[2]))
 	with open(dir + "/log.txt", "a") as f:
 		with redirect_stdout(f):
+			print('Runtime params: ')
+			print('Dataset: ' + DATASET)
+			print('Learning rate: ' + str(LEARNING_RATE))
+			print('Threshold: ' + str(THRESHOLD))
+			print('Number of epochs: ' + str(EPOCHS))
+			print('-' * 52)
 			raw_model.summary()
 	for instrument in INSTRUMENTS:
 
