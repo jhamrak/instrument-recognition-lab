@@ -4,55 +4,38 @@ For English readme, [click here](README.en.md).
 
 ## A projekt célja
 
-Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része.
-[Diplomamunka](docs/thesis.pdf)
-[Témabejelentő](docs/topicdesc.pdf)
+Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamunkám része. A projekt keretében automatikus zenei hangszerfelismeréssel kapcsolatos mély tanulási és hagyományos gépi tanulási módszerek feltárását és összehasonlítását valósítottam meg.
+- [Diplomamunka](docs/thesis.pdf)
+- [Témabejelentő](docs/topicdesc.pdf)
+
 ## Beüzemelés
 
-### Adatok
+### Adatok előkészítése
 
-Miután cloneoztuk a repot, töltsünk le egy datasetet. Ez lehet a teljes OpenMIC-2018 dataset, vagy ennek az általam redukált változata.
-- Teljes OpenMIC dataset letöltése: https://zenodo.org/record/1432913
-- Redukált OpenMIC dataset letöltése: TODO
+Miután clone-oztuk a repot, töltsünk le egy datasetet.
+- Teljes OpenMIC dataset letöltése: https://zenodo.org/record/1432913 VAGY
+- Redukált OpenMIC dataset letöltése: TODO csak a kiválogatott hangszerekre redukált dataset
 A letöltött fájlt csomagoljuk ki a repo gyökerébe.
 
-Ha bemenetként NEM a példában felhasznált VGGish featureset-et szeretnénk használni, akkor a dataset kicsomagolása után futtassuk a megfelelő adattranszformáló scriptet.
-- OpenMIC melspectogramra való tarnszformáló script: TODO. Indítás: python [melspec.py](melspec.py).
-- OpenMIC MFCC-re való transzformáló script: TODO. Indítás: python [mfcc.py](mfcc.py).
+Ha bemenetként melspectogram, vagy MFCC reprezentációt szeretnénk használni, akkor a dataset kicsomagolása után futtassuk a megfelelő adattranszformáló scriptet.
+- OpenMIC melspectogramra való tarnszformáló script: [melspec.py](melspec.py).
+- OpenMIC MFCC-re való transzformáló script: [mfcc.py](mfcc.py).
 
 ### Futtatás
 
 A tanító algoritmus futtatást a [run.py](run.py) scripttel tehetjük meg. Ennek a következő opcionális paraméterei vannak:
 - --mode (default DL): ha értéke DL, akkor Deep Learning, ha értéke ML, akkor Machine Learning algoritmussal dolgozunk
-- --data (default VGG):
-- TODO
--
+- --data (default VGG): az adathalmaz (VGG / MEL / MFCC)
+- --threshold (default 0.5): A hangszer jelenlétét jelző küszöbszám
+- --lr (default 0.0001): a Deep Learning módszerhez tartozó learning rate paraméter
+- --epochs (default 10): a Deep Learning módszerhez tartozó tanítási iterációk száma
 
+## Kiértékelés
 
-### Kiértékelés
-
-TODO logs
-
-
-## Mérföldkövek
-
-1. Hangfájlok beolvasása, megjelenítése.
-
-Egy olyan alkalmas datasetet kerestem, ami ingyen elérhető, megfelelő terjedelmű és a projekt kezdeti fázisában jól használható (több hangszer, hangszerenként több száz fájl, fájlok különböző tulajdonságú monofónikus hangok). Az alábbi linken találhatót választottam:
-http://www.philharmonia.co.uk/explore/sound_samples
-
-A letöltött .mp3 fájlokat az Essentia könyvtár EasyLoader-ének segítségével töltöttem be. Az adatok vizualizáláshoz a Matplotlib könyvtárat használtam fel. Hangszerenként egy-egy audió fájl tartalmát rajzoltattam ki. Ezeken jól látszik, hogy előfeldolgozásra szorulnának a megfelelő kezeléshez. A néma részek eltávolítására (silence removal) és amplitúdó normalizációra egyaránt szükség lehet. Erre egy alkalmasabb modell esetében nem biztos, hogy szükségünk lesz.
-
-2. Működő Keras modell építése.
-
-Első körben igyekeztem további feature-ök nélkül, csak a "nyers" adatokkal dolgozni, felépíteni egy modellt. Ekkor a dimenziók száma miatti hibát kaptam. Az ndarray-om shape-je 1, bármilyen modell létrehozásához pedig legalább 2 dimenziójúnak kellene lennie. A probléma valószínűleg a saját adatstruktúrából ndarray-ra való konverzióban rejlett.
-
-Ehelyett áttértem az Essentia könyvtár MFCC függvényéből számított reprezentációjával dolgozni. Ezzel egy működő modellt kaptam végül. Mivel azonban az Essentia könyvtár csak linux alól telepíthető, és a VirtualBoxban futtatott ubuntu környyezet fenntartását macerásnak éreztem, felvetődött az Essentia cseréje. A Librosa nevű könyvtárra esett a választás.
-
-3. Megfelelő polifónikus input felkutatása.
-
-OpenMic.
-
-## Linkek
-
-https://medium.com/x8-the-ai-community/audio-classification-using-cnn-coding-example-f9cbd272269e
+Futás közben a konzolon megjelenő információkon kívül fájlba is írunk. Minden futtatáskor létrejön egy mappa a /logs mappán belül a futtatás időpontjával és fő paramétereinek nevével.
+Itt található:
+- Hangszerenként egy ábra a vonatkozó tanulási görbével
+- Egy szöveges "log.txt" fájl, melynek tartalma:
+  - a futtatás bemeneti paraméterei
+  - a Deep Learning modellünk paraméterei
+  - hangszerenkénti teljes táblázatos kiértékelés
