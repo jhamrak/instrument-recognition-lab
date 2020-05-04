@@ -1,7 +1,7 @@
 \chapter{Elméleti háttér} 
 \label{ch:theory}
 
-Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat mutatom be. Először magának a zenének a releváns tulajdonságait mutatom be. Ezután ismertetem a MIR kutatási területet, amelybe dolgozatom is tartozik. Majd végül a mesterséges intelligencián alapuló megoldásokról nyújtok elméleti bevezetőt, érintve a hagyományos gépi tanulás és a mély tanulás módszereit is.
+Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat mutatom be. Először magának a zenének a releváns tulajdonságairól ejtek szót. Ezután ismertetem a MIR kutatási területet, amelybe dolgozatom is tartozik. Majd végül a mesterséges intelligencián alapuló megoldásokról nyújtok elméleti bevezetőt, érintve a hagyományos gépi tanulás és a mély tanulás módszereit is.
 
 \section{Zene és reprezentációi} 
 
@@ -9,17 +9,21 @@ Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat 
 
 A zene egy meglehetősen összetett fogalom. Az ember számára a zene megjelenhet hang formájában, leírhatjuk őket szimbólumok segítségével egy kottában, előfordulhat szöveges formában dalszövegként, képi formában egy albumborító, vagy egy zenész képében, illetve mozdulatokban egy zenei előadás keretében. 
 
+//TODO
 Often music means the audio content, although otherwise its scope extends to other types of musical infor-
 mation e.g., lyrics, music metadata, or user listening history.
 
 \subsection{Hang reprezentációk}
 
 A hangok fizikai mivoltukban rezgésekként jelennek meg. A rezgéseket matematikailag olyan folytonos függvényekkel tudjuk leírni, melyek értelmezési tartománya az idő, értékkészlete pedig a nyugalmi állapothoz viszonyított pillanatnyi kitérés. Ilyen lehet például egy szinuszgörbe. Ahhoz, hogy a hangokat számítógépen tudjuk tárolni és feldolgozni, ezeket a függvényeket kell ábrázolnunk.  Mivel azonban a számítógép számábrázolása véges, ezért a hangokat először digitalizálni kell. Ez azt jelenti, hogy a folytonos függvényeket diszkrét, azaz véges helyen vett és véges értékekkel rendelkező fügvényekké alakítjuk. Ez úgy történik, hogy ez eredeti függvényünkből megadott időközönként mintát veszünk, diszkrét értékre kerekítjük, és ezeket az értékeket összefűzzük. Az így kapott függvény lesz a hang digitális reprezentációja.
-
-\includegraphics{wave.png}
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{wave.png}
+  \caption{Tíz másodperces hanganyag dipitális reprezentációja}
+\end{figure}
 
 A hangok digitális reprezentációja tehát lényegében egydimenziós, mivel egy függvénygörbének tekinthetjük. Ezt szokták hívni nyers hangnak is, ugyanis további reprezentációkká tudjuk transzformálni. A MIR területen megjelenő mély tanulási megoldások jelentős része ezen nyers hangábrázolás helyett inkább a kétdimenziós reprezentációkat alkalmazza bemenetként. Ezt azzal indokolják, hogy a nyers bemeneten való tanítás sikeréhez nagyobb adathalmaz szükséges, mint a kétdimenziós reprezentációkéhoz. \cite{Choi2017}
 
+//TODO 2d reprezentációk
 
 
 \subsection{Music Information Retrieval (MIR)} 
@@ -46,16 +50,26 @@ A hangszerfelismerést tekinthetjük statikus, illetve dinamikus feladatnak is a
 TODO több MIR feladat
 
 
-\section{Machine learning, Deep Learning}
+\section{Mesterséges intelligencia}
 
-ML, DL elhelyezése, 5. pdfem
+A mesterséges intelligencia egy általános fogalom az emberi gondolkodás számítógéppel való reprodukálására történő módszerekre. Ahogy arról a bevezetésben is szót ejtettem, a MIR tudományág gyakran használ mesterséges intelligencián alapuló megoldásokat. A továbbiakban két mesterséges intelligenciát megvalósító módszert mutatok be röviden: elsőként a gépi tanulást, majd a mély tanulást, amely a gépi tanulás egy ágazata és napjaink meghatározó trendje. \cite{ai}
 
-\includegraphics{ai.png}
+\begin{figure}[H]
+  \includegraphics{ai.png}
+  \caption{Egyes fogalmak közti tartalmazás szemléltetve, forrás: \cite{ai} }
+\end{figure}
 
-\subsection{Machine Learning}
+\subsection{Gépi tanulás (machine learning)}
 
-ML, ML in MIR
+A gépi tanulás tehát a mesterséges intelligencia megvalósításának egy módszere. Lényege, hogy explicit utasításokat tartalmazó program helyett a bemeneti adatokat egy tanító algoritmusnak adjuk át. Ha elég mennyiségű és minőségű adatot szolgáltatunk a tanításhoz, akkor a modellünk 
 
-\subsection{Deep Learning}
+Hagyományos gépi tanulásról beszélünk, amikor 
 
-DL, miben más mint az ML, architektúrák stb
+//TODO
+
+
+\subsection{Mély tanulás (deep learning)}
+
+A mély tanulás gyakorlatilag a gépi tanulás egy részhalmaza. 
+
+//TODO  miben más mint az ML, architektúrák stb

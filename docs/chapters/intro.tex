@@ -5,7 +5,7 @@ Napjainkban a zenéhez legkönnyebben digitális formában, a világhálón kere
 
 A zenei információk kinyerésének tudományába (Music Information Retrieval, a továbbiakban: ''MIR'') tartozik a továbbiakban taglalt probléma, az automatikus hangszerfelismerés. Ez egy osztályozási feladat. Célja, hogy a meglévő digitális hanganyag alapján az adott zenéről megállapítsuk, hogy milyen hangszerek szólalnak meg benne. Ezt az információt több célra is fel tudjuk használni, például:
 \begin{itemize}
- \item Későbbi feldolgozásra, MIR feladatok inputjaként
+ \item Későbbi feldolgozásra, további MIR feladatok inputjaként
  \item Statisztikák készítésére
  \item Adatbázisban való keresés szűrőfeltételeként
  \item Egy ajánlórendszer részeként, ahol az aktuális zeneszámot követően például egy hangszerelésében hasonló számot szeretnék ajánlani a felhasználónak.
@@ -28,9 +28,9 @@ Dolgozatomban tehát az eddigi kapcsolódó kutatásokat, illetve saját munkám
 
 A második fejezetben betekintést adok a téma elméleti hátterébe. Először kifejtem a zenével kapcsolatos főbb fogalmakat, bemutatom fontosabb tulajdonságait, reprezentációit. Kitérek a MIR bemutatására is. Ezután bevezetem a gépi tanulás és a mély tanulás fogalmát. 
 
-A harmadik fejezetben a módszertanról ejtek szót. Itt kifejtésre kerülnek az adatok előfeldolgozási módszerei, az általam bemutaott mély tanulási architektúrák, illetve ezek megvalósításai.
+A harmadik fejezet az adathalmazokról fog szólni. Itt előbb felsorolom az adathalmazok kiválasztásának szempontjait, majd minden felhasznált adathalmaznak ismertetem a főbb jellemzőit. 
 
-A negyedik fejezet az adathalmazokról fog szólni. Itt előbb felsorolom az adathalmazok kiválasztásának szempontjait, majd minden felhasznált adathalmaznak ismertetem a főbb jellemzőit. 
+A negyedik fejezetben a módszertanról ejtek szót. Itt kifejtésre kerülnek az adatok előfeldolgozási módszerei, az általam bemutaott mély tanulási architektúrák, illetve ezek megvalósításai.
 
 Az ötödik fejezetben részletezem az általam végzett kisérleteket és ezek eredményeit. Ezeket összevetem egymással, illetve a releváns State-of-the-Art kutatásokkal.
 
@@ -39,11 +39,9 @@ A hatodik fejezetben összegzem a leírtakat, valamint továbbgondolom a kutatá
 
 \section{Kapcsolódó munkák}
 
-Az automatikus hangszerfelismerés témában a korábbi kutatások túlnyomó része a monofónikus, azaz egyhangszeres zenékkel foglalkozik.  TODO!!!!!!
+Az automatikus hangszerfelismerés témában a korábbi kutatások túlnyomó része a monofónikus, azaz egyhangszeres zenékkel foglalkozik. Martin és Kim \cite{Martin1998} mintafelismerési statisztikai technikája 1023 izolált hangjegy és 15 különböző hangszer között a hangszercsaládok felismerésében 90\%-os, egyéni hangszerek felismerésében pedig 70\%-os pontosságot produkált. Brown \cite{brown1999} a kepsztrális együtthatókat használta fel K-közép klaszterezési módszeréhez. Eronen és Klapuri \cite{eronenklapuri2000} széleskörű, spektrális és időbeli feature-halmaz segítségével - összesen 43 különböző feature felhasználásával - 81\%-os hangszer és 95\%-os hangszercsalád pontosságról számolt be. Deng \cite{deng2008} klasszikus zenei hangszerek tekintetében elemezte a különböző, gépi tanulási módszerekben használatos feature összeállításokat. Bhalke \cite{bhalke2015} tört Fourier-transzformáción alapuló MFCC feature-ök segítségével tervezett CPNN osztályozót mutatott be, amellyel hangszercsaládok tekintetében 96.5\%-os, hangszerek tekintetében pedig 91.84\%-os pontosságot ért el.
 
 Többszólamú környezetbe való átültetéssel foglalkozott Burred tanulmánya \cite{burred2010}, aki a többszólamúságot két kísérlettel közelítette meg. Először csak egy-egy hangjegyet kombinált össze többszólamú hangjeggyé. Itt két szimultán hangjegy esetén 73.15\%-os, három hangjegyre 55.56\%-os, négy hangjegy kombinációjára pedig 55.18\%-os pontosságot sikerült elérni. Másik kísérletként hosszabb szekvenciákat kombináltak össze, ekkor két hang esetén 63.68\%-os, három hang esetén pedig 56.40\%-os pontosságot kaptak. 
-
-Salamon \cite{salamon2014} egy hasonló témakörben tett kísérletet, polifónikus zenék dallamát kísérelték meg kinyerni.  TODO!!!
 
 Eggink és Brown \cite{egginkandbrown2003} a polifónikus zenékben a hiányzó adat elméletükkel próbálták feltárni az egyes hangszereket. Ennek lényege, hogy felderítették azon idő- és frekvenciabeli részeket a zenén belül, ahol szeparáltan egy hangszer tulajdonságait vélték felfedezni és ezt dolgozták fel. Erre a módszerre épített Giannoulis és Klapuri \cite{giannoulisandklapuri2013} kutatása is, és hasonló megközelítést alkalmazott Garcia \cite{garcia2011} is.
  
