@@ -1,22 +1,54 @@
 \chapter{Bevezetés} % Introduction
 \label{ch:intro}
 
+Napjainkban a zenéhez legkönnyebben digitális formában, a világhálón keresztül férhetünk hozzá. Néhány kattintással olyan zenei tartalomszolgáltatókat érhetünk el, melyek széleskörű adatbázissal rendelkeznek. A folyamatosan bővülő adatmennyiség ellenére ezeknek az adatbázisoknak átláthatónak és könnyen kezelhetőnek kell maradniuk, hogy a felhasználókat a kívánt módon tudják kiszolgálni. Ennek érdekében nap mint nap új  megoldások születnek zenei információk automatikus kinyerése és feldolgozása céljából. Ezek teszik lehetővé a digitálisan tárolt zenék körében például az osztályozást vagy keresést.
+
+A zenei információk kinyerésének tudományába (Music Information Retrieval, a továbbiakban: ''MIR'') tartozik a továbbiakban taglalt probléma, az automatikus hangszerfelismerés. Ez egy osztályozási feladat. Célja, hogy a meglévő digitális hanganyag alapján az adott zenéről megállapítsuk, hogy milyen hangszerek szólalnak meg benne. Ezt az információt több célra is fel tudjuk használni, például:
+\begin{itemize}
+ \item Későbbi feldolgozásra, MIR feladatok inputjaként
+ \item Statisztikák készítésére
+ \item Adatbázisban való keresés szűrőfeltételeként
+ \item Egy ajánlórendszer részeként, ahol az aktuális zeneszámot követően például egy hangszerelésében hasonló számot szeretnék ajánlani a felhasználónak.
+\end{itemize}
+
+Az automatikus hangszerfelismerés feladatot több aspektusból lehet megközelíteni, például a bemeneti adatok jellege, reprezentációja, a megvalósított architektúra, az osztályozás módszere, vagy az osztályok száma alapján. A dolgozatom keretein belül felkutatok néhány létező megoldást, majd ezekre alapozva prezentálom saját megközelítésemet és ennek eredményeit. Az általam bemutatott megoldás egy multi-class multi-label osztályozást valósít meg mély neuronhálós rendszer segítségével többszólamú zenében.
 
 \section{Motiváció}
 
-Az elmúlt években egyre felkapottabb kutatási területté váltak a mély neuronhálós rendszerek. Ezen belül a zenei információk kinyerésének kutatása is jelentős teret hódított magának. 
+Az ember kognitív képességei segítségével a zenében könnyedén fel tudja ismerni az egyes hangszereket. Ugyanez a feladat a számítógép számára azonban már sokkal kevésbé triviális. Ennek egyik oka, hogy egy hangszer megszólaltatásának digitális reprezentációja nagyon változatos lehet. Függ például a hangszíntől, hangmagasságtól, hangerőtől és előadásmódtól, de a felvétel minőségétől és az esetleges háttérzajtól is. További nehezítő körülmény a többszólamúság, amikor egy időben több hangszert is megszólaltatunk, ezzel összemosva az egyszólamú környezetben is sokváltozós képünket.
+
+A MIR nagyban támaszkodik a mesterséges intelligenciára. A számítógépek számítási kapacitásának folyamatos növekedése és az elérhető adathalmazok gyarapodása által pedig egyre nagyobb figyelmet kap a mesterséges intelligencia egy kiemelten számításigényes részterülete: a mély tanulás. Ezt bizonyítja, hogy az évente megrendezésre kerülő ISMIR (International Society for Music Information Retrieval) konferencián 2010-ben még csak 2 (\cite{florian2010}, \cite{Hamel2010}) mély tanulással kapcsolatos cikk jelent meg, de 2015-ben már 6, 2016-ban pedig már 16. \cite{choi2017tutorial}
+
+A mély tanulás tehát egy ígéretes módszer lehet a MIR problémák megoldásában, ideértve az automatikus hangszerfelismerést is. Ezt kihasználva és megoldás életszerűségére törekedve döntöttem úgy, hogy elkezdek kísérletezni mély neuronhálókkal többszólamú zenében. Célom volt találni egy tanításra alkalmas adathalmazt, azon pedig tervezni egy olyan mély neuronhálós rendszert, amely a jelenlegi megoldások pontosságát meghaladja.
+
 
 \section{A dolgozat felépítése}
 
-Dolgozatomban tehát az eddigi kapcsolódó kutatásokat, illetve saját munkám eredményét dolgozom fel. A következő alfejezetben felsorolom az általam relevánsnak tartott, a State-of-the-Art-hoz vezető kutatásokat. 
+Dolgozatomban tehát az eddigi kapcsolódó kutatásokat, illetve saját munkám eredményét dolgozom fel. A következő alfejezetben felsorolom az általam relevánsnak tartott, a State-of-the-Arthoz vezető kutatásokat. 
 
-A második fejezetben betekintést adok a téma elméleti hátterébe. Először kifejtem a zenével kapcsolatos főbb fogalmakat, bemutatom fontosabb tulajdonságait, reprezentációit. Kitérek a kapcsolódó kutatási terület bemutatására is. Ezután bevezetem a gépi tanulás és a mély tanulás fogalmát. 
+A második fejezetben betekintést adok a téma elméleti hátterébe. Először kifejtem a zenével kapcsolatos főbb fogalmakat, bemutatom fontosabb tulajdonságait, reprezentációit. Kitérek a MIR bemutatására is. Ezután bevezetem a gépi tanulás és a mély tanulás fogalmát. 
 
-A harmadik fejezetben a módszertanról ejtek szót. Itt kifejtésre kerülnek az adat előfeldolgozási módszerei, az általam bemutaott mély tanulási architektúrák, illetve ezek megvalósításai. A negyedik fejezet az adathalmazokról fog szólni. Itt először felsorolom az adathalmazok kiválasztásának szempontjait, majd minden felhasznált adathalmaznak leírom a főbb jellemzőit. 
+A harmadik fejezetben a módszertanról ejtek szót. Itt kifejtésre kerülnek az adatok előfeldolgozási módszerei, az általam bemutaott mély tanulási architektúrák, illetve ezek megvalósításai.
 
-Az ötödik fejezetben részletezem az általam végzett kisérleteket és ezek eredményeit. Eután ezeket összevetem egymással, illetve a releváns State-of-the-Art kutatásokkal. A hatodik fejezetben összegzem a leírtakat és kutatásom továbbgondolására felvázolok néhány ötletet.
+A negyedik fejezet az adathalmazokról fog szólni. Itt előbb felsorolom az adathalmazok kiválasztásának szempontjait, majd minden felhasznált adathalmaznak ismertetem a főbb jellemzőit. 
+
+Az ötödik fejezetben részletezem az általam végzett kisérleteket és ezek eredményeit. Ezeket összevetem egymással, illetve a releváns State-of-the-Art kutatásokkal.
+
+A hatodik fejezetben összegzem a leírtakat, valamint továbbgondolom a kutatásomat, felvázolok néhány ötletet annak jövőjéről.
 
 
 \section{Kapcsolódó munkák}
 
-Cite author  \citeauthor{li2015automatic} and cite \cite{han2016deep}. 
+Az automatikus hangszerfelismerés témában a korábbi kutatások túlnyomó része a monofónikus, azaz egyhangszeres zenékkel foglalkozik.  TODO!!!!!!
+
+Többszólamú környezetbe való átültetéssel foglalkozott Burred tanulmánya \cite{burred2010}, aki a többszólamúságot két kísérlettel közelítette meg. Először csak egy-egy hangjegyet kombinált össze többszólamú hangjeggyé. Itt két szimultán hangjegy esetén 73.15\%-os, három hangjegyre 55.56\%-os, négy hangjegy kombinációjára pedig 55.18\%-os pontosságot sikerült elérni. Másik kísérletként hosszabb szekvenciákat kombináltak össze, ekkor két hang esetén 63.68\%-os, három hang esetén pedig 56.40\%-os pontosságot kaptak. 
+
+Salamon \cite{salamon2014} egy hasonló témakörben tett kísérletet, polifónikus zenék dallamát kísérelték meg kinyerni.  TODO!!!
+
+Eggink és Brown \cite{egginkandbrown2003} a polifónikus zenékben a hiányzó adat elméletükkel próbálták feltárni az egyes hangszereket. Ennek lényege, hogy felderítették azon idő- és frekvenciabeli részeket a zenén belül, ahol szeparáltan egy hangszer tulajdonságait vélték felfedezni és ezt dolgozták fel. Erre a módszerre épített Giannoulis és Klapuri \cite{giannoulisandklapuri2013} kutatása is, és hasonló megközelítést alkalmazott Garcia \cite{garcia2011} is.
+ 
+Jiang \cite{Jiang2013} egy többlépcsős megoldást mutat be. Első lépésben a hangszercsaládot határozták meg, ezzel szűkítve a a lehetséges hangszerek halmazát és a változók számát. A pontos hangszer-meghatározás csak ezután következett.
+
+Az előbbi kutatások többnyire hagyományos gépi tanulási megoldásokat alkalmaztak, amelyekhez maguk nyerték ki a különböző bemeneti feature-öket. Humphrey \cite{humphrey2012} írásában a mély tanulási architektúrákat ismerteti a MIR terület korszerű irányzataként. A témában gyakorlati segítségként szolgál Choi \cite{Choi2017} írása, amiben konkrét adatreprezentációkat, mély neuronhálós rétegeket, és mély tanulási technikákat mutat be.
+
+Li \cite{li2015automatic} a nyers hanganyagot inputként felhasználva egy konvolúciós mély neuronhálós rendszert mutatott be a polifónikus zenében való automatikus hangszerfelismerés kapcsán. Ezt a megoldást aztán összevetette hagyományos gépi tanulási módszerekkel is. A mély neuronhálós rendszer teljesített legjobban. 75.60\%-os pontossággal, 68.88\%-os felidézéssel, 72.08 mikro F értékkel és 64.33 makro F értékkel. Han \cite{han2016deep} szintén egy mély konvolúciós hálót használt, azonban az osztályozás szempontjából máshogyan járt el: a zenékben egy darab domináns hangszert keresett. Bemenetként a zenék spektogramját használta fel, 0.602-es mikro és 0.503-as makro F értéket ért el.
