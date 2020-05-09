@@ -7,24 +7,66 @@ Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat 
 
 \subsection{Zene fogalma, tulajdonságai}
 
-A zene egy meglehetősen összetett fogalom. Az ember számára a zene megjelenhet hang formájában, leírhatjuk őket szimbólumok segítségével egy kottában, előfordulhat szöveges formában dalszövegként, képi formában egy albumborító, vagy egy zenész képében, illetve mozdulatokban egy zenei előadás keretében. 
+A zene egy meglehetősen összetett fogalom. Az ember számára a zene megjelenhet például hang formájában, leírhatjuk őket szimbólumok segítségével egy kottában, előfordulhat szöveges formában dalszövegként, képi formában egy albumborító, vagy egy zenész képében, illetve mozdulatokban egy zenei előadás keretében. A teljes zenei élményt ezek kombinációja nyújtja. A zene észlelését befolyásoló tényezőket Schedl \cite{Schedl2013} a következő kategóriákba sorolta: a zene tartalma (music content), a zene kontextusa (music context), a hallgató kontextusa (user context) és a hallgató tulajdonságai (user properties). \cite{Schedl2014}
 
-//TODO
-Often music means the audio content, although otherwise its scope extends to other types of musical infor-
-mation e.g., lyrics, music metadata, or user listening history.
+\begin{figure}[H]
+  \includegraphics[width=15cm]{music.png}
+  \centering
+  \caption{A zene észlelését meghatározó tényezők, forrás: \cite{Schedl2013} }
+\end{figure}
+
+A zenei tartalom fogalma utal azokra a tulajdonságokra, melyek a hangok fizikai jelként való leírása definiál. Ilyen például a ritmus, a hangszín, a dallam, a harmónia, a hangerő, vagy a dalszöveg. Ezzel szemben a zene kontextusa alatt azokat a ténezőket értjük, melyeket nem tudunk közvetlenül a zenéből kinyerni, mégis szorosan kapcsolódik hozzá. Ide tartozik például az előadó hírneve, az albumborító, a művész kulturális- vagy politikai háttértörténete, vagy a zeneéhez készített videoklip. Ami a hallgatóval kapcsolatos aspektusokat illeti, a hallgató kontextusa alatt értjük a dinamikus, gyorsan változó tényezőket. Ide sorolható a hallgató aktuális hangulata, tevékenysége, társadalmi helyzete, tér- és időbeli helye, illetve pszichológiai állapota. Ezzel ellentétben a hallgató tulajdonságai az állandó, vagy csak lassan változó jellemzőit takarja. Ilyen az egyén zenei ízlése, zeneelméleti képzettsége, demográfiai adatai, a hallgatott előadóval kapcsolatos véleménye, vagy a barátai zenei ízlése, véleménye. \cite{Schedl2014}
+
+Dolgozatomban az észlelést meghatározó tulajdonságok közül a zenei tartalmat fogom felhasználni a hangszerek kinyerése érdekében. A zenei tartalom számítógépes felhasználásához pedig elengedhetetlen, hogy a hangokat megfelelően tudjuk számítógépen ábrázolni.
 
 \subsection{Hang reprezentációk}
 
-A hangok fizikai mivoltukban rezgésekként jelennek meg. A rezgéseket matematikailag olyan folytonos függvényekkel tudjuk leírni, melyek értelmezési tartománya az idő, értékkészlete pedig a nyugalmi állapothoz viszonyított pillanatnyi kitérés. Ilyen lehet például egy szinuszgörbe. Ahhoz, hogy a hangokat számítógépen tudjuk tárolni és feldolgozni, ezeket a függvényeket kell ábrázolnunk.  Mivel azonban a számítógép számábrázolása véges, ezért a hangokat először digitalizálni kell. Ez azt jelenti, hogy a folytonos függvényeket diszkrét, azaz véges helyen vett és véges értékekkel rendelkező fügvényekké alakítjuk. Ez úgy történik, hogy ez eredeti függvényünkből megadott időközönként mintát veszünk, diszkrét értékre kerekítjük, és ezeket az értékeket összefűzzük. Az így kapott függvény lesz a hang digitális reprezentációja.
+A hangok fizikai mivoltukban rezgésekként jelennek meg. A rezgéseket matematikailag olyan folytonos függvényekkel tudjuk leírni, melyek értelmezési tartománya az idő, értékkészlete pedig a nyugalmi állapothoz viszonyított pillanatnyi kitérés. Ilyen lehet például egy szinuszgörbe. Ahhoz, hogy a hangokat számítógépen tudjuk tárolni és feldolgozni, ezeket a függvényeket kell ábrázolnunk.  Mivel azonban a számítógép számábrázolása véges, ezért a hangokat először digitalizálni kell. Ez azt jelenti, hogy a folytonos függvényeket diszkrét, azaz véges helyen vett és véges értékekkel rendelkező fügvényekké alakítjuk. Ez úgy történik, hogy ez eredeti függvényünkből megadott időközönként mintát veszünk, diszkrét értékre kerekítjük, és ezeket az értékeket összefűzzük. Az így kapott függvény lesz a hangnak az idő függvényében ábrázolt digitális reprezentációja.
 \begin{figure}[H]
-  \includegraphics[width=\textwidth]{wave.png}
-  \caption{Tíz másodperces hanganyag dipitális reprezentációja}
+  \centering
+  \includegraphics[width=\textwidth/3*2, height=5cm]{wave.png}
+  \caption{Tíz másodperces hanganyag hanghullám reprezentációja}
 \end{figure}
 
-A hangok digitális reprezentációja tehát lényegében egydimenziós, mivel egy függvénygörbének tekinthetjük. Ezt szokták hívni nyers hangnak is, ugyanis további reprezentációkká tudjuk transzformálni. A MIR területen megjelenő mély tanulási megoldások jelentős része ezen nyers hangábrázolás helyett inkább a kétdimenziós reprezentációkat alkalmazza bemenetként. Ezt azzal indokolják, hogy a nyers bemeneten való tanítás sikeréhez nagyobb adathalmaz szükséges, mint a kétdimenziós reprezentációkéhoz. \cite{Choi2017}
+A hangok idő függvényében ábrázolt digitális reprezentációja tehát egydimenziós, mivel egy függvénygörbének tekinthetjük. Ezt szokták hívni hullámforma reprezentációnak, illetve nyers hangnak (raw audio) is, ugyanis további reprezentációkká tudjuk transzformálni. A MIR területen megjelenő mély tanulási megoldások jelentős része ezen nyers hangábrázolás helyett inkább a kétdimenziós reprezentációkat alkalmazza bemenetként. Ezt azzal indokolják, hogy a nyers bemeneten való tanítás sikeréhez nagyobb adathalmaz szükséges, mint a kétdimenziós reprezentációkéhoz. \cite{Choi2017}
 
-//TODO 2d reprezentációk
+Az említett kétdimenziós reprezentációk Fourier-transzformáción alapszanak. A Fourier-transzformáció nagyon leegyszerűsítve egy olyan függvény, amely bemenetként kap egy idő függvényében ábrázolt jelet és ezt felbontja frekvenciákra \cite{melspec}.
 
+\begin{itemize}
+\item \textbf{Ablakozott Fourier transzformált (STFT)}: Gábor Dénes magyar fizikus nevéhez kötődik. A bemeneti jelet egyenlő méretű időszeletekre (ablakokra) osztjuk, majd ezeken alkalmazzuk a Fourier-transzformációt. Ezáltal kapjuk meg a hang spektrumát (spectogram).  \cite{melspec}, \cite{Choi2017}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth/3*2, height=5cm]{spectogram.png}
+  \caption{Spektrum \cite{librosa}}
+\end{figure}
+
+\item \textbf{Mel-frekvenciára transzformált spektrum (Mel-spectogram)}: A mel-spectogram az előbb említett spektrum Mel skálára való transzformáltja. A Mel skálát egy nemlineáris függvény segítségével kapjuk a frekvenciaskálából. Célja, hogy a skála jobban reprezentálja az ember hallásának tartományait. Tehát az értékek közti különbség a Mel skálán megfeleltethető legyen annak, hogy az ember mennyire különböző magasságúnak hallja ezeket. A frekvencia skálán például sokkal nagyobbnak érezzük az 500Hz és 1000Hz közti különbséget, mint a 7500Hz és 8000Hz közti különbséget. A mel-frekvenicára való konverzió képlete a következő: 
+\begin{equation}
+	Mel(f) = 2595*ln(1+\cfrac{f}{700})
+\end{equation}
+Ahol Mel(f) az adott frekvenciaérték mel-skálán való értéke, f pedig az adott frekvencia érték. A képlet segítségével egymást átfedő frekvencia sávokat alakítunk ki, melyek a mel-skálát tekintve egyenlő távolságra helyezkednek el egymástól, majd a frekvenciasávok energia értékeit egyenként leképzzük mel-skálára. \cite{melspec}, \cite{Choi2017}
+ 
+Léteznek egyéb, hasonló skálák is, mint pl. Bark skála, vagy az hallás pszichológián alapúló ERB. Ezek MIR környezetben még nem kerültek összevetésre, de beszédfelismerés környezetben nem mutatnak szignifikáns eltérést az egyes skálák eredményei. A Mel skála, illetve a mel-spectogram használata azonban egy gyakran használt és jól felhasználható reprezentációnak bizonyul MIR környezetben. \cite{Choi2017}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth/3*2, height=5cm]{melspectogram.png}
+  \caption{Melspectogram reprezentáció \cite{librosa}}
+\end{figure}
+
+\item \textbf{Mel-frekvencián vett kepsztrum együtthatók (MFCC)}: Az MFCC együtthatókat a melspectogramon való diszkrét koszinusz-transzformációval kapjuk meg. A képlet a következő:
+\begin{equation}
+	C_i(m) =  \sum_{n=0}^{M-1}S_i(n) cos [\pi m\cfrac{n - 0.5}{M}], 0 \leq m \leq M
+\end{equation}
+Ahol \(M\) a frekvenciaszeletek száma, \(S_i(n)\) az egyes sávokban kiolvasott energia értékek és \(C_i(m)\) az i-edik MFCC együttható. Ezzel a mel-spectogramnál tömörebb reprezentációt kapunk. Ennek hátránya lehet az információvesztés, előnye pedig az apró zajok kiszűrése. \cite{bhalke2015}
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth/3*2, height=5cm]{mfcc.png}
+  \caption{MFCC reprezentáció \cite{librosa}}
+\end{figure}
 
 \subsection{Music Information Retrieval (MIR)} 
 
@@ -47,7 +89,44 @@ A másik tengely, az eldöntési időmérték aszerint sorolja be a feladatokat,
 
 A hangszerfelismerést tekinthetjük statikus, illetve dinamikus feladatnak is a probléma megközelítésének függvényében. Dinamikus, ha erős címkézést szeretnénk megvalósítani, tehát arra vagyunk kíváncsiak, hogy adott időpillanatban éppen milyen hangszerek szólalnak meg. Gyenge címkézés esetén viszont a feladat statikussá válik. Ebben az esetben az egész zenére vetítve szeretnénk címkéket kapni egyes hangszerek jelenlétével, vagy a többi hangszerrel szembeni dominanciájával kapcsolatban.
 
-TODO több MIR feladat
+A MIR terület főbb részterületei és feladatai Schedl \cite{Schedl2014} cikkére alapozva a következők:
+
+\begin{itemize}
+\item Jellemző kinyerés (feature extraction)
+	\begin{itemize}
+	\item hangszín leírás pl. \cite{hangszin1}, \cite{hangszin2}
+	\item kotta- és dallamkinyerés pl. \cite{kotta1}, \cite{kotta2}, \cite{kotta3}
+	\item ütem lekövetés, tempó becslés pl. \cite{tempo1}, \cite{tempo2}, \cite{tempo3}
+	\item tonalitás becslés pl. \cite{tonality1}, \cite{tonality2}, \cite{tonality3}, \cite{tonality4}, \cite{tonality5}, \cite{tonality6}
+	\item struktúrális analízis, szegmentáció pl. \cite{structural1}, \cite{structural2}, \cite{structural3}
+	\end{itemize}
+\item Hasonlóságon alapuló feladatok
+	\begin{itemize}
+	\item hasonlóság mérés pl. \cite{similarity1}, \cite{similarity2}, \cite{similarity3}
+	\item zenei feldolgozás felismerés pl. \cite{cover1}, \cite{cover2}
+	\item dúdoláson alapuló lekérdezés pl. \cite{humming1}, \cite{humming2}, \cite{humming3}
+	\end{itemize}
+\item Osztályozási feladatok
+	\begin{itemize}
+	\item érzelem- és hangulatfelismerés pl. \cite{mood1}, \cite{mood2}
+	\item műfaj szerinti osztályozás pl. \cite{genre1}, \cite{genre2}
+	\item hangszerfelismerés pl. \cite{instrument1}
+	\item szerző / előadó / énekes felismerés pl. \cite{singer1}
+	\item automatikus címkézés pl. \cite{tagging1}, \cite{tagging2}, \cite{tagging3}
+	\end{itemize}
+\item Alkalmazások
+	\begin{itemize}
+	\item hanganyaghoz forrásazonosító készítés (fingerprinting) pl. \cite{fingerprint1}, \cite{fingerprint2}
+	\item tartalom alapú lekérdezés pl. \cite{contentbased1}
+	\item zene ajánlás pl. \cite{recommend1}, \cite{recommend2}, \cite{recommend3}
+	\item lejátszási lista generálás  pl. \cite{playlist1}, \cite{playlist2}, \cite{playlist3}, \cite{playlist4}
+	\item kottázás pl. \cite{score1}, \cite{score2}, \cite{score3}
+	\item dal/előadó sikeresség becslés pl. \cite{popularity1}, \cite{popularity2}, \cite{popularity3}
+	\item zene vizualizáció pl. \cite{visualization1}, \cite{visualization2}, \cite{visualization3}, \cite{visualization4}, \cite{visualization5}
+	\item felhasználói felületen való zenei böngészés pl. \cite{ui1}, \cite{ui2}, \cite{ui3}, \cite{ui4}, \cite{ui5}
+	\item személyre szabott, alkalmazkodó rendszerek pl. \cite{adaptive1}, \cite{adaptive2}, \cite{adaptive3}, \cite{adaptive4}
+	\end{itemize}
+\end{itemize}
 
 
 \section{Mesterséges intelligencia}
