@@ -5,16 +5,52 @@ Ebben a fejezetben a munkám kapcsán felkutatott és alkalmazott adathalmazokr�
 
 \section{Kiválasztási szempontok}
 
-//TODO ismir dataset gyűjtemény
-pl. többszólam, ingyenesen elérhető, szerteágazó (not biased), stb gyenge címkézés
+Egy adott MIR probléma felügyelt tanulási módszerrel való megközelítésekor az adathalmazzal szemben alapvetően két nagyon fontos szempontot kell vigyelembe vennünk.
+\begin{enumerate}
+ \item \textbf{Az adatok jellemzői:} a zenékre vonatkozó szerzői jogok miatt a kutatók általában nem tudnak hozzáférni ''valós'', mindennapi életben előforduló zenékből álló adathalmazhoz, így a fellelhető adathalmazokat általában mesterségesen, kutatási célra fejlesztik. Emiatt mérlegelnünk kell például a következő jellemzők figyelembe vételével:
+	 \begin{itemize}
+	  \item Elérhető számunkra? Ingyenes?
+	  \item A nyers hanganyag rendelkezésre áll, vagy csak valamilyen alternatív reprezentáció?  Utóbbi esetén mi az pontosan?
+	  \item Átestek e valamilyen előfeldolgozáson a minták? 
+	  \item Milyen minőségűek a felvételek? Zajosak?
+	  \item Egyszólamúak, vagy többszólamúak a hangminták?
+	  \item Milyen hosszúak a minták? Egy hangjegy, fix hosszúságú (például 10 másodperc), vagy teljes zenék?
+	  \item Mennyire szerteágazó az adathalmaz? Az általunk vizsgálni kívánt, vagy egyéb fontos tulajdonsággal kapcsolatban van túlreprezentált, vagy alulreprezentált érték?
+	 \end{itemize}
+ \item \textbf{A metaadatok jellemzői:} egy adott MIR probléma felügyelt tanulási módszerrel való megközelítéséhez fontos, hogy adathalmazunkhoz rendelkezésre álljanak a tanítani kívánt jellemzők metaadatként, például:
+	 \begin{itemize}
+	  \item Hangszerek
+	  \item Zene feldolgozásai
+	  \item Tempók
+	  \item Dallamok
+	  \item Stílus besorolások
+	  \item Egyéb címkék, metaadatok...
+	 \end{itemize}
+	 Fontos, hogy ezek jellege is megfeleljen az igényeinknek. Például hogy az címkék egy adott időpontra vonatkoznak, vagy statikus egy bemenetre, vagyis hogy a címkézés erős, vagy gyenge.
+	 
+	 A metaadatok fogják meghatározni a lehetséges osztályozási feladat típusát is. Például ha bináris értékekkel rendelkezünk minden bemenet minden cimkéjére, azzal egy multi-label osztályozást valósíthatunk meg. Míg ha az egyes bemenetekhez egy címke tartozik (és kettőnél több lehetséges címke közül választhatunk), az egy multi-class osztályozást fog jelenteni.
+\end{enumerate}
+
+Egy remek gyűjtőoldalnak bizonyult a Nemzetközi MIR Közösség (International Society of Music Information Retrieval - ISMIR) weboldala (http://www.ismir.net/resources/datasets/). Számos adathalmazhoz biztosít hivatkozást, kulcsszavakban leírja a bennük található adatok és metaadatok jellegét és azt, hogy a hangfájlok csatolva vannak-e az adott adathalmazhoz.
+
+Kísérleteimhez első körben egy egyszerű, könnyen tanítható adathalmazt kerestem (ld. \hyperref[sec:Philharmonia]{Philharmonia Orchestra}). Majd miután ezen megbizonyosodtam a modell működéséről, kísérletet tettem egy reprezentatívabb adathalmazba való átültetésre (ld. \hyperref[sec:OpenMIC]{OpenMIC}).
 
 \section{Philharmonia Orchestra}
+\label{sec:Philharmonia}
 
-Kutatásom első fázisában a Philharmonia Zenekar ingyenesen elérhető hangminta könyvtárát használtam fel. Ebben egyszólamú mintákat találunk. A minták a főkönyvtáron belül a bennük megszólaló hangszer nevével megegyező könytárban találhatóak, ez biztosítja a címkéket. 
+Kutatásom első fázisában a Philharmonia Zenekar ingyenesen elérhető hangminta könyvtárát használtam fel. A könyvtárban egyszólamú mintákat találunk, melyeket a zenekar tagjai vettek fel és tettek közzé használatra. A minták a főkönyvtáron belül a bennük megszólaló hangszer nevével megegyező könytárban találhatóak. Ez biztosítja a hangszer címkézés metaadatot.
 
-//TODO tulajdonságai
+Egy minta az adott hangszerrel egy hangjegy lejátszását tartalmazza. Mivel a minták rövidek és tiszták, a hangszerek közti különbségek relatív könnyen felismerhetőek. Az adathalmazban összesen 20 hangszer szerepel. Az egyes hangszerek különböző mennyiségű mintával vannak jelen, hangszerenként körülbelül 100 és 1000 közti fájl érhető el, összesen 12 992 fájl.
 
 \section{OpenMIC}
+\label{sec:OpenMIC}
 
-A többszólamúság bevezetését a kutatásomban az OpenMIC \cite{humphrey2018openmic} adathalmaz felhasználásával értem el.  
-//TODO  openmic cikk alapján
+A többszólamúság bevezetését kutatásomban az OpenMIC \cite{humphrey2018openmic} adathalmaz felhasználásával értem el. Ez szintén egy ingyenesen elérhető adathalmaz, melynek tartalma 20 000 többszólamú minta 20 különböző hangszert lefedve. A minták 10 másodperc hosszú kivonatok a Free Music Archive-on \cite{fma2016} elérhető zenékből. \cite{humphrey2018openmic}
+
+Az adathalmaz igen előnyös metaadatok tekintetében. Amellett, hogy az összes hanganyag elérhető .ogg formátumban, a hangszer címkék egy fájlban elérhetőek. Minden egyes mintához hangszereként definiált, hogy az adott hangszer megszólal-e a mintában. Az, hogy hangszerenként külön információnk van a mintákra vonatkozóan, lehetőséget ad arra, hogy multi-label osztályozást valósítsunk meg. \cite{humphrey2018openmic}
+
+A címkézéshez bárki hozzájárulhatott. Nyílt, tömeges folyamat volt. Hátránya, hogy nem minden minta összes hangszeréhez született egyértelmű címke. A gyakorlatban egy mintához hangszerenként két változó tartozik: egyik egy bináris maszk változó, amely arra utal, hogy van-e információnk az adott minta vonatkozásában az adott hangszer jelenlétéről. A másik változóban egy százalékérték található, amely az adott hangszer előfordulásának valószínűségét mondja meg a címkézést végző közösség ítéletei alapján. Ez természetesen csak akkor tekinthető relevánsnak, ha a maszk változóban a vonatkozó érték igaz. Ezáltal a címkézést rugalmasnak tekinthetjük, hiszen mi magunk határozhatunk meg egy küszöbértéket a hangszer jelenlétére vonatkozóan. \cite{humphrey2018openmic}
+
+\subsection{VGGish}
+
+Az OpenMIC adathalmazhoz továbbá csatolva van felhasználható bemenetként a nyers hanganyag alternatívájaként egy ''VGGish'' elnevezésű reprezentáció is. Ez a reprezentáció a nyers hanganyag feldolgozása egy VGG \cite{vgg} architektúrán alapuló mély neuronhálón, ami a VGGish elnevezést kapta. A kapott reprezentáció 0.96 másodperces, egymást nem átfedő időablakonként egy 128 értéket tartalmazó leíró vektorból áll. Ez egyfajta előfeldolgozást valósít meg. Segítségével transfer learning technikát alkalmazhatunk. Ennek lényege, hogy mivel a bemenet már valamelyest tanítva van, nekünk elég egy sekélyebb neuronhálót alkalmaznunk a tanításhoz.
