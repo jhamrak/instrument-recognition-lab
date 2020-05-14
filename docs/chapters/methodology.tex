@@ -1,17 +1,67 @@
 \chapter{Módszertan} 
 \label{ch:methodology}
 
+Ebben a fejezetben az alkalmazott módszertant mutatom be. Először ismertetem az alkalmazott előfeldolgozási módszereket. Ezután a tanító modellek architektúráját mutatom be. Végül pedig szót ejtek az ismertetett módszerek implementációjáról.
+
 \section{Bemeneti adatok, előfeldolgozás}
 
-//TODO adattisztítás, reprezentáció változtatás
+Az OpenMIC adathalmazzal két formában kapjuk meg a bemeneti adatokat. Egyrészt elérhetőek a nyers hanganyagok .ogg formátumban. Ezen kívül rendelkezésre állt a VGGish nevű reprezentáció is, amelyről a korábbi \ref{subsec:VGGish} fejezetben írtam. A bemeneti adatokat tanítás előtt azonban néhány előfeldolgozási folyamaton vittem végig részben a megvalósíthatóság, részben pedig a performancianövelés érdekében. Ezekről írok a következő alfejezekben.
+
+\subsection{Alternatív reprezentációk kinyerése}
+
+A .ogg fájlokból beolvasott nyers audioval való tanítás sajnos nem volt lehetséges, mivel ez egy memória szempontjából igen költséges reprezentáció, amihez a hardver eszközöm kapacitása kevésnek bizonyult. Helyette a dolgozat korábbi fejezetében bemutatott melspectogram és MFCC reprezentációkat használtam fel. Mindkét reprezentációt a beolvasott nyers hullámforma reprezentációból nyertem ki az elméleti háttér fejezetben leírt módon.
+
+\subsection{Adathalmazok normalizálása}
+
+Az adatok normalizálása a tanulási folyamat gyorsítására szolgál. A normalizálást úgy érjük el, hogy az adatokat arányosan a 0 és 1 értékek közé transzformáljuk. Erre egy szokásos megoldás:
+\begin{equation}
+x(_i) := (x(_i) - x_{\text{min}}) \/ (x_{\text{max}} - x_{\text{min}})
+\end{equation}
+
+A normalizált adathalmon a gradiens általában hamarabb csökkenthető, ezért a tanítási folyamat rövidebb lehet. \cite{LeCun2012}
+
+\subsection{Osztályok kiegyensúlyozása}
+
+Tanító modelleknél gyakori probléma, hogy a tanulni kívánt osztályok egy része alul van reprezentálva. Dolgozatom multi-label osztályozása esetén két osztályról beszélhetünk: igaz (jelen van az adott hangszer) és hamis (nincs jelen az adott hangszer). Mivel sok esetben a hamis értékek jelentős többségben voltak, - egyes hangszerek esetén az összes adat közel 80\%-át is kitette - ezért a modell jó pontosságot tudott elérni csupán ''hamis'' predikciókkal.
+
+Ezt elkerülendő, három megoldás jöhetett szóba:
+\begin{itemize}
+ \item Alulmintavételezés (Undersampling) - a többségi osztályokból véletlenszerűen eltávolítunk annyi elemet, hogy az osztályok kiegyensúlyozottá váljanak.
+ \item Túlmintavételezés (Oversampling) - a kisebbségi osztályok véletlenszerű elemeit duplikáljunk addig, amíg az osztályok kiegyensúlyozottá válnak.
+ \item Adat augmentáció (Data augmentation) - hasonlóan az oversampling technikához a kisebbségi osztály elemeit bővítjük. Ebben az esetben a meglévő elemek transzformálásával mesterségesen hozunk létre új elemeket (pl. képeknél forgatás). \cite{imbalanced}
+\end{itemize}
+
+Dolgozatom keretében az undersampling módszert alkalmaztam.
+
+\subsection{Tanító-, tesztelő- és validáló halmaz kialakítása}
+
+Tanító modellek alkalmazásakor fontos, hogy legalább kettő, de inkább három független adathalmazzal rendelkezzünk: 
+\begin{itemize}
+ \item Tanító adathalmaz (Train Set) - ebből a halmazból tanul és ezt a halmazt látja a modellünk.
+ \item Validáló adathalmaz (Validation Set) - a tanítási lépések (epoch-ok) között ezen a tanító halmaztól független adathalmazon kiértékeljük modellünk működését. Ezáltal visszajelzést tudunk adni a tanítási folyamat felé és ha szükséges, változtathatunk a hiperparamétereken. Modellünk tehát ezt a halmazt időnként látja, de nem ebből tanul.
+ \item Teszt adathalmaz (Test Set) - a tanítási folyamat végén ezen a halmazon értékeljük ki modellünk teljesítményét. Modellünk ezt a halmazt a tanítás alatt egyáltalán nem látja és ezáltal nem is tud tanulni belőle. Ezzel a függetlenséggel biztosítjuk a kiértékelés torzítatlanságát. \cite{traintestvalid}
+\end{itemize}
+
+Bevett szokás, hogy e három halmazt körülbelül 60\%-20\%-20\% arányban osszuk fel a tanító halmaz javára. \cite{traintestvalid} Dolgozatom során én is ezt az elvet követtem.
 
 \section{Architektúra}
 
-\subsection{Hagyományos Machine Learning (modeling baseline)}
+A következő alfejezetekben a különböző tanító modell kísérletek architektúráját mutatom be.
+
+\subsection{Hagyományos Machine Learning - Modeling Baseline}
 //TODO felhasznált deep learning architektúra(?)
 
-\subsection{Deep Learning}
++ alternatív reprezentációkkal is
+Az OpenMIC dataset megalkotói bemutattak egy példa modelt, amely egy véletlen erdő osztályozó (Random Forest Classifier) modell. Ez egy hagyományos gépi tanulási modell. Az osztályozó 100 eldöntési fából áll, a maximális mélysége 8, 
+
+\subsection{VGGish Embedding Downstream CNN}
+
+
+\subsection{Deep CNN}
+
 
 \section{Megvalósítás}
 
 //TODO implementáció részletei
+
+python keras tensorflow numpy scipy librosa 

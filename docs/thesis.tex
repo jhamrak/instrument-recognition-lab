@@ -7,12 +7,13 @@
 ]{elteikthesis}[2019/06/10]
 \usepackage{tikz}
 \usepackage{xcolor}
-\usepackage{pgfplots}
+\usepackage{pgfplots}\usepackage[final]{pdfpages}
 
 \definecolor{bblue}{HTML}{4F81BD}
 \definecolor{rred}{HTML}{C0504D}
 \definecolor{ggreen}{HTML}{9BBB59}
 \definecolor{ppurple}{HTML}{9F4C7C}
+
 
 % Dolgozat metaadatai
 % Document's metadata
@@ -60,7 +61,8 @@
 % Címlap (kötelező)
 % Title page (mandatory)
 \maketitle
-\topicdeclaration
+\includepdf[pages=-,width=\textwidth]{topicdesc.pdf}
+
 
 % Tartalomjegyzék (kötelező)
 % Table of contents (mandatory)
