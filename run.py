@@ -121,6 +121,12 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 	from keras.layers import Dense, Conv2D, MaxPool2D , Flatten, Dropout
 	from keras.preprocessing.image import ImageDataGenerator
 	import model_builder
+	from keras.callbacks import EarlyStopping
+
+	es = EarlyStopping(monitor='val_loss',
+                              min_delta=0,
+                              patience=6,
+                              verbose=0, mode='auto')
 
 	X_train, Y_true_train, Y_mask_train, X_test, Y_true_test, Y_mask_test, X_val, Y_true_val, Y_mask_val, INSTRUMENTS = read_data(DATA_FILE)
 
@@ -131,7 +137,7 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 	print('>> Tranining and evaluation')
 	dir = utils.create_dir('DL',DATASET)
 	mymodels = dict()
-	raw_model = model_builder.build_small((1,X_train.shape[1], X_train.shape[2]))
+	raw_model = model_builder.build_vgg((1,X_train.shape[1], X_train.shape[2]))
 	with open(dir + "/log.txt", "a") as f:
 		with redirect_stdout(f):
 			print('Runtime params: ')
@@ -145,59 +151,59 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS):
 
 		# Map the instrument name to its column number
 		inst_num = INSTRUMENTS[instrument]
+		if inst_num > 3 and inst_num < 9:
+			# TRAIN
+			X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
+			print('train shapes')
+			print(str(X_train_inst.shape))
+			print(str(Y_true_train_inst.shape))
 
-		# TRAIN
-		X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
-		print('train shapes')
-		print(str(X_train_inst.shape))
-		print(str(Y_true_train_inst.shape))
+			# TEST
+			X_test_inst, Y_true_test_inst = utils.get_instrument_arrays(X_test, Y_true_test, Y_mask_test, inst_num, THRESHOLD)
+			print('test shapes')
+			print(str(X_test_inst.shape))
+			print(str(Y_true_test_inst.shape))
 
-		# TEST
-		X_test_inst, Y_true_test_inst = utils.get_instrument_arrays(X_test, Y_true_test, Y_mask_test, inst_num, THRESHOLD)
-		print('test shapes')
-		print(str(X_test_inst.shape))
-		print(str(Y_true_test_inst.shape))
+			# VALIDATION
+			X_val_inst, Y_true_val_inst = utils.get_instrument_arrays(X_val, Y_true_val, Y_mask_val, inst_num, THRESHOLD)
+			print('val shapes')
+			print(str(X_val_inst.shape))
+			print(str(Y_true_val_inst.shape))
 
-		# VALIDATION
-		X_val_inst, Y_true_val_inst = utils.get_instrument_arrays(X_val, Y_true_val, Y_mask_val, inst_num, THRESHOLD)
-		print('val shapes')
-		print(str(X_val_inst.shape))
-		print(str(Y_true_val_inst.shape))
-
-		model = raw_model
-		model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.Adam(lr= LEARNING_RATE), metrics = ['accuracy'])
-		
-		print('-' * 52)
-		print('\t' + instrument.upper())
-		print('>> Tranining model for [' + instrument + ']')
-		history = model.fit(X_train_inst,Y_true_train_inst , epochs=EPOCHS, batch_size=64, validation_data=(X_val_inst,Y_true_val_inst))
-		print('<< Tranining model for [' + instrument + ']')
-		
-		print('>> Evaluating model for [' + instrument + ']')
-		loss, acc = model.evaluate(X_test_inst, Y_true_test_inst)
-		print('Test loss: {}'.format(loss))
-		print('Test accuracy: {:.2%}'.format(acc))
-		print('<< Evaluating model for [' + instrument + ']')
-		
-		print('>> Logging to file for [' + instrument + ']')
-		plotter.plot_history(history, instrument, dir)
-		
-		Y_pred_train = model.predict(X_train_inst)
-		Y_pred_test = model.predict(X_test_inst)
-		Y_pred_train_bool = Y_pred_train > THRESHOLD #(should be lower ???)
-		Y_pred_test_bool = Y_pred_test > THRESHOLD #(should be lower ???)
-		
-		with open(dir + "/log.txt", "a") as f:
-			with redirect_stdout(f):
-				print('-' * 52)
-				print(instrument)
-				print('\tTRAIN')
-				print(classification_report(Y_true_train_inst, Y_pred_train_bool))
-				print('\tTEST')
-				print(classification_report(Y_true_test_inst, Y_pred_test_bool))
-		print('<< Logging to file for [' + instrument + ']')
-				
-		mymodels[instrument] = model
+			model = raw_model
+			model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.Adam(lr= LEARNING_RATE), metrics = ['accuracy'])
+			
+			print('-' * 52)
+			print('\t' + instrument.upper())
+			print('>> Tranining model for [' + instrument + ']')
+			history = model.fit(X_train_inst,Y_true_train_inst , epochs=EPOCHS, batch_size=64, callbacks=[es], validation_data=(X_val_inst,Y_true_val_inst))
+			print('<< Tranining model for [' + instrument + ']')
+			
+			print('>> Evaluating model for [' + instrument + ']')
+			loss, acc = model.evaluate(X_test_inst, Y_true_test_inst)
+			print('Test loss: {}'.format(loss))
+			print('Test accuracy: {:.2%}'.format(acc))
+			print('<< Evaluating model for [' + instrument + ']')
+			
+			print('>> Logging to file for [' + instrument + ']')
+			plotter.plot_history(history, instrument, dir)
+			
+			Y_pred_train = model.predict(X_train_inst)
+			Y_pred_test = model.predict(X_test_inst)
+			Y_pred_train_bool = Y_pred_train > THRESHOLD #(should be lower ???)
+			Y_pred_test_bool = Y_pred_test > THRESHOLD #(should be lower ???)
+			
+			with open(dir + "/log.txt", "a") as f:
+				with redirect_stdout(f):
+					print('-' * 52)
+					print(instrument)
+					print('\tTRAIN')
+					print(classification_report(Y_true_train_inst, Y_pred_train_bool))
+					print('\tTEST')
+					print(classification_report(Y_true_test_inst, Y_pred_test_bool))
+			print('<< Logging to file for [' + instrument + ']')
+					
+			mymodels[instrument] = model
 		
 	print('<< Tranining and evaluation')
 

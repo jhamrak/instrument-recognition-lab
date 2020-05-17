@@ -135,32 +135,71 @@ A mesterséges intelligencia egy általános fogalom az emberi gondolkodás szá
 
 \begin{figure}[H]
   \includegraphics{ai.png}
-  \caption{Egyes fogalmak közti kapcsolat szemléltetve, forrás: \cite{ai} }
+  \caption{Egyes fogalmak közti kapcsolat szemléltetve, forrás: \cite{ai}}
 \end{figure}
 
 \subsection{Gépi tanulás (machine learning)}
 
-A gépi tanulás tehát a mesterséges intelligencia megvalósításának egy módszere. Lényege, hogy explicit utasításokat tartalmazó program helyett a bemeneti adatokat egy tanító algoritmusnak adjuk át. Ha elég mennyiségű és minőségű adatot szolgáltatunk a tanításhoz, akkor a modellünk 
+A gépi tanulás tehát a mesterséges intelligencia megvalósításának egy módszere. Lényege, hogy a bemeneti adatokon statisztikai alapú, optimalizáló algoritmusok segítségével releváns mintákat fedezzünk fel, illetve egy olyan modellt alkossunk, amivel előrejelzéseket tudunk tenni. 
 
-Hagyományos gépi tanulásról beszélünk, amikor 
+\subsubsection{Tanulás fajtái}
 
-//TODO
-
-\subsubsection{Feladatok}
-
+A machine learning technikákat megkülönböztethetjük egyrészt a tanítás módja alapján:
 \begin{itemize}
-\item Regresszió
-\item Osztályozás 
-\item Klaszterezés
+\item \textbf{Felügyelt tanulás (Supervised learning)} - felügyelt tanulás esetén előre rendelkezésünkre állnak a kimeneti címkék, ezek segítségével tanítjuk a modellünket. Ide tartozik például a hangszerek felismerése előre adott címkék segítségével is.
+\item \textbf{Felügyelet nélküli tanulás (Unsupervised learning)} - felügyelet nélküli tanulásnál a modellünk hoz létre csoportokat vagy címkéket a bemeneti adatokpontok közti összefüggések alapján. Ilyen fürtök segíthetnek például egy webshop esetén bizonyos termékek kosárba tétele után hasonló termékeket ajánlani.
+\item\textbf{Megerősítő tanulás (Reinforcement learning)} - A megerősítő tanulás esetén az algoritmus kísérletezések eredményéből tanul. Az egyes műveletek után visszajelzést kap, amely segít megállapítani, hogy a választott döntés helyes, semleges vagy helytelen volt-e. Például egy társasjáték bot. \cite{azure}
 \end{itemize}
 
-Overfitting
-underfitting
+A feladatok jellege alapján pedig a következőképp kategorizálhatjuk a machine learning megoldásokat:
 
-optimization
+\begin{itemize}
+\item \textbf{Regresszió (Regression)} - regresszió alatt olyan függvényt értünk, amely bizonyos tényezők értéke alapján hivatott megjósolni egy folytonos értékű változót. 
+\item \textbf{Osztályozás (Classification)} - az osztályozás hasonló, mint a regresszió, azonban itt a kimenet nem egy folytonos érték lesz, hanem egy kategória. A feladat itt tehát a kategóriák elhatárolása.
+\item \textbf{Klaszterezés (Clustering)} - a klaszterezés, vagy fürtözés esetén az adatpontok egymástól való távolsága alapján alakítunk ki egymással korreláló csoportokat. \cite{deeplearningbook}
+\end{itemize}
+
+\subsubsection{Algoritmusok}
+
+A hagyományos machine learning algoritmusok közé tartoznak az alábbiak:
+
+\begin{itemize}
+\item \textbf{Lineáris regressziós algoritmusok (Linear regression)} - két változó közötti kapcsolatot mutatjuk meg azzal, hogy egy folytonos egyenes vonalat illesztünk az adatokra.
+\item \textbf{Logisztikus regressziós algoritmusok (Logistic regression)} - hasonló a lineáris regresszióhoz, azonban itt logisztikai görbét, azaz szigmoid függvényt illesztünk az adatpontokra.
+\item \textbf{Naív Bayes osztályozók (Classification)} - az esemény előfordulásának valószínűségét egy kapcsolódó esemény bekövetkezése alapján számoljuk ki.
+\item \textbf{Támogatási vektorgépek (Support-vector machines, vagy SVM)} - egy hipersíkot rajzolnak a két legközelebbi adatpont között. Ez marginalizálja az osztályokat, és maximalizálja a közöttük lévő távolságot, hogy egyértelműbben meg lehessen különböztetni őket.
+\item \textbf{Döntési fák (Decision tree)} - az adatokat két, vagy több homogén halmazba osztják szét. Ha–akkor típusú szabályokat használnak arra, hogy az adatokat elkülönítsék az adatpontok közötti legjelentősebb különbségek alapján.
+\item \textbf{Véletlenszerű erdő (Random forest)} - döntési fákon alapulnak, de egy fa létrehozása helyett faerdőt hoznak létre, majd az erdőben lévő fákat véletlenszerűen rendezik el. Ezután összesítik a döntési fák különböző véletlenszerű formációinak szavazatait, és ez alapján határozzák meg a tesztobjektum végső osztályát.
+\item \textbf{K legközelebbi szomszéd (K nearest neighbors)} - minden adatpontot a hozzá legközelebb eső adatpontok alapján osztályozunk egy távolsági függvénnyel történő mérés alapján. 
+\item \textbf{K közép fürtözés (K means clustering)} - K darab fürtbe csoportosítjuk az adatokat. Az egyes fürtökön belüli adatpontok homogének, más fürtök adatpontjaihoz képest pedig heterogének. \cite{azure}
+\end{itemize}
+
+
+\subsubsection{Overfitting és underfitting}
+
+A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modellünk megfelelő mértékben tudjon tanulni. A tanulás két elkerülendő, szélsőséges jelensége az alultanulás (underfitting) és a túltanulás (overfitting). Underfittingről beszélünk, amikor a modellünk nem tanulta meg a megfelelő mintákat, összefüggéseket az adatból. Az overfitting pedig ennek az ellentéte, amikor túlságosan az adatra specializálva tanítjuk a modellünket. Ennek eredményeként más adaton valószínűleg rosszul fog működni, nem fog tudni általánosítani.
+
+\begin{figure}[H]
+  \includegraphics{overfit.png}
+  \caption{Underfitting és overfitting fogalmak szemléltetve, forrás: \cite{deeplearningbook} }
+\end{figure}
+
 
 \subsection{Mély tanulás (deep learning)}
 
-A mély tanulás gyakorlatilag a gépi tanulás egy részhalmaza. 
 
 //TODO  miben más mint az ML, architektúrák stb
+
+A mély tanulás gyakorlatilag a gépi tanulás egy részhalmaza. 
+
+rétegek
+
+activation functions
+
+optimization
+
+hyperparameters
+
+regularization, dropout, mini batching
+
+cnn
