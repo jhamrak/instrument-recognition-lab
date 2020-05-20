@@ -42,7 +42,7 @@ Tanító modellek alkalmazásakor fontos, hogy legalább kettő, de inkább hár
  \item Teszt adathalmaz (Test Set) - a tanítási folyamat végén ezen a halmazon értékeljük ki modellünk teljesítményét. Modellünk ezt a halmazt a tanítás alatt egyáltalán nem látja és ezáltal nem is tud tanulni belőle. Ezzel a függetlenséggel biztosítjuk a kiértékelés torzítatlanságát. \cite{traintestvalid}
 \end{itemize}
 
-Bevett szokás, hogy e három halmazt körülbelül 60\%-20\%-20\% arányban osszuk fel a tanító halmaz javára. \cite{traintestvalid} Dolgozatom során én is ezt az elvet követtem.
+Bevett szokás, hogy e három halmazt körülbelül 60\%-20\%-20\% arányban osztjuk fel a tanító halmaz javára. \cite{traintestvalid} Dolgozatom során én is ezt az elvet követtem.
 
 \section{Architektúra}
 
@@ -52,12 +52,15 @@ A következő alfejezetekben a különböző tanító modell kísérletek archit
 //TODO felhasznált deep learning architektúra(?)
 
 + alternatív reprezentációkkal is
-Az OpenMIC dataset megalkotói bemutattak egy példa modelt, amely egy véletlen erdő osztályozó (Random Forest Classifier) modell. Ez egy hagyományos gépi tanulási modell. Az osztályozó 100 eldöntési fából áll, a maximális mélysége 8, 
+Az OpenMIC dataset megalkotói bemutattak egy példa modelt, amely egy véletlen erdő osztályozó (Random Forest Classifier) modell. Ez egy hagyományos gépi tanulási algoritmus. Az osztályozó 100 eldöntési fából áll, a maximális mélysége 8, 
 
-\subsection{VGGish Embedding Downstream CNN}
+\subsection{VGGish Embedding Downstream CNN - Shallow CNN}
+
 
 
 \subsection{Deep CNN}
+
+A VGG \cite{vgg} architektúra megvalósítása 
 
 
 \section{Megvalósítás}
