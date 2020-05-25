@@ -1,31 +1,50 @@
 \chapter{Kísérletek, eredmények} 
 \label{ch:results}
 
-Lorem ipsum
+Ebben a fejezetben értékelem ki és vetem össze különböző kísérleteim eredményeit.
 
 \section{Mérőszámok}
 
-//TODO: https://towardsdatascience.com/whats-the-deal-with-accuracy-precision-recall-and-f1-f5d8b4db1021 \cite{fscore}
-
-könyv alapján
-hogyan tudjuk megmérni a modell teljesítményét, pontosság, tanítás ideje, stb...
-
-A következő metrikákat vizsgáltuk:
+A modellek teljesítményét F értékek alapján vetettem össze, egyrészt hangszerenként külön-külön, másrészt a hangszerenkénti átlagot véve is. Az F értékhez a következő metrikák vezettek el:
 
 \begin{itemize}
-\item Pontosság (accuraccy) - a modell az adott lépésben a bemeneti adatok hány százalékára adott helyes kimenetet?
-\item Veszteség (loss) - a veszteségfüggvény eredménye. A modell predikcióinak a valóságtól való eltérését összeadva kapjuk meg.
-\item Precizitás (precision) - 
-\item Felidézés (recall) - 
-\item F1 érték (F1 score) - ..... Ennek a súlyozott átlaga a mérvadó.
+\item \textbf{Pontosság (Accuraccy)} - a modell helyes előrejelzéseinek száma osztva az összes előrejelzés számával. Ez már magában egy jó mérőszám tud lenni, azonban multi-label osztályozások esetén érdemes a helytelen előrejelzések fajtájával is kalkulálni. Ezek a valótlan igazak (false positives) és valótlan hamisak (false negatives).
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{predictedactual.png}
+  \caption{Előrejelzések fajtái, forrás: \cite{fscore}}
+\end{figure}
 
+\item \textbf{Veszteség (Loss)} - a veszteségfüggvény eredménye. A modell predikcióinak a valóságtól való eltérését összeadva kapjuk meg. A modell célja tanuláskor ennek az értéknek a minimalizálása.
+\item \textbf{Precizitás (Precision)} - valós igaz predikációk száma osztva a valós és valótlan igazak számának összegével.
+\item \textbf{Felidézés (Recall)} - valós igaz predikációk száma osztva a valós igaz és valótlan hamis predikációk összegével.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{precisionrecall.png}
+  \caption{Precizitás és felidézés, forrás: \cite{fscore}}
+\end{figure}
+\item \textbf{F érték (F score)} - a precizitás és felidézés értékek harmónikus közepe. Ez lesz tehát a meghatározó mérőszám modelljeink összevetésénél. \cite{fscore}
 
-F1 érték hangszerenként, ezek átlaga, legkisebb és legnagyobb közti különbség
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6cm]{fscore.png}
+  \caption{F score képlete, forrás: \cite{fscore}}
+\end{figure}
 \end{itemize}
+
+
 
 \section{Eredmények}
 
+//TODO bevezető
 
+\subsection{VGGish kiindulás és optimalizáció}
+
+
+//TODO kiinduló eredményekről pár szó ml vs dl
+
+\begin{figure}
+\centering
 \begin{tikzpicture}
     \begin{axis}[
         width  = \textwidth,
@@ -39,23 +58,28 @@ F1 érték hangszerenként, ezek átlaga, legkisebb és legnagyobb közti külö
         xtick = data,
         x tick label style={rotate=90},
         scaled y ticks = false,
-legend cell align=left,legend style={
+        legend cell align=left,legend style={
                 at={(1,1.05)},
                 anchor=south east,
-                column sep=1ex
-        }
+                column sep=1ex}
     ]
         \addplot[style={bblue,fill=bblue,mark=none}]
             coordinates {(Harmónika, 0.68) (Bendzsó,0.72) (Basszusgitár,0.75)  (Cselló,0.79)  (Klarinét,0.52)  (Cintányér,0.93)  (Dob,0.75)  (Furulya,0.89)  (Gitár,0.97)  (Melodikus ütőhangszer,0.77)  (Mandolin,0.70)  (Orgona,0.60) (Zongora,0.93) (Szaxofon,0.83) (Szintetizátor,0.94) (Harsona,0.75) (Trombita,0.76) (Ukulele,0.72) (Hegedű,0.83) (Ének,0.93)};
-
         \addplot[style={rred,fill=rred,mark=none}]
             coordinates {(Harmónika, 0.76) (Bendzsó,0.74) (Basszusgitár,0.66) (Cselló,0.73) (Klarinét,0.52)  (Cintányér,0.88) (Dob,0.93) (Furulya,0.66) (Gitár,0.95)  (Melodikus ütőhangszer,0.79)  (Mandolin,0.64)  (Orgona,0.77) (Zongora,0.91) (Szaxofon,0.67) (Szintetizátor,0.89) (Harsona,0.77) (Trombita,0.71) (Ukulele,0.64) (Hegedű,0.76) (Ének,0.81)};
-
-
         \legend{ML VGGish ,DL VGGish}
     \end{axis}
 \end{tikzpicture}
+\caption{Modeling Baseline és Shallow CNN elődjének kezdeti értékei optimalizációk nélkül VGGish reprezentáción} \label{fig:vggishbase}
+\end{figure}
 
+
+\subsection{Alternatív reprezentációk}
+
+//TODO MELSPEC, MFCC bevezetése, miért alacsonyabbak a számok, ml vs dl
+
+\begin{figure}
+\centering
 \begin{tikzpicture}
     \begin{axis}[
         width  = \textwidth,
@@ -84,21 +108,5 @@ legend cell align=left,legend style={
         \legend{ML Mel,DL Mel}
     \end{axis}
 \end{tikzpicture}
-
-
-
-
-\subsection{Modeling Baseline}
-
-
-\subsection{Modeling Baseline alternatív reprezentációkkal}
-
-\subsection{VGGish Embedding Downstream CNN}
-
-\subsection{Deep CNN}
-
-\section{Összehasonlítások}
-
-\subsection{saját próbálkozásaim} 
-
-\subsection{Más ismert munkákkal}
+\caption{Modeling Baseline és Shallow CNN elődjének kezdeti értékei optimalizációk nélkül melspectogram reprezentáción} \label{fig:vggishbase}
+\end{figure}

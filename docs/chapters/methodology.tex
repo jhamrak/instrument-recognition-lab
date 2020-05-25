@@ -58,7 +58,6 @@ A Modeling Baseline futtatását alapvetően a VGGish reprezentációra implemen
 
 Az első mély tanulási megközelítésem a VGG-16 \cite{vgg} architektúrához hasonló mély konvolúciós neuronháló megvalósítása. Ennek megfelelően Deep CNN néven fogok rá hivatkozni a továbbiakban. A VGG-16 egy 2014-ben bemutatott architektúra, amelyet 224x224 méretű RGB képek tanítására hoztak létre. Több tanulmány is azt állítja, hogy az ehhez hasonló mély konvolúciós hálók hangok tanítására is alkalmasak lehetnek (például \cite{choi2017tutorial}). Erre az állításra az intuíció pedig az lehet, hogy a hangok különböző kétdimenziós reprezentációi képek, melyekben a mély konvolúciós hálók mintákat, összefüggéseket tudnak keresni.
 
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth, height=8cm]{vgg.png}
@@ -78,65 +77,68 @@ Az architektúra a következő elemekből épül fel:
 
 A bemenetet először két konvolúciós rétegnek adjuk át. Ezt követi egy Max-pooling réteg, majd esetleg a nagyobb random-faktor érdekében egy Dropout réteg. Ezután ugyanilyen sorrendben még háromszor-négyszer (attól függően, milyen mély architektúrát szeretnénk megvalósítani) hozzáfűzzük ezeket a rétegeket az előző kimenetéhez. A konvolúciós rétegek ahogy zsugorodnak a Max-poolingok hatásaként, úgy egyre több szűrővel rendelkeznek. Következőnek egy Flattening réteg következik, amely után a Fully-connected rétegeket csatolhatjuk. Dropout rétegeket itt is alkalmazhatunk. Az utolsó Fully-connected layerhez szigmoid aktivációs függvény tartozik, hogy 0 és 1 közötti értékeket kapjunk a kimenetre. Ebből nyerjük ki a végleges igaz-hamis értékeket.
 
+Erre az architektúrára csak a melspectogram reprezentációt lehetett ráilleszteni. A VGGish 10 és az MFCC 20 méretű dimenziója a konvolúciók és Max-poolingok következtében 0 alá redukálódott volna, ami nem lehetséges.
+
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ | c | c |  c | c |}
+	\begin{tabular}{ | c | c |}
 		\hline
-		\textbf{Réteg} & \textbf{VGGish} & \textbf{Melspec}& \textbf{MFCC}  \\
+		\textbf{Réteg} & \textbf{Melspec}  \\
 		\hline \hline
-		\emph{Input} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 128 $\times$ 430 & 1 $\times$ 20 $\times$ 430 \\
+		\emph{Input} & 1 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 64 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 64 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{MaxPool2D} & 64 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 64 $\times$ 63 $\times$ 214 \\
 		\hline
-		\emph{Dropout} & 64 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Dropout} & 64 $\times$ 63 $\times$ 214 \\
 		\hline 
-		\emph{Conv2D} & 128 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 128 $\times$ 63 $\times$ 214 \\
 		\hline
-		\emph{Conv2D} & 128 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 128 $\times$ 63 $\times$ 214 \\
 		\hline
-		\emph{MaxPool2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 128 $\times$ 31 $\times$ 106 \\
 		\hline
-		\emph{Dropout} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Dropout} & 128 $\times$ 31 $\times$ 106 \\
 		\hline 
-		\emph{Conv2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 256 $\times$ 31 $\times$ 106 \\
 		\hline
-		\emph{Conv2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 256 $\times$ 31 $\times$ 106 \\
 		\hline
-		\emph{MaxPool2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 256 $\times$ 15 $\times$ 52 \\
 		\hline
-		\emph{Dropout} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Dropout} & 256 $\times$ 15 $\times$ 52 \\
 		\hline 
-		\emph{Conv2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 512 $\times$ 15 $\times$ 52 \\
 		\hline
-		\emph{Conv2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 512 $\times$ 15 $\times$ 52 \\
 		\hline
-		\emph{MaxPool2D} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 512 $\times$ 7 $\times$ 25 \\
 		\hline
-		\emph{Flatten} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Flatten} & 89600 \\
 		\hline
-		\emph{Fully-connected} & 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Fully-connected} & 4096 \\
 		\hline
-		\emph{Fully-connected} & 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Fully-connected} & 2048 \\
 		\hline
-		\emph{Fully-connected} & 1 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Fully-connected} & 1 \\
 		\hline
 	\end{tabular}
-	\caption{Deep CNN architektúra rétegei és az egyes rétegek outputjainak mérete reprezentációtól függően}
+	\caption{Deep CNN architektúra rétegei és az egyes rétegek outputjainak mérete Melspectogram reprezentáció esetén}
 	\label{tab:dcnn}
 \end{table}
 
 \subsection{Shallow CNN (VGGish Embedding Downstream CNN)}
 
-Kísérleteim során a Deep CNN után egy sekélyebb architektúrát is kialakítottam. Ezt a továbbiakban Shallow CNN néven fogom említeni. A Shallow CNN-t két okból hoztam létre:
+Kísérleteim során a Deep CNN után egy sekélyebb architektúrát is kialakítottam. Ezt a továbbiakban Shallow CNN néven fogom említeni. A Shallow CNN-t három okból hoztam létre:
  
 \begin{itemize}
  \item Amint azt az adathalmazok körében a \ref{subsec:VGGish} alfejezetben is említettem, a VGGish reprezentáció már előre tanítva van. Ezért erre nem lenne hatékony egy Deep CNN mélységű architektúra alkalmazása.
  \item A melspectogram, illetve MFCC reprezentációk esetében a kísérletek arra utaltak, hogy túl kevés az adatunk egy ilyen mély architektúra alkalmazásához. Az eredmények azt mutatták, hogy a modell fölöslegesen próbál nagyon mély összefüggéseket keresni az adatok között. Ezek feltárásához az adott ezres nagyságrendű bemeneti mintaszám helyett legalább tízerzes, de inkább százezres kellene.
+ \item Az MFCC és VGGish reprezentációk mérete nem megfelelő a megadott architektúra dimenzió redukciói miatt.
 \end{itemize}
 
 Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélyebb konvolúciós neuronháló megvalósítása. A rétegek típusa megegyezik a Deep CNN-ével, azonban számuk és méretük jelentősen kisebb (lásd \ref{tab:scnn} táblázat). Ennek eredményeképp jelentősen csökkent a tanítási idő, a modell teljesítőképessége pedig nőtt.
@@ -146,29 +148,29 @@ Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélye
 	\centering
 	\begin{tabular}{ | c | c | c | c |}
 		\hline
-		\textbf{Réteg} & \textbf{VGGish} & \textbf{Melspec}& \textbf{MFCC}  \\
+		\textbf{Réteg} & \textbf{VGGish} & \textbf{MFCC} & \textbf{Melspec}  \\
 		\hline \hline
-		\emph{Input} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 128 $\times$ 430 & 1 $\times$ 20 $\times$ 430 \\
+		\emph{Input} & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 20 $\times$ 430 & 1 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 64 $\times$ 20 $\times$ 430 & 64 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 64 $\times$ 10 $\times$ 128 & 64 $\times$ 20 $\times$ 430 & 64 $\times$ 128 $\times$ 430 \\
 		\hline
-		\emph{MaxPool2D} & 64 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 64 $\times$ 4 $\times$ 63 & 64 $\times$ 9 $\times$ 214 & 64 $\times$ 63 $\times$ 214 \\
 		\hline
-		\emph{Dropout} & 64 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Dropout} & 64 $\times$ 4 $\times$ 63 & 64 $\times$ 9 $\times$ 214 & 64 $\times$ 63 $\times$ 214 \\
 		\hline 
-		\emph{Conv2D} & 128 $\times$ 4 $\times$ 63 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Conv2D} & 128 $\times$ 4 $\times$ 63 & 128 $\times$ 9 $\times$ 214 & 128 $\times$ 63 $\times$ 214 \\
 		\hline
-		\emph{MaxPool2D} & 128 $\times$ 1 $\times$ 31 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{MaxPool2D} & 128 $\times$ 1 $\times$ 31 & 128 $\times$ 4 $\times$ 106 & 128 $\times$ 31 $\times$ 106 \\
 		\hline
-		\emph{Dropout} & 128 $\times$ 1 $\times$ 31 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Dropout} & 128 $\times$ 1 $\times$ 31 & 128 $\times$ 4 $\times$ 106 & 128 $\times$ 31 $\times$ 106 \\
 		\hline
-		\emph{Flatten} & 3968 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Flatten} & 3968 & 54272 & 420608 \\
 		\hline
-		\emph{Fully-connected} & 128 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Fully-connected} & 128 & 128 & 128 \\
 		\hline
-		\emph{Fully-connected} & 1 & 1 $\times$ 10 $\times$ 128 & 1 $\times$ 10 $\times$ 128 \\
+		\emph{Fully-connected} & 1 & 1  & 1 \\
 		\hline
 	\end{tabular}
 	\caption{Shallow CNN architektúra rétegei és az egyes rétegek outputjainak mérete reprezentációtól függően}
@@ -177,6 +179,13 @@ Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélye
 
 \section{Hiperparaméterek, egyéb technikák}
 
+Az előfeldolgozáson és az architektúra kialakításán kívül a tanítás sikerességéhez több különböző deep learning techinkát alkalmaztam. Ezeken túl fontos szerepe volt a megfelelő hiperparaméterek megválasztásának is.
+
+Alkalmazott deep learning technikák:
+\begin{itemize}
+ \item \textbf{Early Stopping} - a learning rate függvényében, magas érték esetén 4, alacsony esetén 7 epoch türelmi küszöbbel early stopping technikát alkalmaztam a validation loss csökkenésére vonatkozólag. 
+ \item \textbf{Dropout} - az architektúra egyes rétegei közé dropout rétegeket illesztettem, amelyek az adott rétegig beállított súlyok 20\%-át véletlenszerűen eldobják az overfitting elkerülése érdekében.
+\end{itemize}
 // TODO  early stop, dropout, hyperparams
 
 \section{Megvalósítás}

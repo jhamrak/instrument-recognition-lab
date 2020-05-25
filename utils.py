@@ -22,6 +22,12 @@ def get_instrument_arrays(X, Y, mask, inst_num, threshold):
 	X, Y = undersample(X,Y,inst_coords,inst_num, threshold)
 	X = get_transformed_array(X)
 	return X, Y
+	
+def get_instrument_arrays_ml(X, Y, mask, inst_num, threshold):
+	inst_coords = mask[:, inst_num]
+	X, Y = undersample(X,Y,inst_coords,inst_num, threshold)
+	X = get_normalized_array(X)
+	return X, Y
 
 
 def get_transformed_array(X_old):
@@ -29,6 +35,12 @@ def get_transformed_array(X_old):
 	shape = X.shape
 	X = X.astype('float16')
 	X = X.reshape(shape[0],1, shape[1], shape[2])
+	X = lb.util.normalize(X)
+	return X
+	
+def get_normalized_array(X_old):
+	X = X_old
+	X = X.astype('float16')
 	X = lb.util.normalize(X)
 	return X
 	

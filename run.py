@@ -59,25 +59,31 @@ def MachineLearning(DATA_FILE, THRESHOLD):
 	print('-' * 52)
 	print('>> Tranining and evaluation')
 	dir = utils.create_dir('ML',DATASET)
+	with open(dir + "/log.txt", "a") as f:
+		with redirect_stdout(f):
+			print('Runtime params: ')
+			print('Dataset: ' + DATASET)
+			print('Threshold: ' + str(THRESHOLD))
+			print('-' * 52)
 	for instrument in INSTRUMENTS:
 
 		# Map the instrument name to its column number
 		inst_num = INSTRUMENTS[instrument]
 
 		# TRAIN
-		X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
+		X_train_inst, Y_true_train_inst = utils.get_instrument_arrays_ml(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
 		print('train shapes')
 		print(str(X_train_inst.shape))
 		print(str(Y_true_train_inst.shape))
 
 		# TEST
-		X_test_inst, Y_true_test_inst = utils.get_instrument_arrays(X_test, Y_true_test, Y_mask_test, inst_num, THRESHOLD)
+		X_test_inst, Y_true_test_inst = utils.get_instrument_arrays_ml(X_test, Y_true_test, Y_mask_test, inst_num, THRESHOLD)
 		print('test shapes')
 		print(str(X_test_inst.shape))
 		print(str(Y_true_test_inst.shape))
 
 		# VALIDATION
-		X_val_inst, Y_true_val_inst = utils.get_instrument_arrays(X_val, Y_true_val, Y_mask_val, inst_num, THRESHOLD)
+		X_val_inst, Y_true_val_inst = utils.get_instrument_arrays_ml(X_val, Y_true_val, Y_mask_val, inst_num, THRESHOLD)
 		print('val shapes')
 		print(str(X_val_inst.shape))
 		print(str(Y_true_val_inst.shape))
@@ -123,9 +129,13 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
 	import model_builder
 	from keras.callbacks import EarlyStopping
 
+	if LEARNING_RATE > 0.0001:
+		patience = 4
+	else:
+		patience = 7
 	es = EarlyStopping(monitor='val_loss',
                               min_delta=0,
-                              patience=10,
+                              patience=patience,
                               verbose=0, mode='auto')
 
 	X_train, Y_true_train, Y_mask_train, X_test, Y_true_test, Y_mask_test, X_val, Y_true_val, Y_mask_val, INSTRUMENTS = read_data(DATA_FILE)
@@ -147,11 +157,13 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
 			print('Number of epochs: ' + str(EPOCHS))
 			print('-' * 52)
 			raw_model.summary()
+	first_inst = 20 - INST_COUNT if 20 - INST_COUNT < 4 else 3
 	for instrument in INSTRUMENTS:
 
 		# Map the instrument name to its column number
 		inst_num = INSTRUMENTS[instrument]
-		if inst_num > 3 and inst_num < (3 + INST_COUNT):
+		
+		if inst_num >= first_inst and inst_num <= (first_inst + INST_COUNT):
 			# TRAIN
 			X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
 			print('train shapes')
@@ -214,7 +226,7 @@ if __name__ == '__main__':
 	parser.add_argument('--lr', default='0.0001', required=False)
 	parser.add_argument('--threshold', default='0.5', required=False)
 	parser.add_argument('--epochs', default='10', required=False)
-	parser.add_argument('--instruments', default='5', required=False)
+	parser.add_argument('--instruments', default='20', required=False)
 	args = parser.parse_args()
 	
 	if args.data.upper() == 'VGG':
