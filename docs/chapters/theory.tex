@@ -184,7 +184,7 @@ A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modell�
 
 \begin{figure}[H]
   \includegraphics{overfit.png}
-  \caption{Underfitting és overfitting fogalmak szemléltetve, forrás: \cite{deeplearningbook} }
+  \caption{Underfitting és overfitting fogalmak szemléltetve, forrás: \cite{deeplearningbook}}
 \end{figure}
 
 
@@ -194,19 +194,17 @@ A mély tanulás a gépi tanulás napjainkban felkapott ágazata. Olyan gépi ta
 
 A hagyományos gépi tanulási modellekkel ellentétben a mély tanulási neurális hálók tanításához nem kell a bemeneten ismernünk minden releváns adatjellemzőt, mivel a magas szintű bemeneti adatból a hálózat saját maga fogja a rejtett rétegeken keresztül felismerni azokat. Ennek sikerességéhez viszont több bemeneti adattal és nagyobb számítási kapacitással kell rendelkeznünk, mint egy hagyományos machine learning modell esetén. \cite{azuredl}
 
-A továbbiakban a mély tanulásról \cite{deeplearningbook} könyv és \cite{.
-
 \subsubsection{Felépítés}
 
-A neurális hálók építőelemei a neuronok, melyek egy-egy skalár értéket reprezentálnak, így hordozzák az információt. Több neuron együttesen egy vektorként alkot egy réteget. Egy neurális háló egy bemeneti, egy kimeneti és több rejtett rétegből áll. A hálót alkotó rétegek száma határozza meg annak mélységét.
-
-A bemeneti rétegen található az input adatunk (például egy kép), melynek egy-egy adatpontját (például egy pixelt a képen) egy-egy neuron fog ábrázolni. A bemeneti réteg neuronjai kapcsolatban állnak a következő, rejtett réteg neuronjaival. A kapcsolat típusa többféle lehet a neuronrétegek típusától függően. Ezekben a rejtett rétegekben ismeri fel a neuronhálónk a bemeneti adatból a számára releváns jellemzőket. A rejtett jelző onnan ered, hogy az itteni adat nem kerül nyilvánosságra, csupán a rákövetkező rétegnek fog bemenetként szolgálni. Végül a neurális háló utolsó rétege lesz a kimenet, itt kapjuk meg a modell előrejelzéseit az adott feladatra.
+A neurális hálók építőelemei a neuronok, melyek egy-egy skalár értéket reprezentálnak, így hordozzák az információt. Több neuron együttesen egy vektorként alkot egy réteget. Egy neurális háló egy bemeneti, egy kimeneti és több rejtett rétegből áll. A hálót alkotó rétegek száma határozza meg annak mélységét. \cite{Choi2017}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{neuralnet.png}
   \caption{Többrétegű előrecsatolt neurális hálózat felépítése, forrás: \cite{deeplearningbook}}
 \end{figure}
+
+A bemeneti rétegen található az input adatunk (például egy kép), melynek egy-egy adatpontját (például egy pixelt a képen) egy-egy neuron fog ábrázolni. A bemeneti réteg neuronjai kapcsolatban állnak a következő, rejtett réteg neuronjaival. A kapcsolat típusa többféle lehet a neuronrétegek típusától függően. Ezekben a rejtett rétegekben ismeri fel a neuronhálónk a bemeneti adatból a számára releváns jellemzőket. A rejtett jelző onnan ered, hogy az itteni adat nem kerül nyilvánosságra, csupán a rákövetkező rétegnek fog bemenetként szolgálni. Végül a neurális háló utolsó rétege lesz a kimenet, itt kapjuk meg a modell előrejelzéseit az adott feladatra. \cite{deeplearningbook} 
 
 Néhány példa különböző típusú neuronrétegekre:
 \begin{itemize}
@@ -221,9 +219,8 @@ Néhány példa különböző típusú neuronrétegekre:
   \caption{A konvolúció művelet, forrás: \cite{deeplearningbook}}
 \end{figure}
  
- \item \textbf{Összevonó réteg (Pooling layer)} -
-
- \item \textbf{Rekurrens réteg (Recurrent layer)} - 
+ \item \textbf{Összevonó réteg (Pooling layer)} - csökkenti a reprezentáció méretét, így kezelhetőbbé téve azt. Szomszédos értékeket von össze a maximumuk (MaxPooling), vagy átlaguk (AveragePooling) alapján.
+ \item \textbf{Rekurrens réteg (Recurrent layer)} -  \cite{deeplearningbook}
  
 \begin{figure}[H]
   \centering
@@ -235,7 +232,7 @@ Néhány példa különböző típusú neuronrétegekre:
 
 \subsubsection{Aktivációs függvények}
 
-Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok értékeit egy nemlineáris transzformáció alkalmazásával adjuk át a következő réteg számára. Néhány ezek közül \cite{deeplearningbook}:
+Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok értékeit egy nemlineáris transzformáció alkalmazásával adjuk át a következő réteg számára. Néhány ezek közül:
 \begin{itemize}
  \item \textbf{Szigmoid} - más néven logisztikus függvény. [0,1] intervallumba transzformálja a kimenetet, ezáltal igaz-hamis, illetve probabilisztikus osztályozásra jól használható a kimeneti rétegen. Hátránya, hogy számítása költséges és szélsőségesen negatív vagy pozitív bemenet esetén eltüntetheti a gradienst.
 \begin{equation}
@@ -245,7 +242,7 @@ Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok érté
 \begin{equation}
 	tanh(x) = \cfrac{2}{1+e^{-2x}} - 1
 \end{equation}
- \item \textbf{Rectified Linear Unit (ReLU)} - a negatív bemeneteket nullára állítja, a pozitívakat változatlanul hagyja. Kiszámítása nem költséges:
+ \item \textbf{Rectified Linear Unit (ReLU)} - a negatív bemeneteket nullára állítja, a pozitívakat változatlanul hagyja. Kiszámítása nem költséges: \cite{deeplearningbook}
 \begin{equation}
 	ReLU(x) = max(0, x)
 \end{equation}
@@ -253,7 +250,7 @@ Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok érté
 
 \subsubsection{Hibafüggvény (Loss Function)}
 
-A loss function egy olyan függvény, amely a neurális hálónk kimenetének valóságtól való eltérését adja meg. Ezt a függvényt úgy kell megválasztanunk, hogy a értékének minimalizálása jól reprezentálja a tanítás sikerességét. Különböző feladattípusokra különböző loss function-öket érdemes használni. Például \cite{deeplearningbook}:
+A loss function egy olyan függvény, amely a neurális hálónk kimenetének valóságtól való eltérését adja meg. Ezt a függvényt úgy kell megválasztanunk, hogy a értékének minimalizálása jól reprezentálja a tanítás sikerességét. Különböző feladattípusokra különböző loss function-öket érdemes használni. Például:
 \begin{itemize}
  \item \textbf{Mean Squared Error} - regressziós feladatok esetén használatos:
 \begin{equation}
@@ -263,9 +260,9 @@ A loss function egy olyan függvény, amely a neurális hálónk kimenetének va
 \begin{equation}
 	L(W) = \cfrac{1}{n}\sum_{i=1}^{n}{(y^{(i)}log(-f(x{(i)};W))+(1-y^{(i)})log(1-f(x{(i)};W))}
 \end{equation}
- \item \textbf{Categorical Cross Entropy} - multi-class osztályozási feladatok esetén használatos:
+ \item \textbf{Categorical Cross Entropy} - multi-class osztályozási feladatok esetén használatos: \cite{deeplearningbook}
 \begin{equation}
-	L(W) = \sum_{i=1}^{n}{(y^{(i)}log(-f(x{(i)};W))} \cite{deeplearningbook}
+	L(W) = \sum_{i=1}^{n}{(y^{(i)}log(-f(x{(i)};W))}
 \end{equation}
  \end{itemize}
 
@@ -290,7 +287,6 @@ A neurális hálózatok rétegei alapján több fajtájú architektúrát külö
  
 
 
- \item \textbf{Rekurrens Neurális Háló (RNN)} - 
-
+ \item \textbf{Rekurrens Neurális Háló (RNN)} -  \cite{deeplearningbook}
 
 \end{itemize}
