@@ -1,7 +1,14 @@
-\chapter{Összegzés, kitekintés} % Conclusion
+\chapter{Összegzés, kitekintés}
 \label{ch:sum}
 
-Továbbfejlesztési ötletek:
-//TODO undersampling helyett oversampling vagy data augmentation
-cnn helyett rnn 
-early stopping mellé model checkpoint
+Dolgozatom keretében megvizsgáltam a zenei információk kinyerése (MIR) tudományterület feladatait, megismerkedtem az automatikus hangszerfelismerés problémájával, ennek megközelítéseivel. Felkutattam különböző gépi tanulási és mély tanulási megoldásokat, tanító adathalmazokat.
+
+Bemutattam egy CNN architektúrát, amellyel három különböző bemeneti reprezentáción kísérleteztem. A kísérletek konklúziójaként az látszik, hogy míg a már előre tanított kisebb dimenziójú reprezentáción nagyjából egyforma teljesítményt nyújt, a nagyobb felbontású reprezentációkon már jobban teljesít a bemutatott mély tanulási architektúra, mint egy hagyományos gépi tanulási megoldás.
+
+A jövőben több módon is tovább lehetne optimalizálni a bemutatott modellt. A tapasztalataim alapján úgy gondolom a legnagyobb javulást az adathalmaz bővítése eredményezné. Erre azonban nem biztos, hogy van lehetőség, így én a következő továbbfejlesztéseket fontolnám meg:
+\begin{itemize}
+ \item Undersampling helyett oversampling, vagy data augmentation technikát alkalmazni az adatok előfeldolgozásakor
+ \item A jelenlegi CNN architektúrát tovább mélyíteni, vagy helyette RNN architektúrát implementálni
+ \item Az early stopping technika mellé model checkpointokat is bevezetni.
+\end{itemize}
+

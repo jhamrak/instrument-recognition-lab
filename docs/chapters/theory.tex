@@ -151,6 +151,9 @@ A machine learning technikákat megkülönböztethetjük egyrészt a tanítás m
 \item\textbf{Megerősítő tanulás (Reinforcement learning)} - A megerősítő tanulás esetén az algoritmus kísérletezések eredményéből tanul. Az egyes műveletek után visszajelzést kap, amely segít megállapítani, hogy a választott döntés helyes, semleges vagy helytelen volt-e. Például egy társasjáték bot. \cite{azure}
 \end{itemize}
 
+
+\subsubsection{Feladatok jellege}
+
 A feladatok jellege alapján pedig a következőképp kategorizálhatjuk a machine learning megoldásokat:
 
 \begin{itemize}
@@ -187,19 +190,107 @@ A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modell�
 
 \subsection{Mély tanulás (Deep Learning)}
 
+A mély tanulás a gépi tanulás napjainkban felkapott ágazata. Olyan gépi tanuló algoritmusokat értünk mély tanulás alatt, melynek rétegei a bemeneti adatok magasabb szintű absztrakcióinak kinyerésével hatékonyan képesek tetszőleges folyamatot modellezni. Ezek alatt a gyakorlatban olyan neurális hálózatokat értünk, melyek egy bemeneti, egy kimeneti és több rejtett rétegből állnak, illetve magas paraméterszámmal rendelkeznek. \cite{azuredl}
 
-//TODO  miben más mint az ML, architektúrák stb
+A hagyományos gépi tanulási modellekkel ellentétben a mély tanulási neurális hálók tanításához nem kell a bemeneten ismernünk minden releváns adatjellemzőt, mivel a magas szintű bemeneti adatból a hálózat saját maga fogja a rejtett rétegeken keresztül felismerni azokat. Ennek sikerességéhez viszont több bemeneti adattal és nagyobb számítási kapacitással kell rendelkeznünk, mint egy hagyományos machine learning modell esetén. \cite{azuredl}
 
-rétegek
+A továbbiakban a mély tanulásról \cite{deeplearningbook} könyv és \cite{.
 
-activation functions
+\subsubsection{Felépítés}
 
-optimization
+A neurális hálók építőelemei a neuronok, melyek egy-egy skalár értéket reprezentálnak, így hordozzák az információt. Több neuron együttesen egy vektorként alkot egy réteget. Egy neurális háló egy bemeneti, egy kimeneti és több rejtett rétegből áll. A hálót alkotó rétegek száma határozza meg annak mélységét.
 
-hyperparameters
+A bemeneti rétegen található az input adatunk (például egy kép), melynek egy-egy adatpontját (például egy pixelt a képen) egy-egy neuron fog ábrázolni. A bemeneti réteg neuronjai kapcsolatban állnak a következő, rejtett réteg neuronjaival. A kapcsolat típusa többféle lehet a neuronrétegek típusától függően. Ezekben a rejtett rétegekben ismeri fel a neuronhálónk a bemeneti adatból a számára releváns jellemzőket. A rejtett jelző onnan ered, hogy az itteni adat nem kerül nyilvánosságra, csupán a rákövetkező rétegnek fog bemenetként szolgálni. Végül a neurális háló utolsó rétege lesz a kimenet, itt kapjuk meg a modell előrejelzéseit az adott feladatra.
 
-regularization, dropout, mini batching
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{neuralnet.png}
+  \caption{Többrétegű előrecsatolt neurális hálózat felépítése, forrás: \cite{deeplearningbook}}
+\end{figure}
 
-cnn
+Néhány példa különböző típusú neuronrétegekre:
+\begin{itemize}
+ \item \textbf{Teljesen kapcsolt réteg (Fully-connected layer)} - 
+ 
+ \item \textbf{Kovolúciós réteg (Convolution layer)} -
+ 
+ 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{convolution.png}
+  \caption{A konvolúció művelet, forrás: \cite{deeplearningbook}}
+\end{figure}
+ 
+ \item \textbf{Összevonó réteg (Pooling layer)} -
 
-rnn
+ \item \textbf{Rekurrens réteg (Recurrent layer)} - 
+ 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{rnn.png}
+  \caption{Rekurrens rétegek közti kapcsolatok, forrás: \cite{deeplearningbook}}
+\end{figure}
+
+\end{itemize}
+
+\subsubsection{Aktivációs függvények}
+
+Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok értékeit egy nemlineáris transzformáció alkalmazásával adjuk át a következő réteg számára. Néhány ezek közül \cite{deeplearningbook}:
+\begin{itemize}
+ \item \textbf{Szigmoid} - más néven logisztikus függvény. [0,1] intervallumba transzformálja a kimenetet, ezáltal igaz-hamis, illetve probabilisztikus osztályozásra jól használható a kimeneti rétegen. Hátránya, hogy számítása költséges és szélsőségesen negatív vagy pozitív bemenet esetén eltüntetheti a gradienst.
+\begin{equation}
+	sig(x) = \cfrac{1}{1+e^{-x}}
+\end{equation}
+ \item \textbf{Hiperbolikus tangens (tanh)} - [-1,1] intervallumba transzformálja a kimenetet, ezáltal nem csak pozitív értékeket alkalmazunk. Hátránya, hogy ennek a számítása is költséges és esetenként ez is eltüntetheti a gradienst. Kiszámítása:
+\begin{equation}
+	tanh(x) = \cfrac{2}{1+e^{-2x}} - 1
+\end{equation}
+ \item \textbf{Rectified Linear Unit (ReLU)} - a negatív bemeneteket nullára állítja, a pozitívakat változatlanul hagyja. Kiszámítása nem költséges:
+\begin{equation}
+	ReLU(x) = max(0, x)
+\end{equation}
+ \end{itemize}
+
+\subsubsection{Hibafüggvény (Loss Function)}
+
+A loss function egy olyan függvény, amely a neurális hálónk kimenetének valóságtól való eltérését adja meg. Ezt a függvényt úgy kell megválasztanunk, hogy a értékének minimalizálása jól reprezentálja a tanítás sikerességét. Különböző feladattípusokra különböző loss function-öket érdemes használni. Például \cite{deeplearningbook}:
+\begin{itemize}
+ \item \textbf{Mean Squared Error} - regressziós feladatok esetén használatos:
+\begin{equation}
+	L(W) = \cfrac{1}{2n}\sum_{i=1}^{n}{(y^{(i)}-f(x^{(i)};W))^2}
+\end{equation}
+ \item \textbf{Binary Cross Entropy} - bináris osztályozási feladatok esetén használatos:
+\begin{equation}
+	L(W) = \cfrac{1}{n}\sum_{i=1}^{n}{(y^{(i)}log(-f(x{(i)};W))+(1-y^{(i)})log(1-f(x{(i)};W))}
+\end{equation}
+ \item \textbf{Categorical Cross Entropy} - multi-class osztályozási feladatok esetén használatos:
+\begin{equation}
+	L(W) = \sum_{i=1}^{n}{(y^{(i)}log(-f(x{(i)};W))} \cite{deeplearningbook}
+\end{equation}
+ \end{itemize}
+
+\subsubsection{Optimalizáló algoritmusok}
+
+A loss function minimalizálása a súlyok igazításával gradiens módszerrel történik. Tehát a súlyok hibához való hozzájárulását kiszámítjuk a hibafüggvény gradienséből, majd ennek megfelelően változtatjuk a súlyokat. Azonban a gradiens csak lassan képes biztosítani a konvergenciát, ezért a gradiensereszkedés algoritmust különböző kiterjesztésekkel láthatjuk el. Ezeket a technikákat nevezzük optimalizálóknak. Néhány példa: gradiensereszkedés, Nesterov lendület, RMSProp, Adam. \cite{deeplearningbook}
+
+\subsubsection{Architektúrák}
+
+A neurális hálózatok rétegei alapján több fajtájú architektúrát különböztethetünk meg:
+
+\begin{itemize}
+ \item \textbf{Deep Belief Network (DBN)} - felügyelet nélküli tanulást megvalósító architektúra. Restrictive Boltzmann gépeket használ a tanításhoz, majd előre-csatolt neurális hálót a finomhangoláshoz.
+ \item \textbf{Variational Autoencoder (VAE)} - adathalmazok tömörített reprezentációinak megtanulására alkalmas architektúra. Gyakorlati felhasználása adathalmazok dimenzionalitásának csökkentése. Az encoder kimenete a bemeneti adat rekonstruált változata.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth, height=7cm]{vae.png}
+  \caption{VAE háló architektúra, forrás: \cite{deeplearningbook}}
+\end{figure}
+ \item \textbf{Generative Adversarial Network (GAN)} - az architektúra lényege, hogy két modellt tanítunk párhuzamosan. Az egyik képeket (vagy akár hangokat, szövegeket) generál, a másik pedig a bemenetről megpróbálja eldönteni, hogy az vajon valós, vagy az első modell által generált tartalom. A cél az, hogy az első modellünk olyan életszerű tartalmak generálására legyen képes, amivel képes megtéveszteni a másik modellt.
+ \item \textbf{Konvolúciós Neurális Háló (CNN)} - az architektúra célja, hogy konvolúciók segítségével releváns alacsony szintű jellemzőket azonosítson be a bemeneti adatokon és ezeket használja fel osztályozáshoz.
+ 
+
+
+ \item \textbf{Rekurrens Neurális Háló (RNN)} - 
+
+
+\end{itemize}

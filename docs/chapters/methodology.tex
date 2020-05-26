@@ -177,19 +177,13 @@ Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélye
 	\label{tab:scnn}
 \end{table}
 
-\section{Hiperparaméterek, egyéb technikák}
+\section{Hiperparaméterek}
 
-Az előfeldolgozáson és az architektúra kialakításán kívül a tanítás sikerességéhez több különböző deep learning techinkát alkalmaztam. Ezeken túl fontos szerepe volt a megfelelő hiperparaméterek megválasztásának is.
+Az előfeldolgozási technikákon és az architektúra kialakításán kívül fontos szerepe volt a megfelelő hiperparaméterek megválasztásának is. Ezek többségét best-practice-ek alapján határoztam meg, majd kísérletezések során optimalizáltam. A különböző hiperparaméterek:
 
-Alkalmazott deep learning technikák:
 \begin{itemize}
- \item \textbf{Early Stopping} - a learning rate függvényében, magas érték esetén 4, alacsony esetén 7 epoch türelmi küszöbbel early stopping technikát alkalmaztam a validation loss csökkenésére vonatkozólag. 
- \item \textbf{Dropout} - az architektúra egyes rétegei közé dropout rétegeket illesztettem, amelyek az adott rétegig beállított súlyok 20\%-át véletlenszerűen eldobják az overfitting elkerülése érdekében.
+ \item \textbf{Epoch-ok száma + Early Stopping} - a tanulásban az epoch-ok száma jelenti azt, hogy a modell hány alkalommal megy végig a bemeneti tanítóhalmazon. Ennek 50 értéket adtam és early stopping technikával egészítettem ki. Az early stopping lényege, hogy minden epoch után egy kiválaszott érték alapján megvizsgáljuk, hogy a tanulás még hatékony-e, és ha nem, akkor leállítjuk. Én ezt a learning rate függvényében, magas learning rate esetén 4, alacsony esetén 7 epoch türelmi küszöbbel a validation loss csökkenésének vizsgálatára alapozva vezettem be.
+ \item \textbf{Learning rate} - a tanulás mértékét határozza meg. Túl magas érték esetén előfordul, hogy a modellünk nem tud konvergálni az optimális megoldás felé, mert folyton átugorja azt. Túl alacsony érték esetén pedig a tanítás folyamata túl hosszú lehet, illetve előfordulhat, hogy bizonyos nem kielégítő lokális minimum gradiens érték irányába konvergálunk, amelyet épp át kellene ugranunk az optimális megoldás megtalálásához.
+ \item \textbf{Dropout} - az architektúra egyes rétegei közé dropout rétegeket illesztettem, amelyek az adott rétegig beállított súlyok egy részét véletlenszerűen eldobják az overfitting elkerülése érdekében. Ezt bármely két réteg közé beilleszthetjük és bármilyen mértékű lehet. Én a súlyok 20\%-ára állítottam be őket, az architektúrában feltüntetett pontokon.
+ \item \textbf{Mini-batch size} - ennek az értéke adja meg, hogy egyidőben hány konkrét bemeneti adaton végezzük el a léptetés és visszacsatolás folyamatokat. Ez az érték bármi lehet egytől a bemeneti adataink számáig. Minél kisebb az érték, annál kevésbé memóriaigényes a tanítás és minél nagyobb, annál gyorsabb. Best-practice-ként alacsony kettő hatvány értékeket szokás használni. Én 64-nek választottam.
 \end{itemize}
-// TODO  early stop, dropout, hyperparams
-
-\section{Megvalósítás}
-
-//TODO implementáció részletei (nem biztos hogy kell)
-
-python keras tensorflow numpy scipy librosa 

@@ -117,7 +117,7 @@ def MachineLearning(DATA_FILE, THRESHOLD):
 		
 	print('<< Tranining and evaluation')
 
-def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
+def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, FIRST_INST, LAST_INST):
 
 	import keras
 	from keras.utils import np_utils
@@ -129,7 +129,7 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
 	import model_builder
 	from keras.callbacks import EarlyStopping
 
-	if LEARNING_RATE > 0.0001:
+	if LEARNING_RATE > 0.00001:
 		patience = 4
 	else:
 		patience = 7
@@ -157,13 +157,12 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
 			print('Number of epochs: ' + str(EPOCHS))
 			print('-' * 52)
 			raw_model.summary()
-	first_inst = 20 - INST_COUNT if 20 - INST_COUNT < 4 else 3
 	for instrument in INSTRUMENTS:
 
 		# Map the instrument name to its column number
 		inst_num = INSTRUMENTS[instrument]
 		
-		if inst_num >= first_inst and inst_num <= (first_inst + INST_COUNT):
+		if inst_num >= FIRST_INST and inst_num <= LAST_INST:
 			# TRAIN
 			X_train_inst, Y_true_train_inst = utils.get_instrument_arrays(X_train, Y_true_train, Y_mask_train, inst_num, THRESHOLD)
 			print('train shapes')
@@ -202,8 +201,8 @@ def DeepLearning(DATA_FILE, LEARNING_RATE, THRESHOLD, EPOCHS, INST_COUNT):
 			
 			Y_pred_train = model.predict(X_train_inst)
 			Y_pred_test = model.predict(X_test_inst)
-			Y_pred_train_bool = Y_pred_train > THRESHOLD #(should be lower ???)
-			Y_pred_test_bool = Y_pred_test > THRESHOLD #(should be lower ???)
+			Y_pred_train_bool = Y_pred_train > THRESHOLD
+			Y_pred_test_bool = Y_pred_test > THRESHOLD
 			
 			with open(dir + "/log.txt", "a") as f:
 				with redirect_stdout(f):
@@ -226,7 +225,8 @@ if __name__ == '__main__':
 	parser.add_argument('--lr', default='0.0001', required=False)
 	parser.add_argument('--threshold', default='0.5', required=False)
 	parser.add_argument('--epochs', default='10', required=False)
-	parser.add_argument('--instruments', default='20', required=False)
+	parser.add_argument('--first_inst', default='0', required=False)
+	parser.add_argument('--last_inst', default='19', required=False)
 	args = parser.parse_args()
 	
 	if args.data.upper() == 'VGG':
@@ -242,7 +242,7 @@ if __name__ == '__main__':
 		raise ValueError('[DATA] param error')
 	
 	if args.mode.upper() == 'DL':
-		DeepLearning(data, float(args.lr), float(args.threshold), int(args.epochs), int(args.instruments))
+		DeepLearning(data, float(args.lr), float(args.threshold), int(args.epochs), int(args.first_inst), int(args.last_inst))
 	elif args.mode.upper() == 'ML':
 		MachineLearning(data,  float(args.threshold))
 	else:

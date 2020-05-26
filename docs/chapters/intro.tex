@@ -11,7 +11,9 @@ A zenei információk kinyerésének tudományába (Music Information Retrieval,
  \item Egy ajánlórendszer részeként, ahol az aktuális zeneszámot követően például egy hangszerelésében hasonló számot szeretnék ajánlani a felhasználónak.
 \end{itemize}
 
-Az automatikus hangszerfelismerés feladatot több aspektusból lehet megközelíteni, például a bemeneti adatok jellege, reprezentációja, a megvalósított architektúra, az osztályozás módszere, vagy az osztályok száma alapján. A dolgozatom keretein belül felkutatok néhány létező megoldást, majd ezekre alapozva prezentálom saját megközelítésemet és ennek eredményeit. Az általam bemutatott megoldás egy multi-label osztályozást valósít meg mély neuronhálós rendszer segítségével többszólamú zenében.
+Az automatikus hangszerfelismerés feladatot több aspektusból lehet megközelíteni, például a bemeneti adatok jellege, reprezentációja, a megvalósított architektúra, az osztályozás módszere, vagy az osztályok száma alapján. A dolgozatom keretein belül felkutatok néhány létező megoldást, majd ezekre alapozva prezentálom saját megközelítésemet és ennek eredményeit.
+
+Az általam bemutatott megoldás egy multi-label osztályozást valósít meg mély neuronhálós rendszer segítségével többszólamú zenében. Pontosabban egy CNN architektúrát alkalmaztam, amelynek inputként polifónikus zenei reprezentációkat adtam meg. Minden zenéhez rendelkezésre álltak címkék arra vonatkozólag, hogy milyen hangszerek szólalnak meg benne. Outputként adott zenére hangszerenként egy bináris értéket vártam, amely arra utal, hogy az adott hangszer megszólal-e az adott zenében. Adott zenére ezen bináris értékekből álló vektor adja meg a zenét játszó hangszerek összességét.
 
 \section{Motiváció}
 
