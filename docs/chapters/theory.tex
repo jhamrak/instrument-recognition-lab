@@ -208,26 +208,33 @@ A bemeneti rétegen található az input adatunk (például egy kép), melynek e
 
 Néhány példa különböző típusú neuronrétegekre:
 \begin{itemize}
- \item \textbf{Teljesen kapcsolt réteg (Fully-connected layer)} - 
- 
- \item \textbf{Kovolúciós réteg (Convolution layer)} -
- 
- 
+ \item \textbf{Teljesen kapcsolt réteg (Fully-connected layer)} - ezen rétegek összes neuronja kapcsolatban áll az előző és a következő réteg összes neuronjával. Az rétegben található neuronok értékeinek és a kapcsolatok súlyának linerális kombinációját továbbítja a következő réteg neuronjai felé. Formalizálva:
+ \begin{equation}
+	y = f(Wx + b)
+\end{equation}
+, ahol \(x\), \(b\), \(y\), \(W\) és \(f()\) rendre a bemeneti neuron, az valós értéktől való eltérés értéke (bias), a kimeneti neuron, a súlymátrix és \(f()\) egy nemlineáris aktivációs függvény.
+ \item \textbf{Kovolúciós réteg (Convolution layer)} - lokális korrelációkat számol a neuronok és a konvolúció megadott magja (kernel) közt. Formalizálva:
+ \begin{equation}
+	y^j = f(\sum_{k=0}^{K-1}W^{jk}*x^k+b^j)
+\end{equation}
+, ahol \(y^j\),  \(W^{jk}\), \(x^k\) és \(b^j\) rendre kétdimenziósak. \(y^j\) a j-edik csatorna kimenete, \(x^k\) a k-adik csatorna bemenete, \(*\) a konvolúciós operátor,  \(W^{jk}\) a konvolúció magja a k-adik bemenethez és j-edik kimenethez és \(b^j\) a valós értéktől való eltérés.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{convolution.png}
   \caption{A konvolúció művelet, forrás: \cite{deeplearningbook}}
 \end{figure}
- 
  \item \textbf{Összevonó réteg (Pooling layer)} - csökkenti a reprezentáció méretét, így kezelhetőbbé téve azt. Szomszédos értékeket von össze a maximumuk (MaxPooling), vagy átlaguk (AveragePooling) alapján.
- \item \textbf{Rekurrens réteg (Recurrent layer)} -  \cite{deeplearningbook}
- 
+ \item \textbf{Rekurrens réteg (Recurrent layer)} - a teljesen kapcsolt réteghez képest van egy olyan plusz tulajdonsága, hogy egy adott neuron megkapja a saját kimenetét is következő lépésben bemenetként. Formalizálva:
+  \begin{equation}
+	y_t = f_out(Vh_t) \\
+	h_t = f_h(U_{x_t}+Wh_{t-1})
+\end{equation}
+, ahol \(h_t\) a háló egy rejtett vektora, amely \(t\) időpontra vonatkozó információt raktároz el, \(U\), \(V\), \(W\) pedig súlymátrixok. \cite{Choi2017}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{rnn.png}
   \caption{Rekurrens rétegek közti kapcsolatok, forrás: \cite{deeplearningbook}}
 \end{figure}
-
 \end{itemize}
 
 \subsubsection{Aktivációs függvények}
@@ -272,21 +279,22 @@ A loss function minimalizálása a súlyok igazításával gradiens módszerrel 
 
 \subsubsection{Architektúrák}
 
-A neurális hálózatok rétegei alapján több fajtájú architektúrát különböztethetünk meg:
+A neurális hálózatok rétegei alapján több fajtájú architektúrát különböztethetünk meg. Néhány példa:
 
 \begin{itemize}
  \item \textbf{Deep Belief Network (DBN)} - felügyelet nélküli tanulást megvalósító architektúra. Restrictive Boltzmann gépeket használ a tanításhoz, majd előre-csatolt neurális hálót a finomhangoláshoz.
  \item \textbf{Variational Autoencoder (VAE)} - adathalmazok tömörített reprezentációinak megtanulására alkalmas architektúra. Gyakorlati felhasználása adathalmazok dimenzionalitásának csökkentése. Az encoder kimenete a bemeneti adat rekonstruált változata.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth, height=7cm]{vae.png}
+  \includegraphics[width=\textwidth]{vae.png}
   \caption{VAE háló architektúra, forrás: \cite{deeplearningbook}}
 \end{figure}
- \item \textbf{Generative Adversarial Network (GAN)} - az architektúra lényege, hogy két modellt tanítunk párhuzamosan. Az egyik képeket (vagy akár hangokat, szövegeket) generál, a másik pedig a bemenetről megpróbálja eldönteni, hogy az vajon valós, vagy az első modell által generált tartalom. A cél az, hogy az első modellünk olyan életszerű tartalmak generálására legyen képes, amivel képes megtéveszteni a másik modellt.
- \item \textbf{Konvolúciós Neurális Háló (CNN)} - az architektúra célja, hogy konvolúciók segítségével releváns alacsony szintű jellemzőket azonosítson be a bemeneti adatokon és ezeket használja fel osztályozáshoz.
- 
-
-
- \item \textbf{Rekurrens Neurális Háló (RNN)} -  \cite{deeplearningbook}
-
+ \item \textbf{Generative Adversarial Network (GAN)} - az architektúra lényege, hogy két modellt tanítunk párhuzamosan. Az egyik képeket (vagy akár hangokat, szövegeket) generál, a másik pedig a bemenetről megpróbálja eldönteni, hogy az vajon valós, vagy az első modell által generált tartalom. A cél az, hogy az első modellünk olyan életszerű tartalmak generálására legyen képes, amivel képes megtéveszteni a másik modellt. Ezáltal 
+ \item \textbf{Konvolúciós Neurális Háló (CNN)} - az architektúra célja, hogy konvolúciók segítségével releváns alacsony szintű jellemzőket azonosítson be a bemeneti adatokon és ezeket használja fel osztályozáshoz. Az input után konvolúciós és pooling rétegek jellemzik, majd a hálót egy, vagy több teljesen kapcsolt réteggel zárjuk.
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{cnn.png}
+  \caption{CNN architektúra, forrás: \cite{deeplearningbook}}
+\end{figure}
+ \item \textbf{Rekurrens Neurális Háló (RNN)} - az architektúra rekurrens rétegeket használ, hogy korábbi időpontok értékeiből is tudjon tanulni, így például nagyon jól kezelhetőek vele szekvenciák. \cite{deeplearningbook}
 \end{itemize}
