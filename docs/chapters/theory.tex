@@ -1,7 +1,7 @@
 \chapter{Elméleti háttér} 
 \label{ch:theory}
 
-Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat mutatom be. Először magának a zenének a releváns tulajdonságairól ejtek szót. Ezután ismertetem a MIR kutatási területet, amelybe dolgozatom is tartozik. Majd végül a mesterséges intelligencián alapuló megoldásokról nyújtok elméleti bevezetőt, érintve a hagyományos gépi tanulás és a mély tanulás módszereit is.
+Ebben a fejezetben a dolgozathoz kapcsolódó fogalmakat és elméleti alapokat mutatom be. Először magának a zenének a releváns tulajdonságairól ejtek szót. Ezután ismertetem a MIR kutatási területet, amelybe dolgozatom is tartozik. Végül a mesterséges intelligencián alapuló megoldásokról nyújtok elméleti bevezetőt, érintve a hagyományos gépi tanulás és a mély tanulás módszereit is.
 
 \section{Zene és reprezentációi} 
 
@@ -15,22 +15,22 @@ A zene egy meglehetősen összetett fogalom. Az ember számára a zene megjelenh
   \caption{A zene észlelését meghatározó tényezők, forrás: \cite{Schedl2013} }
 \end{figure}
 
-A zenei tartalom fogalma utal azokra a tulajdonságokra, melyek a hangok fizikai jelként való leírása definiál. Ilyen például a ritmus, a hangszín, a dallam, a harmónia, a hangerő, vagy a dalszöveg. Ezzel szemben a zene kontextusa alatt azokat a ténezőket értjük, melyeket nem tudunk közvetlenül a zenéből kinyerni, mégis szorosan kapcsolódik hozzá. Ide tartozik például az előadó hírneve, az albumborító, a művész kulturális- vagy politikai háttértörténete, vagy a zeneéhez készített videoklip. Ami a hallgatóval kapcsolatos aspektusokat illeti, a hallgató kontextusa alatt értjük a dinamikus, gyorsan változó tényezőket. Ide sorolható a hallgató aktuális hangulata, tevékenysége, társadalmi helyzete, tér- és időbeli helye, illetve pszichológiai állapota. Ezzel ellentétben a hallgató tulajdonságai az állandó, vagy csak lassan változó jellemzőit takarja. Ilyen az egyén zenei ízlése, zeneelméleti képzettsége, demográfiai adatai, a hallgatott előadóval kapcsolatos véleménye, vagy a barátai zenei ízlése, véleménye. \cite{Schedl2014}
+A zenei tartalom fogalma utal azokra a tulajdonságokra, melyeket a hangok fizikai jelként való leírása definiál. Ilyen például a ritmus, a hangszín, a dallam, a harmónia, a hangerő vagy a dalszöveg. Ezzel szemben a zene kontextusa alatt azokat a tényezőket értjük, melyeket nem tudunk közvetlenül a zenéből kinyerni, mégis szorosan kapcsolódnak hozzá. Ide tartozik például az előadó hírneve, az albumborító, a művész kulturális vagy politikai háttértörténete, vagy a zenéhez készített videoklip. Ami a hallgatóval kapcsolatos aspektusokat illeti, a hallgató kontextusa alatt értjük a dinamikus, gyorsan változó tényezőket. Ide sorolható a hallgató aktuális hangulata, tevékenysége, társadalmi helyzete, tér- és időbeli helye, illetve pszichológiai állapota. Ezzel ellentétben a hallgató tulajdonságai az állandó, vagy csak lassan változó jellemzőit takarja. Ilyen az egyén zenei ízlése, zeneelméleti képzettsége, demográfiai adatai, a hallgatott előadóval kapcsolatos véleménye, vagy a barátai zenei ízlése, véleménye. \cite{Schedl2014}
 
 Dolgozatomban az észlelést meghatározó tulajdonságok közül a zenei tartalmat fogom felhasználni a hangszerek kinyerése érdekében. A zenei tartalom számítógépes felhasználásához pedig elengedhetetlen, hogy a hangokat megfelelően tudjuk számítógépen ábrázolni.
 
 \subsection{Hang reprezentációk}
 
-A hangok fizikai mivoltukban rezgésekként jelennek meg. A rezgéseket matematikailag olyan folytonos függvényekkel tudjuk leírni, melyek értelmezési tartománya az idő, értékkészlete pedig a nyugalmi állapothoz viszonyított pillanatnyi kitérés. Ilyen lehet például egy szinuszgörbe. Ahhoz, hogy a hangokat számítógépen tudjuk tárolni és feldolgozni, ezeket a függvényeket kell ábrázolnunk.  Mivel azonban a számítógép számábrázolása véges, ezért a hangokat először digitalizálni kell. Ez azt jelenti, hogy a folytonos függvényeket diszkrét, azaz véges helyen vett és véges értékekkel rendelkező fügvényekké alakítjuk. Ez úgy történik, hogy ez eredeti függvényünkből megadott időközönként mintát veszünk, diszkrét értékre kerekítjük, és ezeket az értékeket összefűzzük. Az így kapott függvény lesz a hangnak az idő függvényében ábrázolt digitális reprezentációja.
+A hangok fizikai mivoltukban rezgésekként jelennek meg. A rezgéseket matematikailag olyan folytonos függvényekkel tudjuk leírni, melyek értelmezési tartománya az idő, értékkészlete pedig a nyugalmi állapothoz viszonyított pillanatnyi kitérés. Ilyen lehet például egy szinuszgörbe. Ahhoz, hogy a hangokat számítógépen tudjuk tárolni és feldolgozni, ezeket a függvényeket kell ábrázolnunk.  Mivel azonban a számítógép számábrázolása véges, ezért a hangokat először digitalizálni kell. Ez azt jelenti, hogy a folytonos függvényeket diszkrét, azaz véges helyen vett, véges értékekkel rendelkező függvényekké alakítjuk. Ez úgy történik, hogy ez eredeti függvényünkből megadott időközönként mintát veszünk, diszkrét értékre kerekítjük, és ezeket az értékeket összefűzzük. Az így kapott függvény lesz a hangnak az idő függvényében ábrázolt digitális reprezentációja.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth/3*2, height=5cm]{wave.png}
   \caption{Tíz másodperces hanganyag hanghullám reprezentációja}
 \end{figure}
 
-A hangok idő függvényében ábrázolt digitális reprezentációja tehát egydimenziós, mivel egy függvénygörbének tekinthetjük. Ezt szokták hívni hullámforma reprezentációnak, illetve nyers hangnak (raw audio) is, ugyanis további reprezentációkká tudjuk transzformálni. A MIR területen megjelenő mély tanulási megoldások jelentős része ezen nyers hangábrázolás helyett inkább a kétdimenziós reprezentációkat alkalmazza bemenetként. Ezt azzal indokolják, hogy a nyers bemeneten való tanítás sikeréhez nagyobb adathalmaz szükséges, mint a kétdimenziós reprezentációkéhoz. \cite{Choi2017}
+A hangok idő függvényében ábrázolt digitális reprezentációja tehát egydimenziós, mivel egy függvénygörbének tekinthetjük. Ezt szokták hívni hullámforma reprezentációnak, illetve nyers hangnak (raw audio), ugyanis további reprezentációkká tudjuk transzformálni. A MIR területen megjelenő mély tanulási megoldások jelentős része ezen nyers hangábrázolás helyett inkább a kétdimenziós reprezentációkat alkalmazza bemenetként. Ezt azzal indokolják, hogy a nyers bemeneten való tanítás sikeréhez nagyobb adathalmaz szükséges, mint a kétdimenziós reprezentációkéhoz. \cite{Choi2017}
 
-Az említett kétdimenziós reprezentációk Fourier-transzformáción alapszanak. A Fourier-transzformáció nagyon leegyszerűsítve egy olyan függvény, amely bemenetként kap egy idő függvényében ábrázolt jelet és ezt felbontja frekvenciákra \cite{melspec}.
+Az említett kétdimenziós reprezentációk Fourier-transzformáción alapszanak. A Fourier-transzformáció nagyon leegyszerűsítve egy olyan függvény, amely bemenetként kap egy idő függvényében ábrázolt jelet és ezt felbontja frekvenciákra. \cite{melspec}
 
 \begin{itemize}
 \item \textbf{Ablakozott Fourier transzformált (STFT)}: Gábor Dénes magyar fizikus nevéhez kötődik. A bemeneti jelet egyenlő méretű időszeletekre (ablakokra) osztjuk, majd ezeken alkalmazzuk a Fourier-transzformációt. Ezáltal kapjuk meg a hang spektrumát (spectogram).  \cite{melspec}, \cite{Choi2017}
@@ -41,13 +41,13 @@ Az említett kétdimenziós reprezentációk Fourier-transzformáción alapszana
   \caption{Spektrum \cite{librosa}}
 \end{figure}
 
-\item \textbf{Mel-frekvenciára transzformált spektrum (Mel-spectogram)}: A mel-spectogram az előbb említett spektrum Mel skálára való transzformáltja. A Mel skálát egy nemlineáris függvény segítségével kapjuk a frekvenciaskálából. Célja, hogy a skála jobban reprezentálja az ember hallásának tartományait. Tehát az értékek közti különbség a Mel skálán megfeleltethető legyen annak, hogy az ember mennyire különböző magasságúnak hallja ezeket. A frekvencia skálán például sokkal nagyobbnak érezzük az 500Hz és 1000Hz közti különbséget, mint a 7500Hz és 8000Hz közti különbséget. A mel-frekvenicára való konverzió képlete a következő: 
+\item \textbf{Mel-frekvenciára transzformált spektrum (melspectogram)}: A melspectogram az előbb említett spektrum Mel-skálára való transzformáltja. A Mel-skálát egy nemlineáris függvény segítségével kapjuk a frekvenciaskálából. Célja, hogy a skála jobban reprezentálja az ember hallásának tartományait. Tehát az értékek közti különbség a Mel-skálán megfeleltethető legyen annak, hogy az ember mennyire különböző magasságúnak hallja ezeket. A frekvenciaskálán például sokkal nagyobbnak érezzük az 500Hz és 1000Hz közti különbséget, mint a 7500Hz és 8000Hz közti különbséget. A Mel-frekvenicára való konverzió képlete a következő: 
 \begin{equation}
 	Mel(f) = 2595*ln(1+\cfrac{f}{700})
 \end{equation}
-Ahol Mel(f) az adott frekvenciaérték mel-skálán való értéke, f pedig az adott frekvencia érték. A képlet segítségével egymást átfedő frekvencia sávokat alakítunk ki, melyek a mel-skálát tekintve egyenlő távolságra helyezkednek el egymástól, majd a frekvenciasávok energia értékeit egyenként leképzzük mel-skálára. \cite{melspec}, \cite{Choi2017}
+Ahol Mel(f) az adott frekvenciaérték Mel-skálán való értéke, f pedig az adott frekvenciaérték. A képlet segítségével egymást átfedő frekvenciasávokat alakítunk ki, melyek a Mel-skálát tekintve egyenlő távolságra helyezkednek el egymástól, majd a frekvenciasávok energiaértékeit egyenként leképezzük Mel-skálára. \cite{melspec}, \cite{Choi2017}
  
-Léteznek egyéb, hasonló skálák is, mint pl. Bark skála, vagy az hallás pszichológián alapúló ERB. Ezek MIR környezetben még nem kerültek összevetésre, de beszédfelismerés környezetben nem mutatnak szignifikáns eltérést az egyes skálák eredményei. A Mel skála, illetve a mel-spectogram használata azonban egy gyakran használt és jól felhasználható reprezentációnak bizonyul MIR környezetben. \cite{Choi2017}
+Léteznek egyéb, hasonló skálák is, mint pl. Bark-skála, vagy a hallás pszichológiáján alapuló ERB. Ezek MIR környezetben még nem kerültek összevetésre, de beszédfelismerés környezetben nem mutatnak szignifikáns eltérést az egyes skálák eredményei. A Mel-skála, illetve a melspectogram használata azonban egy gyakran használt, és jól felhasználható reprezentációnak bizonyul MIR környezetben. \cite{Choi2017}
 
 \begin{figure}[H]
   \centering
@@ -59,7 +59,7 @@ Léteznek egyéb, hasonló skálák is, mint pl. Bark skála, vagy az hallás ps
 \begin{equation}
 	C_i(m) =  \sum_{n=0}^{M-1}S_i(n) cos [\pi m\cfrac{n - 0.5}{M}], 0 \leq m \leq M
 \end{equation}
-Ahol \(M\) a frekvenciaszeletek száma, \(S_i(n)\) az egyes sávokban kiolvasott energia értékek és \(C_i(m)\) az i-edik MFCC együttható. Ezzel a mel-spectogramnál tömörebb reprezentációt kapunk. Ennek hátránya lehet az információvesztés, előnye pedig az apró zajok kiszűrése. \cite{bhalke2015}
+Ahol \(M\) a frekvenciaszeletek száma, \(S_i(n)\) az egyes sávokban kiolvasott energiaértékek és \(C_i(m)\) az i-edik MFCC együttható. Ezzel a melspectogramnál tömörebb reprezentációt kapunk. Ennek hátránya lehet az információvesztés, előnye pedig az apró zajok kiszűrése. \cite{bhalke2015}
 \end{itemize}
 
 \begin{figure}[H]
@@ -70,22 +70,22 @@ Ahol \(M\) a frekvenciaszeletek száma, \(S_i(n)\) az egyes sávokban kiolvasott
 
 \section{Music Information Retrieval (MIR)} 
 
-A bevezetőben már említettem a zenei információk kinyerését (music information retrieval - MIR). Ez egy interdiszciplináris kutatási terület, magában hordozza többek között a zeneelmélet, pszichoakusztika, pszichológia, informatika, jelfeldolgozás és gépi tanulás tudományágakat. Céljára jól utal az elnevezése, zenékből szeretnénk releváns információt kinyerni, és ezeket felhasználni \cite{Choi2017}. A felhasználásra szerintem nagyon jó, életszerű példát ad Downie 2003-as cikkének \cite{Downie2003} bevezetője, amelyet a következőképp fordíthatunk le:
+A bevezetőben már említettem a zenei információk kinyerését (music information retrieval - MIR). Ez egy interdiszciplináris kutatási terület, amely magában hordozza többek között a zeneelmélet, pszichoakusztika, pszichológia, informatika, jelfeldolgozás és gépi tanulás tudományágakat. Céljára jól utal az elnevezése, zenékből szeretnénk releváns információt kinyerni, és ezeket felhasználni \cite{Choi2017}. A felhasználásra szerintem nagyon jó, életszerű példát ad Downie 2003-as cikkének \cite{Downie2003} bevezetője, amelyet a következőképpen fordíthatunk le:
 
 ''Képzeljünk el egy világot, ahol egyszerűen felénekelhetjük egy számítógépnek a dalrészletet, ami már reggeli óta a fejünkben jár. A gép elfogadja a hamis énekünket, kijavítja, és azonnal javaslatot tesz arra, hogy éppen a ''Camptown Races'' című számra gondoltunk. Miután mi belehallgatunk a gép által talált számos relevánsnak tartott MP3 fájl egyikébe, elfogadhatjuk a gép javaslatát. Ezután elégedetten elutasíthatjuk a felajánlást, hogy az összes további létező verzióját is felkutassa a dalnak, ide értve a nemrég megjelent olasz rap verziót, vagy a skótdudás duettre írt kottát.''  \cite{Downie2003}
 
-Figyeljük meg, hogy ez a hétköznapi eset mennyire össztett probléma. A következő feladatok jelennek meg:
+Figyeljük meg, hogy ez a hétköznapi eset mennyire összetett probléma. A következő feladatok jelennek meg:
 \begin{itemize}
-\item Az emberi éneklés, vagy dúdolás alapján hangfelismerés.
+\item Az emberi éneklés vagy dúdolás alapján hangfelismerés.
 \item Hang alapú lekérdezés egy zenei adatbázisban az előbbi bemenettel.
-\item Hangelemzés, feldolgozás, hogy a hamis hangokat ki tudjuk javítani, az esetleges háttérzajokat eltávolítsuk, illetve ha kell, a dallamból automatikusan kottát generáljunk.
+\item Hangelemzés, -feldolgozás, hogy a hamis hangokat ki tudjuk javítani, az esetleges háttérzajokat eltávolítsuk, illetve ha kell, a dallamból automatikusan kottát generáljunk.
 \item Hasonlóságon alapuló keresés zenék között, hogy megtaláljuk a kívánt dalt az adatbázisban.
 \item Zenei feldolgozások detektálása, hogy további verzióit is megtaláljuk egy adott dalnak.
 \end{itemize}
 
-MIR problémák definiálását több szempontból közelíthetjük meg. Choi cikke \cite{Choi2017} két tengelyre osztja fel a problémateret: szubjektivitás és eldöntési időmérték. A szubjektivitás tengelyen léteznek szubjektívebb feladatok, melyekre nincsenek egyértelmű válaszok. Ilyen lehet például a zene műfajának meghatározása. Objektívebb feladatoknak tekinthetjük azokat, melyek eredménye egyértelműen meghatárhozható, esetleg számszerűsíthető. Ide tartozik a hangszerfelismerés, vagy a tempó észlelés. \cite{Choi2017}
+A MIR problémák definiálását több szempontból közelíthetjük meg. Choi cikke \cite{Choi2017} két tengelyre osztja fel a problémateret: szubjektivitás és eldöntési időmérték. A szubjektivitási tengelyen léteznek a szubjektívebb feladatok, melyekre nincsenek egyértelmű válaszok. Ilyen lehet például a zene műfajának meghatározása. Objektívebb feladatoknak tekinthetjük azokat, melyek eredménye egyértelműen meghatárhozható, esetleg számszerűsíthető. Ide tartozik a hangszerfelismerés vagy a tempó észlelése. \cite{Choi2017}
 
-A másik tengely, az eldöntési időmérték aszerint sorolja be a feladatokat, hogy mekkora időegységeken értelmezhető egy becslés. Ez egy relatív mérték. Például a dallamfelismerés eldöntési időmértékére azt mondhatjuk, hogy alacsony, mert egy felismert dallam jó eséllyel nem fedi le az egész zenét. Másik kifejezéssel azt mondhatjuk, hogy ez egy időben változó, azaz dinamikus tulajdonság. Ellenben a tempó általában állandó értékű az egész zenében, így a teljes zeneszámot fel tudjuk címkézni egy adott tempóval. Erre azt mondjuk, hogy eldöntési időmértéke relatív magas, azaz ez egy statikus tulajdonsága a zenének.\cite{Choi2017}
+A másik tengely, az eldöntési időmérték, aszerint sorolja be a feladatokat, hogy mekkora időegységeken értelmezhető egy becslés. Ez egy relatív mérték. Például a dallamfelismerés eldöntési időmértékére azt mondhatjuk, hogy alacsony, mert egy felismert dallam jó eséllyel nem fedi le az egész zenét. Másik kifejezéssel azt mondhatjuk, hogy ez egy időben változó, azaz dinamikus tulajdonság. Ellenben a tempó általában állandó értékű az egész zenében, így a teljes zeneszámot fel tudjuk címkézni egy adott tempóval. Erre azt mondjuk, hogy az eldöntési időmértéke relatív magas, azaz ez egy statikus tulajdonsága a zenének.\cite{Choi2017}
 
 A hangszerfelismerést tekinthetjük statikus, illetve dinamikus feladatnak is a probléma megközelítésének függvényében. Dinamikus, ha erős címkézést szeretnénk megvalósítani, tehát arra vagyunk kíváncsiak, hogy adott időpillanatban éppen milyen hangszerek szólalnak meg. Gyenge címkézés esetén viszont a feladat statikussá válik. Ebben az esetben az egész zenére vetítve szeretnénk címkéket kapni egyes hangszerek jelenlétével, vagy a többi hangszerrel szembeni dominanciájával kapcsolatban.
 
@@ -94,16 +94,16 @@ A MIR terület főbb részterületei és feladatai Schedl \cite{Schedl2014} cikk
 \begin{itemize}
 \item Jellemző kinyerés (feature extraction)
 	\begin{itemize}
-	\item hangszín leírás pl. \cite{hangszin1}, \cite{hangszin2}
+	\item hangszín leírása pl. \cite{hangszin1}, \cite{hangszin2}
 	\item kotta- és dallamkinyerés pl. \cite{kotta1}, \cite{kotta2}, \cite{kotta3}
-	\item ütem lekövetés, tempó becslés pl. \cite{tempo1}, \cite{tempo2}, \cite{tempo3}
-	\item tonalitás becslés pl. \cite{tonality1}, \cite{tonality2}, \cite{tonality3}, \cite{tonality4}, \cite{tonality5}, \cite{tonality6}
-	\item struktúrális analízis, szegmentáció pl. \cite{structural1}, \cite{structural2}, \cite{structural3}
+	\item ütemlekövetés, tempóbecslés pl. \cite{tempo1}, \cite{tempo2}, \cite{tempo3}
+	\item tonalitás becslése pl. \cite{tonality1}, \cite{tonality2}, \cite{tonality3}, \cite{tonality4}, \cite{tonality5}, \cite{tonality6}
+	\item strukturális analízis, szegmentáció pl. \cite{structural1}, \cite{structural2}, \cite{structural3}
 	\end{itemize}
 \item Hasonlóságon alapuló feladatok
 	\begin{itemize}
-	\item hasonlóság mérés pl. \cite{similarity1}, \cite{similarity2}, \cite{similarity3}
-	\item zenei feldolgozás felismerés pl. \cite{cover1}, \cite{cover2}
+	\item hasonlóság mérése pl. \cite{similarity1}, \cite{similarity2}, \cite{similarity3}
+	\item zenei feldolgozás felismerése pl. \cite{cover1}, \cite{cover2}
 	\item dúdoláson alapuló lekérdezés pl. \cite{humming1}, \cite{humming2}, \cite{humming3}
 	\end{itemize}
 \item Osztályozási feladatok
@@ -111,18 +111,18 @@ A MIR terület főbb részterületei és feladatai Schedl \cite{Schedl2014} cikk
 	\item érzelem- és hangulatfelismerés pl. \cite{mood1}, \cite{mood2}
 	\item műfaj szerinti osztályozás pl. \cite{genre1}, \cite{genre2}
 	\item hangszerfelismerés pl. \cite{instrument1}
-	\item szerző / előadó / énekes felismerés pl. \cite{singer1}
+	\item szerző, előadó, énekes felismerése pl. \cite{singer1}
 	\item automatikus címkézés pl. \cite{tagging1}, \cite{tagging2}, \cite{tagging3}
 	\end{itemize}
 \item Alkalmazások
 	\begin{itemize}
-	\item hanganyaghoz forrásazonosító készítés (fingerprinting) pl. \cite{fingerprint1}, \cite{fingerprint2}
+	\item hanganyaghoz forrásazonosító készítése (fingerprinting) pl. \cite{fingerprint1}, \cite{fingerprint2}
 	\item tartalom alapú lekérdezés pl. \cite{contentbased1}
 	\item zene ajánlás pl. \cite{recommend1}, \cite{recommend2}, \cite{recommend3}
 	\item lejátszási lista generálás  pl. \cite{playlist1}, \cite{playlist2}, \cite{playlist3}, \cite{playlist4}
 	\item kottázás pl. \cite{score1}, \cite{score2}, \cite{score3}
-	\item dal/előadó sikeresség becslés pl. \cite{popularity1}, \cite{popularity2}, \cite{popularity3}
-	\item zene vizualizáció pl. \cite{visualization1}, \cite{visualization2}, \cite{visualization3}, \cite{visualization4}, \cite{visualization5}
+	\item dal, előadó sikerességének becslése pl. \cite{popularity1}, \cite{popularity2}, \cite{popularity3}
+	\item zene vizualizációja pl. \cite{visualization1}, \cite{visualization2}, \cite{visualization3}, \cite{visualization4}, \cite{visualization5}
 	\item felhasználói felületen való zenei böngészés pl. \cite{ui1}, \cite{ui2}, \cite{ui3}, \cite{ui4}, \cite{ui5}
 	\item személyre szabott, alkalmazkodó rendszerek pl. \cite{adaptive1}, \cite{adaptive2}, \cite{adaptive3}, \cite{adaptive4}
 	\end{itemize}
@@ -131,35 +131,35 @@ A MIR terület főbb részterületei és feladatai Schedl \cite{Schedl2014} cikk
 
 \section{Mesterséges intelligencia}
 
-A mesterséges intelligencia egy általános fogalom az emberi gondolkodás számítógéppel való reprodukálására történő módszerekre. Ahogy arról a bevezetésben is szót ejtettem, a MIR tudományág gyakran használ mesterséges intelligencián alapuló megoldásokat. A továbbiakban két mesterséges intelligenciát megvalósító módszert mutatok be röviden: elsőként a gépi tanulást, majd a mély tanulást, amely a gépi tanulás egy ágazata és napjaink meghatározó trendje. \cite{ai}
+A mesterséges intelligencia egy általános fogalom az emberi gondolkodás számítógéppel való reprodukálására történő módszerekre. Ahogy arról a bevezetésben is szót ejtettem, a MIR tudományág gyakran használ mesterséges intelligencián alapuló megoldásokat. A továbbiakban két mesterséges intelligenciát megvalósító módszert mutatok be röviden: elsőként a gépi tanulást, majd a mély tanulást, amely a gépi tanulás egy ágazata, és napjaink meghatározó trendje. \cite{ai}
 
 \begin{figure}[H]
   \includegraphics{ai.png}
   \caption{Egyes fogalmak közti kapcsolat szemléltetve, forrás: \cite{ai}}
 \end{figure}
 
-\subsection{Gépi tanulás (Machine Learning)}
+\subsection{Gépi tanulás (Machine learning)}
 
-A gépi tanulás tehát a mesterséges intelligencia megvalósításának egy módszere. Lényege, hogy a bemeneti adatokon statisztikai alapú, optimalizáló algoritmusok segítségével releváns mintákat fedezzünk fel, illetve egy olyan modellt alkossunk, amivel előrejelzéseket tudunk tenni. 
+A gépi tanulás tehát a mesterséges intelligencia megvalósításának egy módszere. Lényege, hogy a bemeneti adatokon statisztikai alapú, optimalizáló algoritmusok segítségével releváns mintákat fedezzünk fel, illetve egy olyan modellt alkossunk, amivel előrejelzéseket tudunk tenni. \cite{azure}
 
 \subsubsection{Tanulás fajtái}
 
-A machine learning technikákat megkülönböztethetjük egyrészt a tanítás módja alapján:
+A machine learning technikákat megkülönböztethetjük egyrészt a tanulás módja alapján:
 \begin{itemize}
-\item \textbf{Felügyelt tanulás (Supervised learning)} - felügyelt tanulás esetén előre rendelkezésünkre állnak a kimeneti címkék, ezek segítségével tanítjuk a modellünket. Ide tartozik például a hangszerek felismerése előre adott címkék segítségével is.
-\item \textbf{Felügyelet nélküli tanulás (Unsupervised learning)} - felügyelet nélküli tanulásnál a modellünk hoz létre csoportokat vagy címkéket a bemeneti adatokpontok közti összefüggések alapján. Ilyen fürtök segíthetnek például egy webshop esetén bizonyos termékek kosárba tétele után hasonló termékeket ajánlani.
-\item\textbf{Megerősítő tanulás (Reinforcement learning)} - A megerősítő tanulás esetén az algoritmus kísérletezések eredményéből tanul. Az egyes műveletek után visszajelzést kap, amely segít megállapítani, hogy a választott döntés helyes, semleges vagy helytelen volt-e. Például egy társasjáték bot. \cite{azure}
+\item \textbf{Felügyelt tanulás (Supervised learning)} - felügyelt tanulás esetén előre rendelkezésünkre állnak a kimeneti címkék, ezek segítségével tanítjuk a modellünket. Ide tartozik például a hangszerek felismerése is előre adott címkék segítségével.
+\item \textbf{Felügyelet nélküli tanulás (Unsupervised learning)} - felügyelet nélküli tanulásnál a modellünk hoz létre csoportokat vagy címkéket a bemeneti adatpontok közti összefüggések alapján. Ilyen csoportokba rendezés segíthet például egy webshop esetén bizonyos termék kosárba tétele után hasonló termékeket ajánlani.
+\item\textbf{Megerősítő tanulás (Reinforcement learning)} - a megerősítő tanulás esetén az algoritmus kísérletezések eredményéből tanul. Az egyes műveletek után visszajelzést kap, amely segít megállapítani, hogy a választott döntés helyes, semleges vagy helytelen volt-e. Például egy társasjáték bot. \cite{azure}
 \end{itemize}
 
 
 \subsubsection{Feladatok jellege}
 
-A feladatok jellege alapján pedig a következőképp kategorizálhatjuk a machine learning megoldásokat:
+A feladatok jellege alapján pedig a következőképpen kategorizálhatjuk a machine learning megoldásokat:
 
 \begin{itemize}
 \item \textbf{Regresszió (Regression)} - regresszió alatt olyan függvényt értünk, amely bizonyos tényezők értéke alapján hivatott megjósolni egy folytonos értékű változót. 
 \item \textbf{Osztályozás (Classification)} - az osztályozás hasonló, mint a regresszió, azonban itt a kimenet nem egy folytonos érték lesz, hanem egy kategória. A feladat itt tehát a kategóriák elhatárolása.
-\item \textbf{Klaszterezés (Clustering)} - a klaszterezés, vagy fürtözés esetén az adatpontok egymástól való távolsága alapján alakítunk ki egymással korreláló csoportokat. \cite{deeplearningbook}
+	\item \textbf{Klaszterezés (Clustering)} - a klaszterezés, más néven fürtözés esetén az adatpontok egymástól való távolsága alapján alakítunk ki egymással korreláló csoportokat. \cite{deeplearningbook}
 \end{itemize}
 
 \subsubsection{Algoritmusok}
@@ -169,18 +169,18 @@ A hagyományos machine learning algoritmusok közé tartoznak az alábbiak:
 \begin{itemize}
 \item \textbf{Lineáris regressziós algoritmusok (Linear regression)} - két változó közötti kapcsolatot mutatjuk meg azzal, hogy egy folytonos egyenes vonalat illesztünk az adatokra.
 \item \textbf{Logisztikus regressziós algoritmusok (Logistic regression)} - hasonló a lineáris regresszióhoz, azonban itt logisztikai görbét, azaz szigmoid függvényt illesztünk az adatpontokra.
-\item \textbf{Naív Bayes osztályozók (Classification)} - az esemény előfordulásának valószínűségét egy kapcsolódó esemény bekövetkezése alapján számoljuk ki.
-\item \textbf{Támogatási vektorgépek (Support-vector machines, vagy SVM)} - egy hipersíkot rajzolnak a két legközelebbi adatpont között. Ez marginalizálja az osztályokat, és maximalizálja a közöttük lévő távolságot, hogy egyértelműbben meg lehessen különböztetni őket.
-\item \textbf{Döntési fák (Decision tree)} - az adatokat két, vagy több homogén halmazba osztják szét. Ha–akkor típusú szabályokat használnak arra, hogy az adatokat elkülönítsék az adatpontok közötti legjelentősebb különbségek alapján.
+\item \textbf{Naív Bayes osztályozók (Naive Bayes algorithm)} - az esemény előfordulásának valószínűségét egy kapcsolódó esemény bekövetkezése alapján számoljuk ki.
+\item \textbf{Támogatási vektorgépek (Support-vector machines [SVM])} - egy hipersíkot rajzolnak a két legközelebbi adatpont között. Ez marginalizálja az osztályokat, és maximalizálja a közöttük lévő távolságot, hogy egyértelműbben meg lehessen különböztetni őket.
+\item \textbf{Döntési fák (Decision tree)} - az adatokat kettő vagy több homogén halmazba osztják szét. Ha–akkor típusú szabályokat használnak arra, hogy az adatokat elkülönítsék az adatpontok közötti legjelentősebb különbségek alapján.
 \item \textbf{Véletlenszerű erdő (Random forest)} - döntési fákon alapulnak, de egy fa létrehozása helyett faerdőt hoznak létre, majd az erdőben lévő fákat véletlenszerűen rendezik el. Ezután összesítik a döntési fák különböző véletlenszerű formációinak szavazatait, és ez alapján határozzák meg a tesztobjektum végső osztályát.
 \item \textbf{K legközelebbi szomszéd (K nearest neighbors)} - minden adatpontot a hozzá legközelebb eső adatpontok alapján osztályozunk egy távolsági függvénnyel történő mérés alapján. 
-\item \textbf{K közép fürtözés (K means clustering)} - K darab fürtbe csoportosítjuk az adatokat. Az egyes fürtökön belüli adatpontok homogének, más fürtök adatpontjaihoz képest pedig heterogének. \cite{azure}
+\item \textbf{K közép fürtözés (K means clustering)} - \(k\) darab fürtbe csoportosítjuk az adatokat. Az egyes fürtökön belüli adatpontok homogének, más fürtök adatpontjaihoz képest pedig heterogének. \cite{azure}
 \end{itemize}
 
 
-\subsubsection{Overfitting és underfitting}
+\subsubsection{Underfitting és overfitting}
 
-A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modellünk megfelelő mértékben tudjon tanulni. A tanulás két elkerülendő, szélsőséges jelensége az alultanulás (underfitting) és a túltanulás (overfitting). Underfittingről beszélünk, amikor a modellünk nem tanulta meg a megfelelő mintákat, összefüggéseket az adatból. Az overfitting pedig ennek az ellentéte, amikor túlságosan az adatra specializálva tanítjuk a modellünket. Ennek eredményeként más adaton valószínűleg rosszul fog működni, nem fog tudni általánosítani.
+A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modellünk megfelelő mértékben tudjon tanulni. A tanulás két elkerülendő, szélsőséges jelensége az alultanulás (underfitting) és a túltanulás (overfitting). Underfittingről beszélünk, amikor a modellünk nem tanulta meg a megfelelő mintákat, összefüggéseket az adatból. Az overfitting pedig ennek az ellentéte, amikor túlságosan a tanító adathalmazra specializálva tanítjuk a modellünket. Ennek eredményeként más adaton valószínűleg rosszul fog működni, elveszti az általánosító képességét.
 
 \begin{figure}[H]
   \includegraphics{overfit.png}
@@ -188,15 +188,15 @@ A gépi tanulás optimalizáló algoritmusának elsődleges célja, hogy modell�
 \end{figure}
 
 
-\subsection{Mély tanulás (Deep Learning)}
+\subsection{Mély tanulás (Deep learning)}
 
-A mély tanulás a gépi tanulás napjainkban felkapott ágazata. Olyan gépi tanuló algoritmusokat értünk mély tanulás alatt, melynek rétegei a bemeneti adatok magasabb szintű absztrakcióinak kinyerésével hatékonyan képesek tetszőleges folyamatot modellezni. Ezek alatt a gyakorlatban olyan neurális hálózatokat értünk, melyek egy bemeneti, egy kimeneti és több rejtett rétegből állnak, illetve magas paraméterszámmal rendelkeznek. \cite{azuredl}
+A mély tanulás a gépi tanulás napjainkban felkapott ágazata. Olyan gépi tanuló algoritmusokat értünk mély tanulás alatt, melyeknek rétegei a bemeneti adatok magasabb szintű absztrakcióinak kinyerésével hatékonyan képesek tetszőleges folyamatot modellezni. Ezek alatt a gyakorlatban olyan neurális hálózatokat értünk, melyek egy bemeneti, egy kimeneti és több rejtett rétegből állnak, illetve magas paraméterszámmal rendelkeznek. \cite{azuredl}
 
 A hagyományos gépi tanulási modellekkel ellentétben a mély tanulási neurális hálók tanításához nem kell a bemeneten ismernünk minden releváns adatjellemzőt, mivel a magas szintű bemeneti adatból a hálózat saját maga fogja a rejtett rétegeken keresztül felismerni azokat. Ennek sikerességéhez viszont több bemeneti adattal és nagyobb számítási kapacitással kell rendelkeznünk, mint egy hagyományos machine learning modell esetén. \cite{azuredl}
 
 \subsubsection{Felépítés}
 
-A neurális hálók építőelemei a neuronok, melyek egy-egy skalár értéket reprezentálnak, így hordozzák az információt. Több neuron együttesen egy vektorként alkot egy réteget. Egy neurális háló egy bemeneti, egy kimeneti és több rejtett rétegből áll. A hálót alkotó rétegek száma határozza meg annak mélységét. \cite{Choi2017}
+A neurális hálók építőelemei a neuronok, melyek egy-egy skalár értéket reprezentálnak, így hordozzák az információt. Több neuron együttesen egy vektorként alkot egy réteget. Egy neurális háló egy bemeneti, egy kimeneti és több rejtett rétegből áll. A hálót alkotó rétegek száma határozza meg a háló mélységét. \cite{Choi2017}
 
 \begin{figure}[H]
   \centering
@@ -208,26 +208,28 @@ A bemeneti rétegen található az input adatunk (például egy kép), melynek e
 
 Néhány példa különböző típusú neuronrétegekre:
 \begin{itemize}
- \item \textbf{Teljesen kapcsolt réteg (Fully-connected layer)} - ezen rétegek összes neuronja kapcsolatban áll az előző és a következő réteg összes neuronjával. Az rétegben található neuronok értékeinek és a kapcsolatok súlyának linerális kombinációját továbbítja a következő réteg neuronjai felé. Formalizálva:
+ \item \textbf{Teljesen kapcsolt réteg (Fully-connected layer)} - ezen rétegek összes neuronja kapcsolatban áll az előző és a következő réteg összes neuronjával. A rétegben található neuronok értékeinek és a kapcsolatok súlyának linerális kombinációját továbbítja a következő réteg neuronjai felé. Formalizálva:
  \begin{equation}
 	y = f(Wx + b)
 \end{equation}
-, ahol \(x\), \(b\), \(y\), \(W\) és \(f()\) rendre a bemeneti neuron, az valós értéktől való eltérés értéke (bias), a kimeneti neuron, a súlymátrix és \(f()\) egy nemlineáris aktivációs függvény.
- \item \textbf{Kovolúciós réteg (Convolution layer)} - lokális korrelációkat számol a neuronok és a konvolúció megadott magja (kernel) közt. Formalizálva:
+, ahol \(x\), \(b\), \(y\), \(W\) és \(f()\) rendre a bemeneti neuron, a valós értéktől való eltérés értéke (bias), a kimeneti neuron, a súlymátrix és \(f()\) egy nemlineáris aktivációs függvény.
+ \item \textbf{Konvolúciós réteg (Convolution layer)} - lokális korrelációkat számol a neuronok és a konvolúció megadott magja (kernel) közt. Formalizálva:
  \begin{equation}
 	y^j = f(\sum_{k=0}^{K-1}W^{jk}*x^k+b^j)
 \end{equation}
-, ahol \(y^j\),  \(W^{jk}\), \(x^k\) és \(b^j\) rendre kétdimenziósak. \(y^j\) a j-edik csatorna kimenete, \(x^k\) a k-adik csatorna bemenete, \(*\) a konvolúciós operátor,  \(W^{jk}\) a konvolúció magja a k-adik bemenethez és j-edik kimenethez és \(b^j\) a valós értéktől való eltérés.
+, ahol \(y^j\),  \(W^{jk}\), \(x^k\) és \(b^j\) rendre kétdimenziósak. \(y^j\) a j-edik csatorna kimenete, \(x^k\) a k-adik csatorna bemenete, \(*\) a konvolúciós operátor,  \(W^{jk}\) a konvolúció magja a k-adik bemenethez és j-edik kimenethez, és \(b^j\) a valós értéktől való eltérés.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{convolution.png}
   \caption{A konvolúció művelet, forrás: \cite{deeplearningbook}}
 \end{figure}
- \item \textbf{Összevonó réteg (Pooling layer)} - csökkenti a reprezentáció méretét, így kezelhetőbbé téve azt. Szomszédos értékeket von össze a maximumuk (MaxPooling), vagy átlaguk (AveragePooling) alapján.
- \item \textbf{Rekurrens réteg (Recurrent layer)} - a teljesen kapcsolt réteghez képest van egy olyan plusz tulajdonsága, hogy egy adott neuron megkapja a saját kimenetét is következő lépésben bemenetként. Formalizálva:
+ \item \textbf{Összevonó réteg (Pooling layer)} - csökkenti a reprezentáció méretét, így kezelhetőbbé téve azt. Szomszédos értékeket von össze a maximumuk (MaxPooling) vagy átlaguk (AveragePooling) alapján.
+ \item \textbf{Rekurrens réteg (Recurrent layer)} - a teljesen kapcsolt réteghez képest egy plusz tulajdonsággal rendelkezik: egy adott neuron megkapja a saját kimenetét is következő lépésben bemenetként. Formalizálva:
   \begin{equation}
-	y_t = f_out(Vh_t) \\
+\begin{split}
+	y_t = f_{out}(Vh_t) \\
 	h_t = f_h(U_{x_t}+Wh_{t-1})
+\end{split}
 \end{equation}
 , ahol \(h_t\) a háló egy rejtett vektora, amely \(t\) időpontra vonatkozó információt raktároz el, \(U\), \(V\), \(W\) pedig súlymátrixok. \cite{Choi2017}
 \begin{figure}[H]
@@ -241,11 +243,11 @@ Néhány példa különböző típusú neuronrétegekre:
 
 Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok értékeit egy nemlineáris transzformáció alkalmazásával adjuk át a következő réteg számára. Néhány ezek közül:
 \begin{itemize}
- \item \textbf{Szigmoid} - más néven logisztikus függvény. [0,1] intervallumba transzformálja a kimenetet, ezáltal igaz-hamis, illetve probabilisztikus osztályozásra jól használható a kimeneti rétegen. Hátránya, hogy számítása költséges és szélsőségesen negatív vagy pozitív bemenet esetén eltüntetheti a gradienst.
+ \item \textbf{Szigmoid} - más néven logisztikus függvény. [0,1] intervallumba transzformálja a kimenetet, ezáltal igaz-hamis, illetve probabilisztikus osztályozásra jól használható a kimeneti rétegen. Hátránya, hogy számítása költséges, és szélsőségesen negatív vagy pozitív bemenet esetén eltüntetheti a gradienst.
 \begin{equation}
 	sig(x) = \cfrac{1}{1+e^{-x}}
 \end{equation}
- \item \textbf{Hiperbolikus tangens (tanh)} - [-1,1] intervallumba transzformálja a kimenetet, ezáltal nem csak pozitív értékeket alkalmazunk. Hátránya, hogy ennek a számítása is költséges és esetenként ez is eltüntetheti a gradienst. Kiszámítása:
+ \item \textbf{Hiperbolikus tangens (tanh)} - [-1,1] intervallumba transzformálja a kimenetet, ezáltal nem csak pozitív értékeket alkalmazunk. Hátránya, hogy ennek a számítása is költséges, és esetenként ez is eltüntetheti a gradienst. Kiszámítása:
 \begin{equation}
 	tanh(x) = \cfrac{2}{1+e^{-2x}} - 1
 \end{equation}
@@ -255,9 +257,9 @@ Az aktivációs függvényeket azért használjuk, hogy az egyes neuronok érté
 \end{equation}
  \end{itemize}
 
-\subsubsection{Hibafüggvény (Loss Function)}
+\subsubsection{Hibafüggvény (Loss function)}
 
-A loss function egy olyan függvény, amely a neurális hálónk kimenetének valóságtól való eltérését adja meg. Ezt a függvényt úgy kell megválasztanunk, hogy a értékének minimalizálása jól reprezentálja a tanítás sikerességét. Különböző feladattípusokra különböző loss function-öket érdemes használni. Például:
+A loss function egy olyan függvény, amely a neurális hálónk kimenetének valóságtól való eltérését adja meg. Ezt a függvényt úgy kell megválasztanunk, hogy a értékének minimalizálása jól reprezentálja a tanítás sikerességét. Különböző feladattípusokra különböző hibafüggvényeket érdemes használni. Például:
 \begin{itemize}
  \item \textbf{Mean Squared Error} - regressziós feladatok esetén használatos:
 \begin{equation}
@@ -275,7 +277,7 @@ A loss function egy olyan függvény, amely a neurális hálónk kimenetének va
 
 \subsubsection{Optimalizáló algoritmusok}
 
-A loss function minimalizálása a súlyok igazításával gradiens módszerrel történik. Tehát a súlyok hibához való hozzájárulását kiszámítjuk a hibafüggvény gradienséből, majd ennek megfelelően változtatjuk a súlyokat. Azonban a gradiens csak lassan képes biztosítani a konvergenciát, ezért a gradiensereszkedés algoritmust különböző kiterjesztésekkel láthatjuk el. Ezeket a technikákat nevezzük optimalizálóknak. Néhány példa: gradiensereszkedés, Nesterov lendület, RMSProp, Adam. \cite{deeplearningbook}
+A loss function minimalizálása a súlyok igazításával gradiens módszerrel történik. Tehát a súlyok hibához való hozzájárulását kiszámítjuk a hibafüggvény gradienséből, majd ennek megfelelően változtatjuk a súlyokat. Azonban a gradiens csak lassan képes biztosítani a konvergenciát, ezért a gradiens módszert különböző kiterjesztésekkel láthatjuk el. Ezeket a technikákat nevezzük optimalizálóknak. Néhány példa: gradiens ereszkedés, Nesterov lendület, RMSProp, Adam. \cite{deeplearningbook}
 
 \subsubsection{Architektúrák}
 
@@ -283,18 +285,18 @@ A neurális hálózatok rétegei alapján több fajtájú architektúrát külö
 
 \begin{itemize}
  \item \textbf{Deep Belief Network (DBN)} - felügyelet nélküli tanulást megvalósító architektúra. Restrictive Boltzmann gépeket használ a tanításhoz, majd előre-csatolt neurális hálót a finomhangoláshoz.
- \item \textbf{Variational Autoencoder (VAE)} - adathalmazok tömörített reprezentációinak megtanulására alkalmas architektúra. Gyakorlati felhasználása adathalmazok dimenzionalitásának csökkentése. Az encoder kimenete a bemeneti adat rekonstruált változata.
+ \item \textbf{Variational Autoencoder (VAE)} - adathalmazok tömörített reprezentációinak megtanulására alkalmas architektúra. A gyakorlatban adathalmazok dimenzionalitásának csökkentésére használható. Ezt egy encoder segítségével teszi meg. Egy decoder is tartozik hozzá, amely a redukált dimenziójú reprezentációból képes kielégítő pontossággal rekonstruálni az eredeti adatot.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{vae.png}
-  \caption{VAE háló architektúra, forrás: \cite{deeplearningbook}}
+  \caption{VAE-háló architektúra, forrás: \cite{deeplearningbook}}
 \end{figure}
- \item \textbf{Generative Adversarial Network (GAN)} - az architektúra lényege, hogy két modellt tanítunk párhuzamosan. Az egyik képeket (vagy akár hangokat, szövegeket) generál, a másik pedig a bemenetről megpróbálja eldönteni, hogy az vajon valós, vagy az első modell által generált tartalom. A cél az, hogy az első modellünk olyan életszerű tartalmak generálására legyen képes, amivel képes megtéveszteni a másik modellt. Ezáltal 
- \item \textbf{Konvolúciós Neurális Háló (CNN)} - az architektúra célja, hogy konvolúciók segítségével releváns alacsony szintű jellemzőket azonosítson be a bemeneti adatokon és ezeket használja fel osztályozáshoz. Az input után konvolúciós és pooling rétegek jellemzik, majd a hálót egy, vagy több teljesen kapcsolt réteggel zárjuk.
+ \item \textbf{Generative Adversarial Network (GAN)} - az architektúra lényege, hogy két modellt tanítunk párhuzamosan. Az egyik képeket (vagy akár hangokat, szövegeket) generál, a másik pedig a bemenetről megpróbálja eldönteni, hogy az vajon valós, vagy az első modell által generált tartalom. A cél az, hogy az első modellünk olyan életszerű tartalmak generálására legyen képes, amivel képes megtéveszteni a másik modellt. Ezáltal a gyakorlatban képes lehet például emberek élethű portréfotóit legenerálni anélkül, hogy emberre lenne szüksége a mintázáshoz.
+ \item \textbf{Konvolúciós Neurális Háló (CNN)} - az architektúra célja, hogy konvolúciók segítségével releváns alacsony szintű jellemzőket azonosítson be a bemeneti adatokon, majd ezeket használja fel osztályozáshoz. Az input után konvolúciós és pooling rétegek jellemzik, majd a hálót egy vagy több teljesen kapcsolt réteggel zárjuk. Nagyon jól alkalmazható például képfelismerési problémákhoz.
  \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{cnn.png}
   \caption{CNN architektúra, forrás: \cite{deeplearningbook}}
 \end{figure}
- \item \textbf{Rekurrens Neurális Háló (RNN)} - az architektúra rekurrens rétegeket használ, hogy korábbi időpontok értékeiből is tudjon tanulni, így például nagyon jól kezelhetőek vele szekvenciák. \cite{deeplearningbook}
+ \item \textbf{Rekurrens Neurális Háló (RNN)} - az architektúra rekurrens rétegeket használ, hogy korábbi időpontok értékeiből is tudjon tanulni. Ezáltal szekvenciákat tud optimálisan kezelni. Egy gyakorlati példa az írás előrejelzése, melyhez a korábban leírt szavakat is felhasználja. \cite{deeplearningbook}
 \end{itemize}

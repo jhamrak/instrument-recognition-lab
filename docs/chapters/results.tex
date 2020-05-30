@@ -8,22 +8,22 @@ Ebben a fejezetben a releváns mérőszámok ismertetése után kiértékelem k�
 A modellek teljesítményét F értékek alapján vetettem össze, egyrészt hangszerenként külön-külön, másrészt a hangszerenkénti átlagot véve is. Az F értékhez a következő metrikák vezettek el:
 
 \begin{itemize}
-\item \textbf{Pontosság (Accuraccy)} - a modell helyes előrejelzéseinek száma osztva az összes előrejelzés számával. Ez már magában egy jó mérőszám tud lenni, azonban multi-label osztályozások esetén érdemes a helytelen előrejelzések fajtájával is kalkulálni. Ezek a valótlan igazak (false positives) és valótlan hamisak (false negatives).
+\item \textbf{Pontosság (Accuracy)} - a modell helyes előrejelzéseinek száma osztva az összes előrejelzés számával. Ez már magában egy jó mérőszám tud lenni, azonban multi-label osztályozások esetén érdemes a helytelen előrejelzések fajtájával is kalkulálni. Ezek a valótlan igazak (false positives) és valótlan hamisak (false negatives).
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{predictedactual.png}
   \caption{Előrejelzések fajtái, forrás: \cite{fscore}}
 \end{figure}
 
-\item \textbf{Veszteség (Loss)} - a veszteségfüggvény eredménye. A modell predikcióinak a valóságtól való eltérését összeadva kapjuk meg. A modell célja tanuláskor ennek az értéknek a minimalizálása.
-\item \textbf{Precizitás (Precision)} - valós igaz predikációk száma osztva a valós és valótlan igazak számának összegével.
+\item \textbf{Hiba (Loss)} - a hibafüggvény eredménye. A modell predikcióinak a valóságtól való eltérését összeadva kapjuk meg. A modell célja tanuláskor ennek az értéknek a minimalizálása.
+\item \textbf{Precizitás (Precision)} - valós igaz predikációk száma osztva a valós és valótlan igaz predikációk számának összegével.
 \item \textbf{Felidézés (Recall)} - valós igaz predikációk száma osztva a valós igaz és valótlan hamis predikációk összegével.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{precisionrecall.png}
   \caption{Precizitás és felidézés, forrás: \cite{fscore}}
 \end{figure}
-\item \textbf{F érték (F score)} - a precizitás és felidézés értékek harmónikus közepe. Ez lesz tehát a meghatározó mérőszám modelljeink összevetésénél. \cite{fscore}
+\item \textbf{F érték (F score)} - a precizitás és felidézés értékek harmonikus közepe. Ez lesz tehát a meghatározó mérőszám a modelljeink összevetésénél. \cite{fscore}
 
 \begin{figure}[H]
   \centering
@@ -36,7 +36,7 @@ A modellek teljesítményét F értékek alapján vetettem össze, egyrészt han
 
 \section{Eredmények}
 
-A végső eredmények csak az OpenMIC datasettel kapcsolatos kísérleteket tartalmazzák. Az eredmények összevetésére a hangszerenkénti F score-okat használtam fel. Ez modellenként 20 hangszer, ami 20 különböző értéket jelent. Ezért minden modell végső összevetési alapjának két összesítő értéket választottam: az F-score-ok átlagát és a 0,70 feletti F score-t meghaladó hangszerek számát. Utóbbira a továbbiakban jól tanított hangszerként fogok hivatkozni. Saját intuícióm vezetett arra a következtetésre, hogy 0,70-es F score felett már életszerűen használható értékről beszélhetünk.
+A végső eredmények csak az OpenMIC datasettel kapcsolatos kísérleteket tartalmazzák. Az eredmények összevetésére a hangszerenkénti F értékeket használtam fel. Ez modellenként 20 hangszer, ami 20 különböző értéket jelent. Ezért minden modell végső összevetési alapjának két összesítő értéket választottam: az F értékek átlagát és a 0,70 feletti F értéket meghaladó hangszerek számát. Utóbbira a továbbiakban jól tanított hangszerként fogok hivatkozni. Saját intuícióm vezetett arra a következtetésre, hogy 0,70-es F érték felett már életszerűen használható értékről beszélhetünk.
 
 A továbbiakban a Modeling Baseline és a Shallow CNN architektúrák különböző eredményeit mutatom be. Az eredményeket mindenhol többszöri futtatás maximálisan elért értékei reprezentálják.
 
@@ -54,7 +54,7 @@ Először a VGGish reprezentáció tekintetében tettem kísérleteket, mivel a 
         ybar=0pt,
         bar width=4pt,
         ymajorgrids = true,
-        ylabel = {F-score},
+        ylabel = {F érték},
         symbolic x coords={Harmónika,Bendzsó,Basszusgitár,Cselló,Klarinét,Cintányér,Dob,Furulya,Gitár,Melodikus ütőhangszer,Mandolin,Orgona,Zongora,Szaxofon,Szintetizátor,Harsona,Trombita,Ukulele,Hegedű,Ének},
         xtick = data,
         x tick label style={rotate=90},
@@ -74,15 +74,15 @@ Először a VGGish reprezentáció tekintetében tettem kísérleteket, mivel a 
 \caption{Modeling Baseline és Shallow CNN eredményei optimalizációk nélkül VGGish reprezentáción} \label{fig:vggishbase}
 \end{figure}
 
-Az eredmények hangszerenként a \ref{fig:vggishbase} ábrán láthatóak. Az F-score-ok átlaga és a jól tanított hangszerek száma kicsivel magasabb volt a Modeling Baseline modellen, mint a Shallow CNN-en. Előbbi 0,79 átlag F score-t és 17 jól tanított hangszert, utóbbi 0,76 átlag F score-t és 14 jól tanított hangszert produkált.
+Az eredmények hangszerenként a \ref{fig:vggishbase} ábrán láthatóak. Az F értékek átlaga és a jól tanított hangszerek száma kicsivel magasabb volt a Modeling Baseline modellen, mint a Shallow CNN-en. Előbbi 0,79 átlag F értéket és 17 jól tanított hangszert, utóbbi 0,76 átlag F értéket és 14 jól tanított hangszert produkált.
 
-Ami még a \ref{fig:vggishbase} diagramról leolvasható, hogy a hangszerek között vannak jobban és kevésbé taníthatóak. Például a klarinét és mandolin mindkét modellen relatív alacsony F-értéket hozott. Ezzel szemben a gitár és zongora tanítása mindkét modell esetében 0.9 feletti F-értéket eredményezett.
+Ami még leolvasható a \ref{fig:vggishbase} ábráról, hogy a hangszerek között vannak jobban és kevésbé taníthatóak. Például a klarinét és a mandolin mindkét modellen relatív alacsony F értéket hozott. Ezzel szemben a gitár és a zongora tanítása mindkét modell esetében 0.9 feletti F értéket eredményezett.
 
-A hangszereket vizsgálva a modellek között megjelentek nagyon hasonló és különböző értékek is. A legangyobb különbséget a Shallow CNN javára a dob mutatta, itt 0,75 állt szemben 0,93 értékkel, ami 0,18 F-score eltérés. A Modeling Baseline javára pedig a furulyával kapcsolatos számok jelentették a legnagyobb, 0,23 F-score eltérést. Itt 0,66 és 0,89 voltak az értékek.
+A hangszereket vizsgálva a modellek között megjelentek nagyon hasonló és különböző értékek is. A legnagyobb különbséget a Shallow CNN javára a dob mutatta, itt 0,75 állt szemben 0,93-mal, ami 0,18 F érték eltérés. A Modeling Baseline javára pedig a furulyával kapcsolatos számok jelentették a legnagyobb, 0,23 F értéknyi eltérést. Itt 0,66 és 0,89 volt a két érték.
 
 \subsection{Optimalizáció}
 
-Következő lépésként implementáltam a különböző előfeldolgozási adatoptimalizáló technikákat, mint például undersampling és normalizálió. Ezután szintén a VGGish reprezentáción futtatva a modellek teljesítménye javulást ért el: mindkét modell F score átlaga egyaránt 0,83-ra növekedett a korábbi 0,79-ről és 0,76-ról. Ezen felül a jól tanított hangszerek száma mindkét modell esetén elérte a maximális 20-at a korábbi 17 és 14 helyett. Ez a ShallowCNN számára magasabb relatív javulást jelent, ennek hangszerenkénti összevetése a \ref{fig:shallowcnnopt} ábrán látható.
+Következő lépésként implementáltam a különböző előfeldolgozási adatoptimalizáló technikákat, mint például undersampling és normalizáció. Ezután szintén a VGGish reprezentáción futtatva a modellek teljesítménye javulást ért el: mindkét modell F érték átlaga egyaránt 0,83-ra növekedett a korábbi 0,79-ről és 0,76-ról. Ezenfelül a jól tanított hangszerek száma mindkét modell esetén elérte a maximális 20-at a korábbi 17 és 14 helyett. Ez a ShallowCNN számára magasabb relatív javulást jelent, ennek hangszerenkénti összevetése a \ref{fig:shallowcnnopt} ábrán látható.
 
 \begin{figure}[H]
 \centering
@@ -94,7 +94,7 @@ Következő lépésként implementáltam a különböző előfeldolgozási adato
         ybar=0pt,
         bar width=4pt,
         ymajorgrids = true,
-        ylabel = {F-score},
+        ylabel = {F érték},
         symbolic x coords={Harmónika,Bendzsó,Basszusgitár,Cselló,Klarinét,Cintányér,Dob,Furulya,Gitár,Melodikus ütőhangszer,Mandolin,Orgona,Zongora,Szaxofon,Szintetizátor,Harsona,Trombita,Ukulele,Hegedű,Ének},
         xtick = data,
         x tick label style={rotate=90},
@@ -111,17 +111,17 @@ Következő lépésként implementáltam a különböző előfeldolgozási adato
         \legend{Kezdeti,Optimalizált}
     \end{axis}
 \end{tikzpicture}
-\caption{Shallow CNN optimalizációk előtt és után VGGish reprezentáción}
+\caption{Shallow CNN eredményei VGGish reprezentáción optimalizációk előtt, illetve után}
 \label{fig:shallowcnnopt}
 \end{figure}
 
-Így végül optimalizált adathalmazon bár hangszerenként vannak kisebb eltérések mindkét megoldás irányába, összesítve ugyanolyan eredményt képes produkálni egy hagyományos gépi tanulási algoritmus, mint egy mély tanulási modell. Legalábbis a kis méretű, előre tanított VGGish reprezentáción.
+Így végül az optimalizált adathalmazon -, bár hangszerenként vannak kisebb eltérések mindkét megoldás irányába - összesítve ugyanolyan eredményt képes produkálni egy hagyományos gépi tanulási algoritmus, mint egy mély tanulási modell. Legalábbis a kis méretű, előre tanított VGGish reprezentáción.
 
 \subsection{Alternatív reprezentációk}
 
-A VGGish reprezentáció után mindkét modellt futtattam melspectogram és MFCC reprezentációkat felhasználva. A melspectogram tekintetében végeztem az adatoptimalizálás előtt is kísérleteket. Már itt észrevehető volt: a nagyobb, komplexebb reprezentáción a mély tanulás jobb eredményt mutat. A Modeling Baseline 0,56-os F-score-t és 4 jól tanított hangszert, a Shallow CNN architektúra pedig 0,61-es F score-t és 5 jól tanított hangszert produkált.
+A VGGish reprezentáció után mindkét modellt futtattam melspectogram és MFCC reprezentációkat felhasználva. A melspectogram tekintetében végeztem az adatoptimalizálás előtt is kísérleteket. Már itt is észrevehető volt, hogy a mély tanulás a nagyobb, komplexebb reprezentáción jobb eredményt mutat. A Modeling Baseline 0,56-os átlag F értéket és négy jól tanított hangszert, a Shallow CNN architektúra pedig 0,61-es átlag F értéket és öt jól tanított hangszert produkált.
 
-Ám az adatoptimalizáció utáni értékek még jelentősebbek. Az optimalizáció kapcsán lényegében ugyanaz látszik, mint a VGGish esetén: mindkét modellen javulást eredményezett az optimalizálás, de a Shallow CNN-en szignifikánsabb a különbség. A végső értékek a Modeling Baseline tekintetében 0,65-ös F-score és 5 jól tanított hangszer. Ezzel szemben a Shallow CNN F-score-ja 0,73-ra, jól tanított hangszereinek száma 12-re nőtt. Ez a Modeling Baseline esetén plusz 0,09 F-score-t és 1 jól tanított hangszert jelent, míg a Shallow CNN esetén plusz 0,12 F-score-t és 7 jól tanított hangszert. Így tehát a Modeling Baseline és Shallow CNN melspectogramon vett végső eredményei közül a Shallow CNN-é magasabb 0,08 átlag F-score-ral és 7 jól tanított hangszerrel. A hangszerenkénti értékek a \ref{fig:melspec} ábráról olvashatóak le.
+Ám az adatoptimalizáció utáni értékek még jelentősebbek. Az optimalizáció kapcsán lényegében ugyanaz látszik, mint a VGGish esetén: mindkét modellen javulást eredményezett az optimalizálás, de a Shallow CNN-en szignifikánsabb a különbség. A végső értékek a Modeling Baseline tekintetében 0,65-ös átlag F érték és öt jól tanított hangszer. Ezzel szemben a Shallow CNN átlag F értéke 0,73-ra, jól tanított hangszereinek száma 12-re nőtt. Ez a Modeling Baseline esetén plusz 0,09 átlag F értéket és egy jól tanított hangszert jelent, míg a Shallow CNN esetén plusz 0,12 átlag F értéket és hét jól tanított hangszert. Így tehát a Modeling Baseline és Shallow CNN melspectogramon vett végső eredményei közül a Shallow CNN-é magasabb 0,08 átlag F értékkel és hét jól tanított hangszerrel. A hangszerenkénti értékek a \ref{fig:melspec} ábráról olvashatóak le.
 
 \begin{figure}[H]
 \centering
@@ -158,7 +158,7 @@ legend cell align=left,legend style={
 \label{fig:melspec}
 \end{figure}
 
-A melspectogram reprezentáció után az MFCC következett. Az MFCC reprezentáción mindkét modell a melspectogramon való futtatáshoz hasonló eredményt adott. A Modeling Baseline 0,61-es átlag F-score-t és 4 jól tanított hangszert ért el, ez 0,04 F-score-ral és 1 jól tanított hangszerrel alacsonyabb, mint melspectogram esetén. A Shallow CNN tekintetében pedig 0,72 átlag F-score és 8 jól tanított hangszer lett a végső eredmény. Ezek az értékek 0,01 F-score és 4 jól tanított hangszer különbséget mutatnak a melspectogram javára. A hangszerenkénti értékek a \ref{fig:mfcc} ábráról olvashatóak le.
+A melspectogram reprezentáció után az MFCC következett. Az MFCC reprezentáción mindkét modell a melspectogramon való futtatáshoz hasonló eredményt adott. A Modeling Baseline 0,61-es átlag F értéket és négy jól tanított hangszert ért el, ez 0,04 átlag F értékkel és egy jól tanított hangszerrel alacsonyabb, mint melspectogram esetén. A Shallow CNN tekintetében pedig 0,72 átlag F érték és nyolc jól tanított hangszer lett a végső eredmény. Ezek az értékek 0,01 átlag F érték és négy jól tanított hangszernyi különbséget mutatnak a melspectogram javára. A hangszerenkénti értékek a \ref{fig:mfcc} ábráról olvashatóak le.
 
 \begin{figure}[H]
 \centering
@@ -170,7 +170,7 @@ A melspectogram reprezentáció után az MFCC következett. Az MFCC reprezentác
         ybar=0pt,
         bar width=4pt,
         ymajorgrids = true,
-        ylabel = {macro f-score},
+        ylabel = {F érték},
         symbolic x coords={Harmónika,Bendzsó,Basszusgitár,Cselló,Klarinét,Cintányér,Dob,Furulya,Gitár,Melodikus ütőhangszer,Mandolin,Orgona,Zongora,Szaxofon,Szintetizátor,Harsona,Trombita,Ukulele,Hegedű,Ének},
         xtick = data,
         x tick label style={rotate=90},
@@ -195,17 +195,17 @@ legend cell align=left,legend style={
 \label{fig:mfcc}
 \end{figure}
 
-Melspectogram, illetve MFCC reprezentációk közti jelentős effektívségbeli különbség tehát nem jelenik meg az eredményekben. Ezt érdemes lenne tovább vizsgálni. Mélyebb architektúrára, illetve több bemeneti adatra lenne szükség a bizonyításához, vagy cáfolásához.
+Melspectogram, illetve MFCC reprezentációk közti jelentős hatékonyságbeli különbség tehát nem jelenik meg az eredményekben. Ezt érdemes lenne tovább vizsgálni. Az különbségek bizonyításához vagy cáfolásához mélyebb architektúrára, valamint több bemeneti adatra lenne szükség.
 
 \subsection{Összehasonlítás}
 
-A bemutatott eredményekből és a \ref{tab:all} összefoglaló táblázatból látszik, hogy melspectogram és MFCC bemeneti reprezentációk esetén az általam prezentált Deep Learning architektúra (Shallow CNN) jobb eredményeket produkál, mint egy hagyományos gépi tanulási algoritmus (Modeling Baseline).
+A bemutatott eredményekből és a \ref{tab:all} összefoglaló táblázatból látszik, hogy melspectogram és MFCC bemeneti reprezentációk esetén az általam prezentált deep learning architektúra (Shallow CNN) jobb eredményeket produkál, mint egy hagyományos gépi tanulási algoritmus (Modeling Baseline).
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ | c | p{2,5cm} | p{2,5cm} |}
 		\hline
-		 & \textbf{Átlagos F-score} & \textbf{Jól tanított hangszerek száma}  \\
+		 & \textbf{Átlagos F érték} & \textbf{Jól tanított hangszerek száma}  \\
 		\hline \hline
 		\emph{Modeling Baseline VGGish kezdeti} & 0,79 & 17 \\
 		\hline
@@ -237,4 +237,4 @@ A bemutatott eredményekből és a \ref{tab:all} összefoglaló táblázatból l
 \end{table}
 
 
-A reprezentációk tekintetében elmondható, hogy a melspectogram és MFCC jelentősen gyengébb eredményeket értek el, mint a VGGish. Ennek fő oka az adathalmaz méretéből fakad. Ugyanis a VGGish reprezentáció célzottan sekélyebb architektúrákra és kevesebb adatra lett megalkotva.
+A reprezentációk tekintetében elmondható, hogy a melspectogram és MFCC jelentősen gyengébb eredményeket értek el, mint a VGGish. Ennek fő oka az adathalmaz méretéből fakad, ugyanis a VGGish reprezentációt célzottan  sekélyebb architektúrákra, kevesebb adatra alkották meg.

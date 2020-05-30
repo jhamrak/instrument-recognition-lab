@@ -1,11 +1,13 @@
 \chapter{Módszertan} 
 \label{ch:methodology}
 
-Ebben a fejezetben az alkalmazott módszertant mutatom be. Először ismertetem az alkalmazott előfeldolgozási módszereket. Ezután a tanító modellek architektúráját mutatom be. Végül pedig szót ejtek az ismertetett módszerek implementációjáról.
+Ebben a fejezetben az alkalmazott módszertant mutatom be. Először ismertetem az alkalmazott előfeldolgozási módszereket. Ezután a tanító modellek architektúráját mutatom be. Végül pedig szót ejtek az ismertetett deep learning architektúrához tartozó hiperparaméterekről.
 
 \section{Bemeneti adatok, előfeldolgozás}
 
-Az OpenMIC adathalmazzal két formában kapjuk meg a bemeneti adatokat. Egyrészt elérhetőek a nyers hanganyagok .ogg formátumban. Ezen kívül rendelkezésre állt a VGGish nevű reprezentáció is, amelyről a korábbi \ref{subsec:VGGish} fejezetben írtam. A bemeneti adatokat tanítás előtt azonban néhány előfeldolgozási folyamaton vittem végig részben a megvalósíthatóság, részben pedig a performancianövelés érdekében. Ezekről írok a következő alfejezekben.
+Az OpenMIC adathalmazzal két formában kapjuk meg a bemeneti adatokat. Egyrészt elérhetőek a nyers hanganyagok .ogg formátumban. Másrészt rendelkezésre állt a VGGish nevű reprezentáció is, amelyről a \ref{subsec:VGGish}-es fejezetben írtam.
+
+A bemeneti adatokat tanítás előtt néhány előfeldolgozási folyamaton vittem végig részben a megvalósíthatóság, részben pedig a performancianövelés érdekében. Ezekről írok a következő alfejezetekben.
 
 \subsection{Alternatív reprezentációk kinyerése}
 
@@ -18,11 +20,11 @@ Az adatok normalizálása a tanulási folyamat gyorsítására szolgál. A norma
 x(_i) := (x(_i) - x_{\text{min}}) \/ (x_{\text{max}} - x_{\text{min}})
 \end{equation}
 
-A normalizált adathalmon a gradiens általában hamarabb csökkenthető, ezért a tanítási folyamat rövidebb lehet. \cite{LeCun2012}
+A normalizált adathalmazon a gradiens általában hamarabb csökkenthető, ezért a tanítási folyamat rövidebb lehet. \cite{LeCun2012}
 
-\subsection{Osztályok kiegyensúlyozása}
+\subsection{Osztályok kiegyenlítése}
 
-Tanító modelleknél gyakori probléma, hogy a tanulni kívánt osztályok egy része alul van reprezentálva. Dolgozatom multi-label osztályozása esetén két osztályról beszélhetünk: igaz (jelen van az adott hangszer) és hamis (nincs jelen az adott hangszer). Mivel sok esetben a hamis értékek jelentős többségben voltak, - egyes hangszerek esetén az összes adat közel 80\%-át is kitette - ezért a modell jó pontosságot tudott elérni csupán ''hamis'' predikciókkal.
+Tanító modelleknél gyakori probléma, hogy a tanulni kívánt osztályok egy része alulreprezentált. Dolgozatom multi-label osztályozása esetén két osztályról beszélhetünk: igaz (jelen van az adott hangszer) és hamis (nincs jelen az adott hangszer). Mivel sok esetben a hamis értékek jelentős többségben voltak - egyes hangszerek esetén az összes adat közel 80\%-át is kitette -, ezért a modell jó pontosságot tudott elérni csupán “hamis” predikciókkal.
 
 Ezt elkerülendő, három megoldás jöhetett szóba:
 \begin{itemize}
@@ -33,26 +35,26 @@ Ezt elkerülendő, három megoldás jöhetett szóba:
 
 Dolgozatom keretében az undersampling módszert alkalmaztam.
 
-\subsection{Tanító-, tesztelő- és validáló halmaz kialakítása}
+\subsection{Tanító, tesztelő, és validáló halmaz kialakítása}
 
 Tanító modellek alkalmazásakor fontos, hogy legalább kettő, de inkább három független adathalmazzal rendelkezzünk: 
 \begin{itemize}
- \item \textbf{Tanító adathalmaz (Train Set)} - ebből a halmazból tanul és ezt a halmazt látja a modellünk.
- \item \textbf{Validáló adathalmaz (Validation Set)} - a tanítási lépések (epoch-ok) között ezen a tanító halmaztól független adathalmazon kiértékeljük modellünk működését. Ezáltal visszajelzést tudunk adni a tanítási folyamat felé és ha szükséges, változtathatunk a hiperparamétereken. Modellünk tehát ezt a halmazt időnként látja, de nem ebből tanul
- \item \textbf{Teszt adathalmaz (Test Set)} - a tanítási folyamat végén ezen a halmazon értékeljük ki modellünk teljesítményét. Modellünk ezt a halmazt a tanítás alatt egyáltalán nem látja és ezáltal nem is tud tanulni belőle. Ezzel a függetlenséggel biztosítjuk a kiértékelés torzítatlanságát. \cite{traintestvalid}
+ \item \textbf{Tanító adathalmaz (Train set)} - ebből a halmazból tanul, és ezt a halmazt látja a modellünk.
+ \item \textbf{Validáló adathalmaz (Validation set)} - a tanítási lépések (epoch-ok) között ezen - a tanító halmaztól független - adathalmazon kiértékeljük modellünk működését. Ezáltal visszajelzést tudunk adni a tanítási folyamat felé, és ha szükséges, változtathatunk a hiperparamétereken. Modellünk tehát ezt a halmazt időnként látja, de nem ebből tanul.
+ \item \textbf{Teszt adathalmaz (Test set)} - a tanítási folyamat végén ezen a halmazon értékeljük ki modellünk teljesítményét. Modellünk ezt a halmazt a tanítás alatt egyáltalán nem látja, és ezáltal nem is tud tanulni belőle. Ezzel a függetlenséggel biztosítjuk a kiértékelés torzítatlanságát. \cite{traintestvalid}
 \end{itemize}
 
-Bevett szokás, hogy e három halmazt körülbelül 60\%-20\%-20\% arányban osztjuk fel a tanító halmaz javára. \cite{traintestvalid} Dolgozatom során én is ezt az elvet követtem.
+Bevett szokás, hogy az adathalmazunkat véletlenszerűen, körülbelül 60\%-20\%-20\% arányban felosztjuk a fent említett három diszjunkt halmazra úgy, hogy a nagyobb részt a tanító halmaz kapja. \cite{traintestvalid} Dolgozatom során én is ezt az elvet követtem.
 
 \section{Architektúra}
 
 A következő alfejezetekben a különböző tanító modell kísérletek architektúráját mutatom be.
 
-\subsection{Hagyományos Machine Learning (Modeling Baseline)}
+\subsection{Hagyományos machine learning (Modeling Baseline)}
 
-Az OpenMIC dataset megalkotói bemutattak egy példa modellt, amely egy véletlen erdő osztályozó (Random Forest Classifier). \cite{humphrey2018openmic} Ez egy hagyományos gépi tanulási algoritmus. Az osztályozó 100 eldöntési fából áll, a maximális mélysége 8. Ez szolgált munkám kiinduló pontjaként. A továbbiakban Modeling Baseline elnevezéssel hivatkozok rá.
+Az OpenMIC dataset megalkotói bemutattak egy példa modellt, amely egy véletlen erdő osztályozó (random forest classifier). \cite{humphrey2018openmic} Ez egy hagyományos gépi tanulási algoritmus. Az osztályozó 100 eldöntési fából áll, a maximális mélysége 8. Ez szolgált munkám kiinduló pontjaként. A továbbiakban Modeling Baseline elnevezéssel hivatkozok rá.
 
-A Modeling Baseline futtatását alapvetően a VGGish reprezentációra implementálták. Dolgozatom keretében megvalósítottam ugyanennek az osztályozónak a melspectogram, ileltve MFCC reprezentációkon való tanítását is. Ezáltal minden reprezentációra kaptam egy viszonyítási alapot.
+A Modeling Baseline futtatását alapvetően a VGGish reprezentációra implementálták. Dolgozatom keretében megvalósítottam ugyanennek az osztályozónak a melspectogram, illetve MFCC reprezentációkon való tanítását is. Ezáltal minden reprezentációra kaptam egy viszonyítási alapot.
 
 \subsection{Deep CNN}
 
@@ -67,18 +69,17 @@ Az első mély tanulási megközelítésem a VGG-16 \cite{vgg} architektúrához
 Az architektúra a következő elemekből épül fel:
 
 \begin{itemize}
- \item Konvolúciós rétegek, ReLU aktivációs függvénnyel
- \item Max-pooling rétegek
- \item Opcionálisan Dropout rétegek
- \item Flattening réteg
- \item Fully-connected rétegek, ReLU aktivációs függvénnyel
- \item Fully-connected utolsó réteg, szigmoid aktivációs függvénnyel
+ \item konvolúciós rétegek, ReLU aktivációs függvénnyel
+ \item max-pooling rétegek
+ \item opcionálisan dropout rétegek
+ \item flattening réteg
+ \item teljesen kapcsolt rétegek, ReLU aktivációs függvénnyel
+ \item teljesen kapcsolt utolsó réteg, szigmoid aktivációs függvénnyel
 \end{itemize}
 
-A bemenetet először két konvolúciós rétegnek adjuk át. Ezt követi egy Max-pooling réteg, majd esetleg a nagyobb random-faktor érdekében egy Dropout réteg. Ezután ugyanilyen sorrendben még háromszor-négyszer (attól függően, milyen mély architektúrát szeretnénk megvalósítani) hozzáfűzzük ezeket a rétegeket az előző kimenetéhez. A konvolúciós rétegek ahogy zsugorodnak a Max-poolingok hatásaként, úgy egyre több szűrővel rendelkeznek. Következőnek egy Flattening réteg következik, amely után a Fully-connected rétegeket csatolhatjuk. Dropout rétegeket itt is alkalmazhatunk. Az utolsó Fully-connected layerhez szigmoid aktivációs függvény tartozik, hogy 0 és 1 közötti értékeket kapjunk a kimenetre. Ebből nyerjük ki a végleges igaz-hamis értékeket.
+A bemenetet először két konvolúciós rétegnek adjuk át. Ezt követi egy max-pooling réteg, majd esetleg a nagyobb random-faktor érdekében egy dropout réteg. Ezután ugyanilyen sorrendben még háromszor-négyszer (attól függően, milyen mély architektúrát szeretnénk megvalósítani) hozzáfűzzük ezeket a rétegeket az előző kimenetéhez. Ahogy a konvulúciós rétegek zsugorodnak a max-poolingok hatásaként, úgy egyre több szűrővel érdemes ellátni őket. A következő egy flattening réteg, amely lehetőséget biztosít arra, hogy teljesen kapcsolt rétegeket csatoljunk utána. Dropout rétegeket itt is alkalmazhatunk. Az utolsó teljesen kapcsolt réteghez szigmoid aktivációs függvény tartozik, hogy 0 és 1 közötti értékeket kapjunk a kimenetre. Ebből nyerjük ki a végleges igaz-hamis értékeket.
 
-Erre az architektúrára csak a melspectogram reprezentációt lehetett ráilleszteni. A VGGish 10 és az MFCC 20 méretű dimenziója a konvolúciók és Max-poolingok következtében 0 alá redukálódott volna, ami nem lehetséges.
-
+Erre az architektúrára csak a melspectogram reprezentációt lehetett ráilleszteni. A VGGish 10 és az MFCC 20 méretű dimenziója a konvolúciók és összevonások következtében nulla alá redukálódott volna, ami nem lehetséges. Ezért ezen architektúrával a kísérlezetést abbahagytam, ezt egy későbbi kutatás során lehetne folytatni.
 
 \begin{table}[H]
 	\centering
@@ -127,21 +128,21 @@ Erre az architektúrára csak a melspectogram reprezentációt lehetett ráilles
 		\emph{Fully-connected} & 1 \\
 		\hline
 	\end{tabular}
-	\caption{Deep CNN architektúra rétegei és az egyes rétegek outputjainak mérete Melspectogram reprezentáció esetén}
+	\caption{Deep CNN architektúra rétegei és az egyes rétegek outputjainak mérete melspectogram reprezentáció esetén}
 	\label{tab:dcnn}
 \end{table}
 
-\subsection{Shallow CNN (VGGish Embedding Downstream CNN)}
+\subsection{Shallow CNN (Embedding downstream CNN)}
 
 Kísérleteim során a Deep CNN után egy sekélyebb architektúrát is kialakítottam. Ezt a továbbiakban Shallow CNN néven fogom említeni. A Shallow CNN-t három okból hoztam létre:
  
 \begin{itemize}
- \item Amint azt az adathalmazok körében a \ref{subsec:VGGish} alfejezetben is említettem, a VGGish reprezentáció már előre tanítva van. Ezért erre nem lenne hatékony egy Deep CNN mélységű architektúra alkalmazása.
- \item A melspectogram, illetve MFCC reprezentációk esetében a kísérletek arra utaltak, hogy túl kevés az adatunk egy ilyen mély architektúra alkalmazásához. Az eredmények azt mutatták, hogy a modell fölöslegesen próbál nagyon mély összefüggéseket keresni az adatok között. Ezek feltárásához az adott ezres nagyságrendű bemeneti mintaszám helyett legalább tízerzes, de inkább százezres kellene.
- \item Az MFCC és VGGish reprezentációk mérete nem megfelelő a megadott architektúra dimenzió redukciói miatt.
+ \item Amint azt az adathalmazok körében a \ref{subsec:VGGish}-es alfejezetben is említettem, a VGGish reprezentáció már előre tanított, ezért erre nem lenne hatékony egy Deep CNN mélységű architektúra alkalmazása.
+ \item A melspectogram, illetve MFCC reprezentációk esetében a kísérletek arra utaltak, hogy túl kevés az adatunk egy ilyen mély architektúra alkalmazásához. Az eredmények azt mutatták, hogy a modell fölöslegesen próbál nagyon mély összefüggéseket keresni az adatok között. Ezek feltárásához az adott ezres nagyságrendű bemeneti mintaszám helyett legalább tízezres, de inkább százezres kellene.
+ \item Az MFCC és VGGish reprezentációk mérete nem megfelelő a megadott architektúra dimenzióredukciói miatt.
 \end{itemize}
 
-Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélyebb konvolúciós neuronháló megvalósítása. A rétegek típusa megegyezik a Deep CNN-ével, azonban számuk és méretük jelentősen kisebb (lásd \ref{tab:scnn} táblázat). Ennek eredményeképp jelentősen csökkent a tanítási idő, a modell teljesítőképessége pedig nőtt.
+Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélyebb konvolúciós neuronháló megvalósítása. A rétegek típusa megegyezik a Deep CNN-ével, azonban számuk és méretük jelentősen kisebb (lásd \ref{tab:scnn} táblázat). Ennek eredményeképpen jelentősen csökkent a tanítási idő, a modell teljesítőképessége pedig nőtt.
 
 
 \begin{table}[H]
@@ -182,8 +183,8 @@ Maga a Shallow CNN a Deep CNN leegyszerűsített változata, tehát egy sekélye
 Az előfeldolgozási technikákon és az architektúra kialakításán kívül fontos szerepe volt a megfelelő hiperparaméterek megválasztásának is. Ezek többségét best-practice-ek alapján határoztam meg, majd kísérletezések során optimalizáltam. A különböző hiperparaméterek:
 
 \begin{itemize}
- \item \textbf{Epoch-ok száma + Early Stopping} - a tanulásban az epoch-ok száma jelenti azt, hogy a modell hány alkalommal megy végig a bemeneti tanítóhalmazon. Ennek 50 értéket adtam és early stopping technikával egészítettem ki. Az early stopping lényege, hogy minden epoch után egy kiválaszott érték alapján megvizsgáljuk, hogy a tanulás még hatékony-e, és ha nem, akkor leállítjuk. Én ezt a learning rate függvényében, magas learning rate esetén 4, alacsony esetén 7 epoch türelmi küszöbbel a validation loss csökkenésének vizsgálatára alapozva vezettem be.
- \item \textbf{Learning rate} - a tanulás mértékét határozza meg. Túl magas érték esetén előfordul, hogy a modellünk nem tud konvergálni az optimális megoldás felé, mert folyton átugorja azt. Túl alacsony érték esetén pedig a tanítás folyamata túl hosszú lehet, illetve előfordulhat, hogy bizonyos nem kielégítő lokális minimum gradiens érték irányába konvergálunk, amelyet épp át kellene ugranunk az optimális megoldás megtalálásához.
- \item \textbf{Dropout} - az architektúra egyes rétegei közé dropout rétegeket illesztettem, amelyek az adott rétegig beállított súlyok egy részét véletlenszerűen eldobják az overfitting elkerülése érdekében. Ezt bármely két réteg közé beilleszthetjük és bármilyen mértékű lehet. Én a súlyok 20\%-ára állítottam be őket, az architektúrában feltüntetett pontokon.
- \item \textbf{Mini-batch size} - ennek az értéke adja meg, hogy egyidőben hány konkrét bemeneti adaton végezzük el a léptetés és visszacsatolás folyamatokat. Ez az érték bármi lehet egytől a bemeneti adataink számáig. Minél kisebb az érték, annál kevésbé memóriaigényes a tanítás és minél nagyobb, annál gyorsabb. Best-practice-ként alacsony kettő hatvány értékeket szokás használni. Én 64-nek választottam.
+ \item \textbf{Tanulási ráta (Learning rate)} - a tanulás mértékét határozza meg. Túl magas érték esetén előfordul, hogy a modellünk nem tud konvergálni az optimális megoldás felé, mert folyton átugorja azt. Túl alacsony érték esetén pedig a tanítás folyamata túl hosszú lehet, illetve előfordulhat, hogy bizonyos nem kielégítő lokális minimum gradiens érték irányába konvergálunk, amelyet épp át kellene ugranunk az optimális megoldás megtalálásához.
+ \item \textbf{Epoch-ok száma + early stopping} - a tanulásban az epoch-ok száma jelenti azt, hogy a modell hány alkalommal megy végig a bemeneti tanítóhalmazon. Ennek 50 értéket adtam és early stopping technikával egészítettem ki. Az early stopping lényege, hogy minden epoch után egy kiválaszott érték alapján megvizsgáljuk, hogy a tanulás még hatékony-e, és ha nem, akkor leállítjuk. Én ezt a tanulási ráta függvényében, magas tanulási ráta esetén 4, alacsony esetén 7 epoch türelmi küszöbbel a validációs hiba csökkenésének vizsgálatára alapozva vezettem be.
+ \item \textbf{Dropout} - az architektúra egyes rétegei közé dropout rétegeket illesztettem, amelyek az adott rétegig beállított súlyok egy részét véletlenszerűen eldobják az overfitting jelenség elkerülése érdekében. Ezt bármely két réteg közé beilleszthetjük és bármilyen mértékű lehet. Én a súlyok 20\%-ára állítottam be őket, az architektúrában feltüntetett pontokon.
+ \item \textbf{Mini-batch size} - ennek az értéke adja meg, hogy egy időben hány konkrét bemeneti adaton végezzük el a léptetési és visszacsatolási folyamatokat. Ez az érték bármi lehet egytől a bemeneti adataink számáig. Minél kisebb az érték, annál kevésbé memóriaigényes a tanítás, és minél nagyobb az érték, annál gyorsabb. Best-practice-ként alacsony kettő-hatványértékeket szokás használni. Ebből kiindulva én 64-nek választottam meg.
 \end{itemize}
