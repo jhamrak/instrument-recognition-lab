@@ -13,9 +13,7 @@ Ez a projekt a programtervező informatikus mesterképzéshez tartozó diplomamu
 ### Adatok előkészítése
 
 Miután clone-oztuk a repot, töltsünk le egy datasetet.
-- Teljes OpenMIC dataset letöltése: https://zenodo.org/record/1432913 VAGY
-- Redukált OpenMIC dataset letöltése: TODO csak a kiválogatott hangszerekre redukált dataset
-A letöltött fájlt csomagoljuk ki a repo gyökerébe.
+- Teljes OpenMIC dataset letöltése: https://zenodo.org/record/1432913
 
 Ha bemenetként melspectogram, vagy MFCC reprezentációt szeretnénk használni, akkor a dataset kicsomagolása után futtassuk a megfelelő adattranszformáló scriptet.
 - OpenMIC melspectogramra való tarnszformáló script: [melspec.py](melspec.py).
